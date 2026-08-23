@@ -6,7 +6,7 @@ import TypographyPanel from './components/TypographyPanel';
 import LayoutAndCardsPanel from './components/LayoutAndCardsPanel';
 import FieldsEditor from './components/FieldsEditor';
 import LogoPanel from './components/LogoPanel';
-import ExportControls from './components/ExportControls';
+import ExportControls, { SideActionWings } from './components/ExportControls';
 import SocialCopywriterModal from './components/SocialCopywriterModal';
 import SupabaseModal from './components/SupabaseModal';
 import { DEFAULT_GLASS_CARD_DATA, SAMPLE_IMAGES, LUXURY_THEMES } from './utils/constants';
@@ -22,7 +22,7 @@ export default function App() {
   const [presets, setPresets] = useState(getAllPresets);
   const [activePresetId, setActivePresetId] = useState('preset-sale-gold');
   const [customFonts, setCustomFonts] = useState([]);
-  const [viewMode, setViewMode] = useState('split'); // 'split' (fixed top preview) or 'full'
+  const [viewMode, setViewMode] = useState('split'); // 'split' or 'full'
 
   // 2. Modals
   const [isCopywriterOpen, setIsCopywriterOpen] = useState(false);
@@ -124,9 +124,18 @@ export default function App() {
     { text: `${cardData.subtitle || 'المساحة'}: ${cardData.heroNumber} ${cardData.heroUnit}` }
   ];
 
+  // Get Side Action Wings for the Stage Bay
+  const sideWings = SideActionWings({
+    canvasRef,
+    showGridLines,
+    setShowGridLines,
+    showLogo,
+    setShowLogo
+  });
+
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col antialiased selection:bg-amber-500/30 selection:text-amber-200">
-      {/* 1. Slim Header (52px) */}
+    <div className="bg-slate-950 text-slate-100 flex flex-col antialiased selection:bg-amber-500/30 selection:text-amber-200">
+      {/* 1. Header (Slim 52px) */}
       <Header
         presets={presets}
         activePresetId={activePresetId}
@@ -138,11 +147,11 @@ export default function App() {
         onOpenCopywriterModal={() => setIsCopywriterOpen(true)}
       />
 
-      {/* 2. Main Workspace Layout */}
-      <main className="flex-1 max-w-[1550px] w-full mx-auto p-2 sm:p-3 lg:p-4 grid grid-cols-1 lg:grid-cols-12 gap-3 items-start pb-4">
+      {/* 2. Main Studio Workspace Layout */}
+      <main className="max-w-[1550px] w-full mx-auto p-2 sm:p-3 lg:p-4 grid grid-cols-1 lg:grid-cols-12 gap-3 items-start">
         
-        {/* RIGHT COLUMN (DESKTOP) / TOP STICKY PREVIEW BAR (MOBILE) */}
-        <div className="lg:col-span-5 xl:col-span-5 flex flex-col items-center gap-2 lg:sticky lg:top-16 z-30">
+        {/* RIGHT COLUMN (DESKTOP) / TOP STICKY PREVIEW STAGE (MOBILE) */}
+        <div className="lg:col-span-5 xl:col-span-5 flex flex-col items-center gap-2 sticky top-13 lg:top-15 self-start z-30 bg-slate-950/98 lg:bg-transparent backdrop-blur-xl lg:backdrop-blur-none py-1.5 lg:py-0 border-b border-slate-800 lg:border-none shadow-xl lg:shadow-none">
           
           {/* Mobile View Toggle Bar */}
           <div className="lg:hidden w-full flex items-center justify-between px-1 text-xs">
@@ -165,46 +174,51 @@ export default function App() {
             </button>
           </div>
 
-          {/* Sticky Canvas Stage on Mobile */}
-          <div className={`w-full flex items-center justify-center transition-all ${
-            viewMode === 'split'
-              ? 'sticky top-13 lg:static bg-slate-950/98 lg:bg-transparent backdrop-blur-md py-1 rounded-2xl lg:rounded-none border-b lg:border-none border-slate-800'
-              : 'relative'
-          }`}>
-            <div className={`transition-transform duration-150 flex items-center justify-center ${
+          {/* Dedicated Stage Bay: Flanked by Right and Left Wings */}
+          <div className="w-full flex items-center justify-center gap-2 py-1">
+            {/* Right Wing: الجريد والشعار */}
+            {sideWings.rightWing}
+
+            {/* Center Canvas Preview Stage: 100% visible height */}
+            <div className={`transition-all duration-150 flex items-center justify-center ${
               viewMode === 'split'
-                ? 'h-[250px] sm:h-[290px] lg:h-auto overflow-hidden scale-[0.48] sm:scale-[0.55] lg:scale-100 origin-center -my-22 sm:-my-16 lg:my-0'
-                : 'w-full'
+                ? 'w-[170px] sm:w-[210px] lg:w-[320px] xl:w-[350px]'
+                : 'w-full max-w-[380px]'
             }`}>
-              <CanvasPreview
-                ref={canvasRef}
-                imageUrl={imageUrl}
-                imageZoom={imageZoom}
-                imagePanX={imagePanX}
-                imagePanY={imagePanY}
-                imageBlur={imageBlur}
-                imageFilter={imageFilter}
-                overlayColor={overlayColor}
-                overlayOpacity={overlayOpacity}
-                hasVignette={hasVignette}
-                vignetteIntensity={vignetteIntensity}
-                themeId={themeId}
-                finish={finish}
-                cardData={cardData}
-                showLogo={showLogo}
-                logoUrl={logoUrl}
-                logoPosition={logoPosition}
-                logoScale={logoScale}
-                logoOpacity={logoOpacity}
-                isPhoneMockup={isPhoneMockup}
-                showGridLines={showGridLines}
-                showGridIndicator={showGridIndicator}
-                gridViewsCount="1916"
-              />
+              <div className={viewMode === 'split' ? 'scale-[0.50] sm:scale-[0.62] lg:scale-[0.88] xl:scale-100 origin-center' : 'w-full'}>
+                <CanvasPreview
+                  ref={canvasRef}
+                  imageUrl={imageUrl}
+                  imageZoom={imageZoom}
+                  imagePanX={imagePanX}
+                  imagePanY={imagePanY}
+                  imageBlur={imageBlur}
+                  imageFilter={imageFilter}
+                  overlayColor={overlayColor}
+                  overlayOpacity={overlayOpacity}
+                  hasVignette={hasVignette}
+                  vignetteIntensity={vignetteIntensity}
+                  themeId={themeId}
+                  finish={finish}
+                  cardData={cardData}
+                  showLogo={showLogo}
+                  logoUrl={logoUrl}
+                  logoPosition={logoPosition}
+                  logoScale={logoScale}
+                  logoOpacity={logoOpacity}
+                  isPhoneMockup={isPhoneMockup}
+                  showGridLines={showGridLines}
+                  showGridIndicator={showGridIndicator}
+                  gridViewsCount="1916"
+                />
+              </div>
             </div>
+
+            {/* Left Wing: نسخ ومفرغ PNG */}
+            {sideWings.leftWing}
           </div>
 
-          {/* Quick Action Toolbar (Download, Copy, Toolstrip) */}
+          {/* Bottom Action Bar: High-Res Download & Views */}
           <div className="w-full max-w-[420px]">
             <ExportControls
               canvasRef={canvasRef}
@@ -214,7 +228,6 @@ export default function App() {
               setShowLogo={setShowLogo}
               showGridIndicator={showGridIndicator}
               setShowGridIndicator={setShowGridIndicator}
-              onOpenCopywriterModal={() => setIsCopywriterOpen(true)}
             />
           </div>
         </div>
@@ -245,7 +258,7 @@ export default function App() {
             })}
           </div>
 
-          {/* Control Deck Body (Clean & Compact) */}
+          {/* Control Deck Body (Clean, Zero bottom whitespace) */}
           <div className="p-3 sm:p-4 rounded-3xl bg-slate-900/75 border border-slate-800/80 backdrop-blur-xl shadow-xl">
             {activeTab === 'fields' && (
               <FieldsEditor
