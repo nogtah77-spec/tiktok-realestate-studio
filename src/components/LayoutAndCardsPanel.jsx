@@ -337,10 +337,10 @@ export default function LayoutAndCardsPanel({
             <span className="text-slate-400 text-[11px]">نص الشارة:</span>
             <input
               type="text"
-              value={cardData.dividerTagText || 'VIP'}
+              value={cardData.dividerTagText !== undefined ? cardData.dividerTagText : 'VIP'}
               onChange={(e) => updateCardData('dividerTagText', e.target.value)}
-              placeholder="VIP..."
-              className="px-2.5 py-1 rounded-lg bg-slate-950 border border-slate-800 text-xs text-white outline-none w-24"
+              placeholder="اكتب نص الشارة..."
+              className="px-2.5 py-1 rounded-lg bg-slate-950 border border-slate-800 text-xs text-white outline-none w-32 focus:border-amber-400"
             />
           </div>
         )}

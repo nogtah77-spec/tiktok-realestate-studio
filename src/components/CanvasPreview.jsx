@@ -174,19 +174,24 @@ const CanvasPreview = forwardRef(({
     if (!showDividers || dividerStyle === 'none') return null;
 
     if (dividerStyle === 'tag') {
+      const tagText = cardData.dividerTagText !== undefined ? cardData.dividerTagText : 'VIP';
       return (
         <div className="w-full flex items-center justify-center my-2 px-4 relative" style={{ opacity: dividerOpacity / 100 }}>
           <div className="flex-1 h-[1px]" style={{ background: `linear-gradient(to right, transparent, ${effectiveDividerColor})` }} />
-          <span
-            className="mx-2 px-2 py-0.5 rounded-full text-[9px] font-bold border tracking-wider"
-            style={{
-              borderColor: effectiveDividerColor,
-              color: effectiveBorderColor,
-              backgroundColor: 'rgba(0,0,0,0.45)'
-            }}
-          >
-            • {dividerTagText || 'VIP'} •
-          </span>
+          {tagText !== '' ? (
+            <span
+              className="mx-2 px-2.5 py-0.5 rounded-full text-[9px] font-bold border tracking-wider"
+              style={{
+                borderColor: effectiveDividerColor,
+                color: effectiveBorderColor,
+                backgroundColor: 'rgba(0,0,0,0.45)'
+              }}
+            >
+              • {tagText} •
+            </span>
+          ) : (
+            <span className="mx-1 text-[8px]" style={{ color: effectiveBorderColor }}>•</span>
+          )}
           <div className="flex-1 h-[1px]" style={{ background: `linear-gradient(to left, transparent, ${effectiveDividerColor})` }} />
         </div>
       );
