@@ -1,43 +1,72 @@
 export const TONES = [
-  { id: 'luxury', label: '👑 فاخر وملكي', desc: 'أسلوب راقٍ ونخبة موجه للباحثين عن الفخامة والاستثمار الراقي' },
-  { id: 'urgent', label: '🔥 حماسي وعاجل', desc: 'أسلوب جذاب وسريع يركز على الفرصة الحصرية وسرعة الحجز' },
-  { id: 'warm', label: '🏡 دافئ وعائلي', desc: 'يركز على جودة الحياة والراحة والسكينة العائلية' },
-  { id: 'short', label: '⚡ مختصر ومباشر', desc: 'نقاط مركزة وسريعة بدون إطالة مع إبراز الأرقام والموقع' }
+  { id: 'luxury', label: '👑 فاخر ومميز', desc: 'أسلوب راقٍ وأنيق موجه للعروض الراقية والمستثمرين' },
+  { id: 'urgent', label: '🔥 حماسي وفرصة', desc: 'أسلوب جذاب وسريع يركز على الفرصة وسرعة الحجز' },
+  { id: 'warm', label: '🏡 دافئ ومريح', desc: 'يركز على الراحة والسكينة وجودة المكان' },
+  { id: 'short', label: '⚡ مختصر ومباشر', desc: 'نقاط سريعة بدون إطالة مع إبراز الأرقام والموقع فوراً' }
+];
+
+export const QUICK_PROPERTY_FEATURES = [
+  { id: 'instant_delivery', label: '🔑 استلام فوري' },
+  { id: 'super_lux', label: '✨ تشطيب سوبر لوكس' },
+  { id: 'facilities', label: '💳 توجد تسهيلات بالسداد' },
+  { id: 'cash_discount', label: '💵 خصم خاص للكاش' },
+  { id: 'registered', label: '📜 مسجل شهر عقاري / عقد نهائي' },
+  { id: 'land_share', label: '📝 حصة في الأرض' },
+  { id: 'prime_location', label: '🏙️ موقع حيوي مميز' },
+  { id: 'elevator', label: '🛗 أسانسير راكب' },
+  { id: 'garage', label: '🚗 جراج خاص' },
+  { id: 'pool', label: '🏊 حمام سباحة' },
+  { id: 'security', label: '🛡️ أمن وحراسة 24 ساعة' }
+];
+
+export const OUTRO_PRESETS = [
+  { id: 'whatsapp_direct', label: '📲 تواصل عبر الواتساب والموبايل' },
+  { id: 'location_viewing', label: '📍 طلب اللوكيشن والمعاينة على الطبيعة' },
+  { id: 'direct_owner', label: '💼 للجادين فقط - التعامل مباشر' },
+  { id: 'limited_time', label: '⏳ فرصة متاحة لفترة محدودة' }
 ];
 
 export function generateMarketingCopies({
   fields = [],
-  themeLabel = 'عرض عقاري مميز',
-  themeId = 'sale',
-  agentName = 'العمودي للخدمات والوساطة العقارية',
-  phone = '0500000000',
+  agentName = 'العمودي للخدمات العقارية',
+  phone = '01000000000',
   tone = 'luxury',
+  selectedFeatures = [],
+  closingText = '',
   customNotes = ''
 }) {
   const textLines = fields.map(f => f.text).filter(Boolean);
-  const mainTitle = textLines[0] || 'عقار فاخر للبيع';
-  const location = textLines[1] || 'موقع استراتيجي مميز';
-  const details = textLines[2] || 'مواصفات راقية وتشطيب سوبر ديلوكس';
-  const price = textLines[3] || 'السعر والتفاصيل عند التواصل';
+  const mainTitle = textLines[0] || 'عقار مميز للبيع';
+  const location = textLines[1] || 'موقع استراتيجي حيوي';
+  const details = textLines[2] || 'مواصفات راقية ومساحة ممتازة';
 
-  const viralHashtags = '#عقارات #عقارات_الرياض #عقارات_السعودية #فلل_مودرن #عقار #تيك_توك_عقارات #الرياض #العمودي_للعقارات #explore #fyp #realestate';
+  const viralHashtags = '#عقارات #شقق_للبيع #فلل_فاخرة #عقارات_مصر #الشيخ_زايد #التجمع_الخامس #العاصمة_الإدارية #الساحل_الشمالي #العمودي_للعقارات #استثمار_عقاري #fyp #viral #realestate';
+
+  // Feature bullets
+  const featuresText = selectedFeatures.length > 0
+    ? '\n💎 أهم المميزات:\n' + selectedFeatures.map(f => `▫️ ${f}`).join('\n') + '\n'
+    : '';
+
+  // Closing / CTA line
+  const defaultClosing = phone ? `📲 للتواصل والاستفسار والمعاينة (هاتف / واتساب): ${phone}` : '📲 للتواصل والمعاينة يسعدنا اتصالكم';
+  const finalClosing = closingText ? `${closingText}\n${defaultClosing}` : defaultClosing;
 
   let tiktok = '';
   if (tone === 'luxury') {
-    tiktok = '✨ ' + mainTitle + ' | تحفة معمارية استثنائية\n\n📍 ' + location + '\n🏛️ ' + details + '\n💎 ' + price + '\n\n👑 فرصة استثنائية لراغبي الفخامة والاستثمار الراقي.\n📲 للحجز والمعاينة الخاصة: ' + phone + '\n\n' + viralHashtags;
+    tiktok = `✨ ${mainTitle} | فرصة استثنائية\n\n📍 الموقع: ${location}\n📐 المواصفات: ${details}\n${featuresText}\n👑 للباحثين عن الفخامة والمواقع الراقية.\n${finalClosing}\n\n${viralHashtags}`;
   } else if (tone === 'urgent') {
-    tiktok = '🚨 فرصة عقارية لا تُعوّض في أفضل المواقع! 🏃‍♂️💨\n\n🏡 ' + mainTitle + '\n📍 ' + location + '\n✨ ' + details + '\n💰 ' + price + '\n\n⏳ العرض مباشر وحصري – الأولوية للأسبقية!\n📞 تواصل معنا فوراً قبل فوات الأوان: ' + phone + '\n\n' + viralHashtags;
+    tiktok = `🚨 فرصة عقارية مميزة لا تُعوّض! 🏃‍♂️💨\n\n🏡 ${mainTitle}\n📍 الموقع: ${location}\n✨ المواصفات: ${details}\n${featuresText}\n⏳ المعاينة متاحة والحجز بأسبقية التواصل!\n${finalClosing}\n\n${viralHashtags}`;
   } else if (tone === 'warm') {
-    tiktok = '🏡 بيت العمر وراحة البال تبدأ من هنا..\n\n✨ ' + mainTitle + '\n📍 ' + location + '\n🌿 ' + details + '\n🤍 ' + price + '\n\nمكان صُمم ليصنع أجمل الذكريات لعائلتك.\n📲 تواصل معنا لمعاينة الموقع: ' + phone + '\n\n' + viralHashtags;
+    tiktok = `🏡 مكان صُمم ليمنحك الراحة والسكينة..\n\n✨ ${mainTitle}\n📍 الموقع: ${location}\n🌿 التفاصيل: ${details}\n${featuresText}\n${finalClosing}\n\n${viralHashtags}`;
   } else {
-    tiktok = '📌 ' + mainTitle + '\n📍 ' + location + '\n▫️ ' + details + '\n💵 ' + price + '\n\n📞 للاستفسار والحجز: ' + phone + '\n\n' + viralHashtags;
+    tiktok = `📌 ${mainTitle}\n📍 الموقع: ${location}\n▫️ المواصفات: ${details}\n${featuresText}\n${finalClosing}\n\n${viralHashtags}`;
   }
 
-  let instagram = '✨ *' + mainTitle + '* ✨\n\n🏢 تقدم لكم *' + agentName + '* أحد أرقى العروض العقارية المتميزة:\n\n📍 *الموقع:* ' + location + '\n📐 *المواصفات:* ' + details + '\n💰 *السعر:* ' + price + '\n\n' + (customNotes ? '📝 *ملاحظات إضافية:* ' + customNotes + '\n\n' : '') + '💎 *مميزات العقار:*\n▫️ تشطيب هندسي فائق الجودة\n▫️ موقع استراتيجي قريب من كافة الخدمات\n▫️ توثيق رسمي ووساطة معتمدة 100%\n\n━━━━━━━━━━━━━━━━━━━\n📲 *للتواصل والاستفسار والمعاينة:*\n📞 هاتف / واتساب: ' + phone + '\n🏛️ *' + agentName + '*\n━━━━━━━━━━━━━━━━━━━\n\n#عقارات_الرياض #فلل_للبيع #عقارات_فاخرة #عقار #استثمار_عقاري #الرياض #تصميم_مودرن #ديكور #قصور #شقق_فاخرة';
+  let instagram = `✨ *${mainTitle}* ✨\n\n🏢 تقدم لكم *${agentName}* أحد أفضل العروض العقارية المتميزة:\n\n📍 *الموقع:* ${location}\n📐 *المواصفات:* ${details}\n${featuresText}${customNotes ? `📝 *ملاحظات:* ${customNotes}\n\n` : ''}━━━━━━━━━━━━━━━━━━━\n${finalClosing}\n🏛️ *${agentName}*\n━━━━━━━━━━━━━━━━━━━\n\n${viralHashtags}`;
 
-  let whatsapp = 'السلام عليكم ورحمة الله وبركاته 🌹\n\nيسعدنا في *' + agentName + '* أن نشارككم هذا العرض العقاري الحصري:\n\n🌟 *' + mainTitle + '*\n📍 *الموقع:* ' + location + '\n📐 *المواصفات:* ' + details + '\n🏷️ *السعر:* ' + price + (customNotes ? '\n\n💡 *ملاحظة:* ' + customNotes : '') + '\n\n🔗 *لحجز موعد للمعاينة أو طلب اللوكيشن والصور والفيديو:*\nيسعدنا تواصلكم مباشرة عبر الواتساب على هذا الرقم 📲\n' + phone + '\n\n_نعتز بخدمتكم وتوفير أفضل الفرص الاستثمارية._';
+  let whatsapp = `السلام عليكم ورحمة الله وبركاته 🌹\n\nيسعدنا في *${agentName}* أن نشارككم تفاصيل هذا العرض المميز:\n\n🌟 *${mainTitle}*\n📍 *الموقع:* ${location}\n📐 *المواصفات:* ${details}\n${featuresText}${customNotes ? `💡 *ملاحظة:* ${customNotes}\n` : ''}\n🔗 *لطلب اللوكيشن أو تحديد موعد للمعاينة على الطبيعة:*\n${finalClosing}\n\n_نعتز دائماً بخدمتكم وتوفير أفضل الفرص._`;
 
-  return { tiktok, instagram, whatsapp };
+  return { tiktok, instagram, whatsapp, hashtags: viralHashtags };
 }
 
 export function getWhatsAppUrl(phone, text) {
