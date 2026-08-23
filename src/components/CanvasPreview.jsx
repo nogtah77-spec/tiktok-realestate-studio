@@ -1,5 +1,6 @@
 import React, { forwardRef } from 'react';
 import { LUXURY_THEMES } from '../utils/constants';
+import { MASTER_PALETTES } from '../utils/themeEngine';
 
 const CanvasPreview = forwardRef(({
   // Image props
@@ -17,6 +18,7 @@ const CanvasPreview = forwardRef(({
   // Theme & Finish
   themeId = 'sale-gold',
   finish = 'glossy',
+  activePlatformThemeId = 'italian-mocha',
 
   // Card Content & Controls
   cardData = {},
@@ -35,6 +37,7 @@ const CanvasPreview = forwardRef(({
   gridViewsCount = '1916'
 }, ref) => {
   const activeTheme = LUXURY_THEMES.find(t => t.id === themeId) || LUXURY_THEMES[0];
+  const activePlatformTheme = MASTER_PALETTES.find(p => p.id === activePlatformThemeId) || MASTER_PALETTES[1];
 
   // Image Filter CSS
   let filterCss = 'none';
@@ -97,10 +100,19 @@ const CanvasPreview = forwardRef(({
     borderStyle = 'solid'
   } = cardData;
 
-  // Compute final border color & glow
-  const effectiveBorderColor = borderColorMode === 'custom' && customBorderColor ? customBorderColor : activeTheme.borderColor;
-  const effectiveGlowColor = glowColorMode === 'custom' && customGlowColor ? customGlowColor : (activeTheme.borderGlow || activeTheme.borderColor);
-  const effectiveDividerColor = dividerCustomColor || activeTheme.dividerColor;
+  // Compute final border color & glow based on explicit mode
+  let effectiveBorderColor = activeTheme.borderColor;
+  let effectiveGlowColor = activeTheme.borderGlow || activeTheme.borderColor;
+
+  if (borderColorMode === 'platform') {
+    effectiveBorderColor = activePlatformTheme.previewCard.borderColor;
+    effectiveGlowColor = activePlatformTheme.previewCard.borderGlow;
+  } else if (borderColorMode === 'custom' && customBorderColor) {
+    effectiveBorderColor = customBorderColor;
+    effectiveGlowColor = customGlowColor || customBorderColor;
+  }
+
+  const effectiveDividerColor = dividerCustomColor || (borderColorMode === 'platform' ? activePlatformTheme.previewCard.borderColor : activeTheme.dividerColor);
 
   // Logo position
   const getLogoPositionClass = () => {
@@ -288,15 +300,15 @@ const CanvasPreview = forwardRef(({
                 />
               ) : (
                 <div
-                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-950/80 backdrop-blur-md border border-amber-400/30 shadow-lg text-right"
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-950/80 backdrop-blur-md border border-white/20 shadow-lg text-right"
                   style={{ opacity: logoOpacity / 100 }}
                 >
-                  <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-amber-300 via-amber-500 to-amber-700 flex items-center justify-center font-black text-slate-950 text-[10px] shadow-sm">
+                  <div className="w-6 h-6 rounded-lg bg-white flex items-center justify-center font-black text-slate-950 text-[10px] shadow-sm">
                     ع
                   </div>
                   <div>
                     <div className="text-[10px] font-extrabold text-white leading-tight">العمودي للعقارات</div>
-                    <div className="text-[7px] font-bold text-amber-300/90 tracking-wider">AL-AMOUDI REAL ESTATE</div>
+                    <div className="text-[7px] font-bold text-slate-300 tracking-wider">AL-AMOUDI REAL ESTATE</div>
                   </div>
                 </div>
               )}

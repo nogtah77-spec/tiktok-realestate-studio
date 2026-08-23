@@ -5,14 +5,15 @@ import { MASTER_PALETTES } from '../utils/themeEngine';
 export default function PalettesStudioPanel({
   activePlatformThemeId,
   onSelectPlatformTheme,
-  onApplyToCard
+  onApplyToCard,
+  activeCardPaletteId
 }) {
   return (
-    <div className="space-y-3 text-xs select-none">
+    <div className="space-y-3.5 text-xs select-none">
       {/* Header (Clean & Minimal) */}
-      <div className="p-3 rounded-2xl bg-slate-900/70 border border-slate-800 flex items-center justify-between">
+      <div className="p-3.5 rounded-2xl bg-slate-900/70 border border-slate-800 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-300 flex items-center justify-center font-bold">
+          <div className="w-6 h-6 rounded-lg bg-white/10 text-white flex items-center justify-center font-bold">
             <Palette className="w-3.5 h-3.5" />
           </div>
           <h3 className="font-extrabold text-slate-100 text-xs">استوديو اللوحات اللونية الاحترافية</h3>
@@ -20,23 +21,24 @@ export default function PalettesStudioPanel({
       </div>
 
       {/* 8 Compact Theme Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
         {MASTER_PALETTES.map((palette) => {
           const isPlatformActive = activePlatformThemeId === palette.id;
+          const isCardActive = activeCardPaletteId === palette.id;
 
           return (
             <div
               key={palette.id}
-              className={`p-3 rounded-2xl border transition-all space-y-2.5 ${
-                isPlatformActive
-                  ? 'border-amber-400 bg-slate-900 ring-1 ring-amber-400/40 shadow-lg'
+              className={`p-3.5 rounded-2xl border transition-all space-y-3 ${
+                isPlatformActive || isCardActive
+                  ? 'border-white bg-slate-900 ring-1 ring-white/30 shadow-lg'
                   : 'border-slate-800 bg-slate-950/70 hover:border-slate-700'
               }`}
             >
               {/* Header: Number, Icon, Title, and Color Dots Preview */}
               <div className="flex items-center justify-between gap-1.5">
                 <div className="flex items-center gap-1.5">
-                  <span className="w-5 h-5 rounded-md bg-slate-900 border border-slate-800 flex items-center justify-center font-mono font-black text-amber-400 text-[10px]">
+                  <span className="w-5 h-5 rounded-md bg-slate-900 border border-slate-800 flex items-center justify-center font-mono font-black text-white text-[10px]">
                     {palette.num}
                   </span>
                   <span className="text-sm">{palette.icon}</span>
@@ -52,25 +54,31 @@ export default function PalettesStudioPanel({
               </div>
 
               {/* Two Compact Action Buttons */}
-              <div className="grid grid-cols-2 gap-1.5 pt-1 border-t border-slate-800">
+              <div className="grid grid-cols-2 gap-2 pt-1 border-t border-slate-800">
+                {/* 1. Apply to Platform */}
                 <button
                   onClick={() => onSelectPlatformTheme(palette.id)}
-                  className={`flex items-center justify-center gap-1 py-1.5 px-2 rounded-xl text-[10px] font-bold border transition-all active:scale-95 cursor-pointer ${
+                  className={`flex items-center justify-center gap-1 py-2 px-2 rounded-xl text-[10px] font-bold border transition-all active:scale-95 cursor-pointer ${
                     isPlatformActive
-                      ? 'border-amber-400 bg-amber-500 text-slate-950 font-black shadow'
+                      ? 'border-white bg-white text-slate-950 font-black shadow'
                       : 'border-slate-800 bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white'
                   }`}
                 >
-                  <Monitor className="w-3 h-3" />
+                  {isPlatformActive ? <Check className="w-3 h-3 stroke-[3]" /> : <Monitor className="w-3 h-3" />}
                   <span>{isPlatformActive ? 'ثيم المنصة (نشط)' : 'ثيم المنصة'}</span>
                 </button>
 
+                {/* 2. Apply to TikTok Cover Card */}
                 <button
                   onClick={() => onApplyToCard(palette)}
-                  className="flex items-center justify-center gap-1 py-1.5 px-2 rounded-xl border border-slate-800 bg-slate-900 hover:bg-slate-800 text-amber-300 hover:text-amber-200 text-[10px] font-bold transition-all active:scale-95 cursor-pointer"
+                  className={`flex items-center justify-center gap-1 py-2 px-2 rounded-xl text-[10px] font-bold border transition-all active:scale-95 cursor-pointer ${
+                    isCardActive
+                      ? 'border-emerald-400 bg-emerald-500/20 text-emerald-300 font-black shadow ring-1 ring-emerald-400/40'
+                      : 'border-slate-800 bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white'
+                  }`}
                 >
-                  <Smartphone className="w-3 h-3 text-amber-400" />
-                  <span>تطبيق على الغلاف</span>
+                  {isCardActive ? <Check className="w-3 h-3 stroke-[3] text-emerald-400" /> : <Smartphone className="w-3 h-3" />}
+                  <span>{isCardActive ? 'مطبّق على الغلاف ✓' : 'تطبيق على الغلاف'}</span>
                 </button>
               </div>
             </div>

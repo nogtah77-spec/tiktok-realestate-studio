@@ -30,6 +30,7 @@ export default function App() {
 
   // 2. 8 Pro Palettes Theme Engine
   const [activePlatformThemeId, setActivePlatformThemeId] = useState(getSavedPlatformThemeId);
+  const [activeCardPaletteId, setActiveCardPaletteId] = useState(null);
   const activeThemeObj = MASTER_PALETTES.find(p => p.id === activePlatformThemeId) || MASTER_PALETTES[1];
 
   // 3. Modals
@@ -86,6 +87,7 @@ export default function App() {
 
   const handleApplyPaletteToCard = (palette) => {
     if (!palette) return;
+    setActiveCardPaletteId(palette.id);
     setCardData(prev => ({
       ...prev,
       borderColorMode: 'custom',
@@ -96,9 +98,15 @@ export default function App() {
     }));
   };
 
+  const handleSetThemeId = (newThemeId) => {
+    setThemeId(newThemeId);
+    setActiveCardPaletteId(null);
+  };
+
   // Handle Preset selection
   const handleSelectPreset = (preset) => {
     setActivePresetId(preset.id);
+    setActiveCardPaletteId(null);
     if (preset.themeId) setThemeId(preset.themeId);
     if (preset.finish) setFinish(preset.finish);
     if (preset.overlayColor) setOverlayColor(preset.overlayColor);
@@ -178,7 +186,8 @@ export default function App() {
     logoOpacity,
     showGridLines,
     showGridIndicator,
-    gridViewsCount: '1916'
+    gridViewsCount: '1916',
+    activePlatformThemeId
   };
 
   // Get Side Action Wings for the Stage Bay
@@ -362,11 +371,12 @@ export default function App() {
             {activeTab === 'layout' && (
               <LayoutAndCardsPanel
                 themeId={themeId}
-                setThemeId={setThemeId}
+                setThemeId={handleSetThemeId}
                 finish={finish}
                 setFinish={setFinish}
                 cardData={cardData}
                 setCardData={setCardData}
+                activePlatformThemeId={activePlatformThemeId}
               />
             )}
 
@@ -422,6 +432,7 @@ export default function App() {
                 activePlatformThemeId={activePlatformThemeId}
                 onSelectPlatformTheme={handleSelectPlatformTheme}
                 onApplyToCard={handleApplyPaletteToCard}
+                activeCardPaletteId={activeCardPaletteId}
               />
             )}
           </div>

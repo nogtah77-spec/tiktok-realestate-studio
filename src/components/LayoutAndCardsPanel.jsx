@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, Palette, Sliders, Layers, Frame, Maximize2 } from 'lucide-react';
+import { Sparkles, Palette, Sliders, Layers, Frame, Maximize2, Monitor, Tag } from 'lucide-react';
 import { LUXURY_THEMES, DIVIDER_STYLES } from '../utils/constants';
 
 export default function LayoutAndCardsPanel({
@@ -8,22 +8,36 @@ export default function LayoutAndCardsPanel({
   finish,
   setFinish,
   cardData,
-  setCardData
+  setCardData,
+  activePlatformThemeId
 }) {
   const updateCardData = (key, value) => {
     setCardData(prev => ({ ...prev, [key]: value }));
   };
 
+  const handleSelectRealEstateTheme = (newThemeId) => {
+    setThemeId(newThemeId);
+    // Automatically apply the complete real estate category theme (including borders)
+    setCardData(prev => ({
+      ...prev,
+      borderColorMode: 'theme',
+      glowColorMode: 'theme'
+    }));
+  };
+
   const activeTheme = LUXURY_THEMES.find(t => t.id === themeId) || LUXURY_THEMES[0];
+  const borderMode = cardData.borderColorMode || 'theme';
 
   return (
     <div className="space-y-4 text-xs">
       {/* 1. Real Estate Luxury Themes */}
       <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3">
-        <label className="font-extrabold text-slate-100 flex items-center gap-2 text-xs">
-          <Palette className="w-4 h-4 text-slate-300" />
-          <span>الثيم اللوني وتصنيف العرض العقاري</span>
-        </label>
+        <div className="flex items-center justify-between">
+          <label className="font-extrabold text-slate-100 flex items-center gap-2 text-xs">
+            <Palette className="w-4 h-4 text-slate-300" />
+            <span>الثيم اللوني وتصنيف العرض العقاري</span>
+          </label>
+        </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
           {LUXURY_THEMES.map((theme) => {
@@ -31,7 +45,7 @@ export default function LayoutAndCardsPanel({
             return (
               <button
                 key={theme.id}
-                onClick={() => setThemeId(theme.id)}
+                onClick={() => handleSelectRealEstateTheme(theme.id)}
                 className={`p-3 rounded-xl border text-right transition-all cursor-pointer ${
                   isSelected
                     ? 'border-white bg-slate-800 text-white ring-1 ring-white/30 shadow-md'
@@ -200,6 +214,57 @@ export default function LayoutAndCardsPanel({
           <span>حدود البوكس والتوهج</span>
         </label>
 
+        {/* Explicit Border Color Source Selector */}
+        <div className="space-y-1.5 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800">
+          <span className="text-[11px] font-bold text-slate-300 block">مصدر لون الحدود والتوهج:</span>
+          <div className="grid grid-cols-3 gap-2">
+            <button
+              onClick={() => {
+                updateCardData('borderColorMode', 'theme');
+                updateCardData('glowColorMode', 'theme');
+              }}
+              className={`flex items-center justify-center gap-1 py-1.5 px-2 rounded-lg text-[10px] font-bold border transition-all cursor-pointer ${
+                borderMode === 'theme'
+                  ? 'border-white bg-slate-800 text-white shadow-sm ring-1 ring-white/30'
+                  : 'border-slate-800 bg-slate-900 text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              <Tag className="w-3 h-3" />
+              <span>تصنيف العرض</span>
+            </button>
+
+            <button
+              onClick={() => {
+                updateCardData('borderColorMode', 'platform');
+                updateCardData('glowColorMode', 'platform');
+              }}
+              className={`flex items-center justify-center gap-1 py-1.5 px-2 rounded-lg text-[10px] font-bold border transition-all cursor-pointer ${
+                borderMode === 'platform'
+                  ? 'border-white bg-slate-800 text-white shadow-sm ring-1 ring-white/30'
+                  : 'border-slate-800 bg-slate-900 text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              <Monitor className="w-3 h-3" />
+              <span>ثيم المنصة</span>
+            </button>
+
+            <button
+              onClick={() => {
+                updateCardData('borderColorMode', 'custom');
+                updateCardData('glowColorMode', 'custom');
+              }}
+              className={`flex items-center justify-center gap-1 py-1.5 px-2 rounded-lg text-[10px] font-bold border transition-all cursor-pointer ${
+                borderMode === 'custom'
+                  ? 'border-white bg-slate-800 text-white shadow-sm ring-1 ring-white/30'
+                  : 'border-slate-800 bg-slate-900 text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              <Palette className="w-3 h-3" />
+              <span>مخصص</span>
+            </button>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
           <div>
             <div className="flex justify-between items-center text-slate-300 mb-1 text-[11px]">
@@ -254,34 +319,30 @@ export default function LayoutAndCardsPanel({
           </div>
         </div>
 
-        {/* Border and Glow Color Pickers */}
-        <div className="flex items-center gap-4 pt-1">
-          <label className="flex items-center gap-1.5 text-slate-300 cursor-pointer">
-            <span className="text-[11px] font-medium">لون الحد:</span>
-            <input
-              type="color"
-              value={cardData.customBorderColor || activeTheme.borderColor}
-              onChange={(e) => {
-                updateCardData('customBorderColor', e.target.value);
-                updateCardData('borderColorMode', 'custom');
-              }}
-              className="w-4 h-4 rounded cursor-pointer bg-transparent border-0"
-            />
-          </label>
+        {/* Custom Border and Glow Color Pickers (Visible when custom mode is active) */}
+        {borderMode === 'custom' && (
+          <div className="flex items-center gap-4 pt-1 bg-slate-950/40 p-2 rounded-xl border border-slate-800">
+            <label className="flex items-center gap-1.5 text-slate-300 cursor-pointer">
+              <span className="text-[11px] font-medium">لون الحد المخصص:</span>
+              <input
+                type="color"
+                value={cardData.customBorderColor || activeTheme.borderColor}
+                onChange={(e) => updateCardData('customBorderColor', e.target.value)}
+                className="w-4 h-4 rounded cursor-pointer bg-transparent border-0"
+              />
+            </label>
 
-          <label className="flex items-center gap-1.5 text-slate-300 cursor-pointer">
-            <span className="text-[11px] font-medium">لون التوهج:</span>
-            <input
-              type="color"
-              value={cardData.customGlowColor || activeTheme.borderColor}
-              onChange={(e) => {
-                updateCardData('customGlowColor', e.target.value);
-                updateCardData('glowColorMode', 'custom');
-              }}
-              className="w-4 h-4 rounded cursor-pointer bg-transparent border-0"
-            />
-          </label>
-        </div>
+            <label className="flex items-center gap-1.5 text-slate-300 cursor-pointer">
+              <span className="text-[11px] font-medium">لون التوهج المخصص:</span>
+              <input
+                type="color"
+                value={cardData.customGlowColor || activeTheme.borderColor}
+                onChange={(e) => updateCardData('customGlowColor', e.target.value)}
+                className="w-4 h-4 rounded cursor-pointer bg-transparent border-0"
+              />
+            </label>
+          </div>
+        )}
       </div>
 
       {/* 6. Architectural Dividers */}
