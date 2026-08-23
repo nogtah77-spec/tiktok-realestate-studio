@@ -16,7 +16,7 @@ const CanvasPreview = forwardRef(({
 
   // Theme & Finish
   themeId = 'sale-gold',
-  finish = 'glossy', // 'glossy' or 'matte'
+  finish = 'glossy',
 
   // Card Content & Controls
   cardData = {},
@@ -76,9 +76,9 @@ const CanvasPreview = forwardRef(({
     bottomPillStyle = 'pill',
 
     showDividers = true,
-    dividerStyle = 'fading',
+    dividerStyle = 'tag',
     dividerTagText = 'VIP',
-    dividerOpacity = 70,
+    dividerOpacity = 75,
     dividerCustomColor = '',
 
     boxWidth = 84,
@@ -104,11 +104,11 @@ const CanvasPreview = forwardRef(({
   // Logo position
   const getLogoPositionClass = () => {
     switch (logoPosition) {
-      case 'top-left': return 'top-6 left-6';
-      case 'top-center': return 'top-6 left-1/2 -translate-x-1/2';
-      case 'bottom-right': return 'bottom-6 right-6';
-      case 'bottom-left': return 'bottom-6 left-6';
-      default: return 'top-6 right-6';
+      case 'top-left': return 'top-5 left-5';
+      case 'top-center': return 'top-5 left-1/2 -translate-x-1/2';
+      case 'bottom-right': return 'bottom-5 right-5';
+      case 'bottom-left': return 'bottom-5 left-5';
+      default: return 'top-5 right-5';
     }
   };
 
@@ -116,9 +116,28 @@ const CanvasPreview = forwardRef(({
   const renderDivider = () => {
     if (!showDividers || dividerStyle === 'none') return null;
 
+    if (dividerStyle === 'tag') {
+      return (
+        <div className="w-full flex items-center justify-center my-2 px-4 relative" style={{ opacity: dividerOpacity / 100 }}>
+          <div className="flex-1 h-[1px]" style={{ background: `linear-gradient(to right, transparent, ${effectiveDividerColor})` }} />
+          <span
+            className="mx-2 px-2 py-0.5 rounded-full text-[9px] font-bold border tracking-wider"
+            style={{
+              borderColor: effectiveDividerColor,
+              color: effectiveBorderColor,
+              backgroundColor: 'rgba(0,0,0,0.45)'
+            }}
+          >
+            • {dividerTagText || 'VIP'} •
+          </span>
+          <div className="flex-1 h-[1px]" style={{ background: `linear-gradient(to left, transparent, ${effectiveDividerColor})` }} />
+        </div>
+      );
+    }
+
     if (dividerStyle === 'fading') {
       return (
-        <div className="w-full flex items-center justify-center my-2.5 px-4" style={{ opacity: dividerOpacity / 100 }}>
+        <div className="w-full flex items-center justify-center my-2 px-4" style={{ opacity: dividerOpacity / 100 }}>
           <div
             className="w-full h-[1px]"
             style={{
@@ -131,7 +150,7 @@ const CanvasPreview = forwardRef(({
 
     if (dividerStyle === 'double') {
       return (
-        <div className="w-full flex flex-col items-center justify-center gap-1 my-2.5 px-6" style={{ opacity: dividerOpacity / 100 }}>
+        <div className="w-full flex flex-col items-center justify-center gap-1 my-2 px-6" style={{ opacity: dividerOpacity / 100 }}>
           <div className="w-full h-[1px]" style={{ background: `linear-gradient(to right, transparent, ${effectiveDividerColor}, transparent)` }} />
           <div className="w-3/4 h-[1px]" style={{ background: `linear-gradient(to right, transparent, ${effectiveDividerColor}, transparent)` }} />
         </div>
@@ -140,7 +159,7 @@ const CanvasPreview = forwardRef(({
 
     if (dividerStyle === 'beam') {
       return (
-        <div className="w-full flex items-center justify-center my-3 px-8" style={{ opacity: dividerOpacity / 100 }}>
+        <div className="w-full flex items-center justify-center my-2.5 px-8" style={{ opacity: dividerOpacity / 100 }}>
           <div
             className="w-full h-[2px] rounded-full blur-[0.5px]"
             style={{
@@ -154,7 +173,7 @@ const CanvasPreview = forwardRef(({
 
     if (dividerStyle === 'micro-sparkle') {
       return (
-        <div className="w-full flex items-center justify-center my-2.5 px-4 relative" style={{ opacity: dividerOpacity / 100 }}>
+        <div className="w-full flex items-center justify-center my-2 px-4 relative" style={{ opacity: dividerOpacity / 100 }}>
           <div className="flex-1 h-[1px]" style={{ background: `linear-gradient(to right, transparent, ${effectiveDividerColor})` }} />
           <span className="mx-2 text-[10px] leading-none" style={{ color: activeTheme.diamondColor, filter: `drop-shadow(0 0 4px ${effectiveGlowColor})` }}>
             ✦
@@ -164,28 +183,9 @@ const CanvasPreview = forwardRef(({
       );
     }
 
-    if (dividerStyle === 'tag') {
-      return (
-        <div className="w-full flex items-center justify-center my-2.5 px-4 relative" style={{ opacity: dividerOpacity / 100 }}>
-          <div className="flex-1 h-[1px]" style={{ background: `linear-gradient(to right, transparent, ${effectiveDividerColor})` }} />
-          <span
-            className="mx-2 px-2 py-0.5 rounded-full text-[9px] font-bold border tracking-wider"
-            style={{
-              borderColor: effectiveDividerColor,
-              color: effectiveBorderColor,
-              backgroundColor: 'rgba(0,0,0,0.4)'
-            }}
-          >
-            • {dividerTagText || 'VIP'} •
-          </span>
-          <div className="flex-1 h-[1px]" style={{ background: `linear-gradient(to left, transparent, ${effectiveDividerColor})` }} />
-        </div>
-      );
-    }
-
     if (dividerStyle === 'dotted') {
       return (
-        <div className="w-full flex items-center justify-center gap-1.5 my-2.5" style={{ opacity: dividerOpacity / 100 }}>
+        <div className="w-full flex items-center justify-center gap-1.5 my-2" style={{ opacity: dividerOpacity / 100 }}>
           <span className="w-1 h-1 rounded-full" style={{ backgroundColor: effectiveDividerColor }} />
           <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: effectiveBorderColor }} />
           <span className="w-1 h-1 rounded-full" style={{ backgroundColor: effectiveDividerColor }} />
@@ -197,23 +197,23 @@ const CanvasPreview = forwardRef(({
   };
 
   return (
-    <div className={`relative flex items-center justify-center transition-all ${isPhoneMockup ? 'p-2 sm:p-3' : 'p-0'}`}>
+    <div className="relative flex items-center justify-center select-none bg-transparent">
       {/* Phone Frame Container */}
-      <div className={`relative ${isPhoneMockup ? 'rounded-[46px] p-2.5 bg-slate-900 ring-1 ring-slate-700/60 shadow-[0_30px_90px_rgba(0,0,0,0.85)]' : ''}`}>
+      <div className={`relative ${isPhoneMockup ? 'rounded-[38px] p-2 bg-slate-900/90 ring-1 ring-slate-800 shadow-[0_20px_60px_rgba(0,0,0,0.7)]' : ''}`}>
         
-        {/* Phone Dynamic Island */}
+        {/* Dynamic Island */}
         {isPhoneMockup && (
-          <div className="no-export absolute top-5 left-1/2 -translate-x-1/2 w-28 h-5 bg-black rounded-full z-40 flex items-center justify-end px-2.5 pointer-events-none shadow-sm">
-            <div className="w-2.5 h-2.5 rounded-full bg-slate-900 ring-1 ring-slate-800" />
+          <div className="no-export absolute top-4 left-1/2 -translate-x-1/2 w-24 h-4 bg-black rounded-full z-40 flex items-center justify-end px-2 pointer-events-none shadow-sm">
+            <div className="w-2 h-2 rounded-full bg-slate-900 ring-1 ring-slate-800" />
           </div>
         )}
 
-        {/* 9:16 Canvas Root (Width: 380px x 675px -> Scaled to 1080x1920 on export) */}
+        {/* 9:16 Canvas Root */}
         <div
           ref={ref}
           id="tiktok-canvas-target"
-          className={`relative w-[380px] h-[675px] sm:w-[410px] sm:h-[728px] overflow-hidden select-none ${
-            isPhoneMockup ? 'rounded-[38px]' : 'rounded-2xl'
+          className={`relative w-[340px] h-[604px] sm:w-[380px] sm:h-[675px] overflow-hidden select-none ${
+            isPhoneMockup ? 'rounded-[32px]' : 'rounded-2xl'
           } bg-slate-950`}
           style={{ aspectRatio: '9 / 16' }}
         >
@@ -230,7 +230,7 @@ const CanvasPreview = forwardRef(({
             />
           ) : (
             <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-950 flex flex-col items-center justify-center text-slate-500 gap-2 p-6 text-center">
-              <span className="text-4xl">📷</span>
+              <span className="text-3xl">📷</span>
               <p className="text-xs font-medium text-slate-400">يرجى رفع صورة العقار</p>
             </div>
           )}
@@ -254,23 +254,20 @@ const CanvasPreview = forwardRef(({
             />
           )}
 
-          {/* 4. Alignment Grid Lines & Crosshairs (Excluded from export) */}
+          {/* 4. Alignment Grid Lines & Crosshairs */}
           {showGridLines && (
             <div className="no-export absolute inset-0 z-30 pointer-events-none border border-cyan-400/20">
-              {/* Rule of Thirds Vertical Lines */}
               <div className="absolute top-0 bottom-0 left-1/3 w-[1px] bg-cyan-400/30 border-r border-dashed border-cyan-400/40" />
               <div className="absolute top-0 bottom-0 right-1/3 w-[1px] bg-cyan-400/30 border-r border-dashed border-cyan-400/40" />
-              {/* Rule of Thirds Horizontal Lines */}
               <div className="absolute left-0 right-0 top-1/3 h-[1px] bg-cyan-400/30 border-b border-dashed border-cyan-400/40" />
               <div className="absolute left-0 right-0 bottom-1/3 h-[1px] bg-cyan-400/30 border-b border-dashed border-cyan-400/40" />
-              {/* Center Crosshair */}
               <div className="absolute top-0 bottom-0 left-1/2 w-[1px] bg-amber-400/35" />
               <div className="absolute left-0 right-0 top-1/2 h-[1px] bg-amber-400/35" />
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full border border-amber-400/50" />
             </div>
           )}
 
-          {/* 5. Brand Logo Layer (with Toggle) */}
+          {/* 5. Brand Logo Layer */}
           {showLogo && (
             <div className={`absolute z-20 pointer-events-none ${getLogoPositionClass()}`}>
               {logoUrl ? (
@@ -279,31 +276,31 @@ const CanvasPreview = forwardRef(({
                   alt="Brand Logo"
                   className="object-contain transition-all drop-shadow-xl"
                   style={{
-                    height: `${(logoScale / 100) * 44}px`,
+                    height: `${(logoScale / 100) * 40}px`,
                     opacity: logoOpacity / 100
                   }}
                 />
               ) : (
                 <div
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-950/75 backdrop-blur-md border border-amber-400/30 shadow-xl text-right"
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-950/80 backdrop-blur-md border border-amber-400/30 shadow-lg text-right"
                   style={{ opacity: logoOpacity / 100 }}
                 >
-                  <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-amber-300 via-amber-500 to-amber-700 flex items-center justify-center font-black text-slate-950 text-xs shadow-sm">
+                  <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-amber-300 via-amber-500 to-amber-700 flex items-center justify-center font-black text-slate-950 text-[10px] shadow-sm">
                     ع
                   </div>
                   <div>
-                    <div className="text-[11px] font-extrabold text-white tracking-wide">العمودي للعقارات</div>
-                    <div className="text-[8px] font-medium text-amber-300/90 tracking-wider">AL-AMOUDI REAL ESTATE</div>
+                    <div className="text-[10px] font-extrabold text-white leading-tight">العمودي للعقارات</div>
+                    <div className="text-[7px] font-bold text-amber-300/90 tracking-wider">AL-AMOUDI REAL ESTATE</div>
                   </div>
                 </div>
               )}
             </div>
           )}
 
-          {/* 6. The Master 3-Tier Luxury Glass Box */}
+          {/* 6. Master 3-Tier Luxury Glass Box */}
           <div
             id="tiktok-glass-card-root"
-            className="absolute inset-x-0 z-20 flex items-center justify-center pointer-events-none px-4"
+            className="absolute inset-x-0 z-20 flex items-center justify-center pointer-events-none px-3"
             style={{
               top: `${verticalPosition}%`,
               transform: 'translateY(-50%)'
@@ -313,15 +310,15 @@ const CanvasPreview = forwardRef(({
               className="relative flex flex-col items-center justify-center text-center transition-all duration-150"
               style={{
                 width: `${boxWidth}%`,
-                padding: '24px 20px',
+                padding: '20px 16px',
                 borderRadius: `${borderRadius}px`,
                 backgroundColor: activeTheme.glassBg.replace('0.55', (boxOpacity / 100).toString()).replace('0.65', (boxOpacity / 100).toString()).replace('0.6', (boxOpacity / 100).toString()),
                 backdropFilter: boxBlur > 0 ? `blur(${boxBlur}px)` : 'none',
                 WebkitBackdropFilter: boxBlur > 0 ? `blur(${boxBlur}px)` : 'none',
                 border: borderWidth > 0 ? `${borderWidth}px ${borderStyle === 'double' ? 'double' : 'solid'} ${effectiveBorderColor}` : 'none',
                 boxShadow: isGlossy
-                  ? `0 20px 60px rgba(0, 0, 0, 0.65), 0 0 ${borderGlowIntensity * 0.45}px ${effectiveGlowColor}, inset 0 1px 2px rgba(255, 255, 255, 0.45), inset 0 -1px 2px rgba(0, 0, 0, 0.4)`
-                  : `0 15px 40px rgba(0, 0, 0, 0.5), 0 0 ${borderGlowIntensity * 0.25}px ${effectiveGlowColor}`
+                  ? `0 18px 50px rgba(0, 0, 0, 0.65), 0 0 ${borderGlowIntensity * 0.4}px ${effectiveGlowColor}, inset 0 1px 2px rgba(255, 255, 255, 0.45), inset 0 -1px 2px rgba(0, 0, 0, 0.4)`
+                  : `0 14px 35px rgba(0, 0, 0, 0.5), 0 0 ${borderGlowIntensity * 0.2}px ${effectiveGlowColor}`
               }}
             >
               {/* Glossy Sheen Overlay */}
@@ -336,14 +333,14 @@ const CanvasPreview = forwardRef(({
               )}
 
               {/* SECTION 1: TOP TITLE */}
-              <div className="w-full px-2">
+              <div className="w-full px-1">
                 <h2
                   className={`font-extrabold tracking-tight m-0 p-0 leading-tight ${titleShimmer ? activeTheme.shimmerClass : ''}`}
                   style={{
                     fontFamily: titleFont ? `'${titleFont}', sans-serif` : 'inherit',
                     fontSize: `${titleSize}px`,
                     color: titleShimmer ? 'transparent' : titleColor,
-                    filter: titleShimmer ? 'none' : 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.8))'
+                    filter: titleShimmer ? 'none' : 'drop-shadow(0 4px 10px rgba(0, 0, 0, 0.8))'
                   }}
                 >
                   {title}
@@ -355,7 +352,6 @@ const CanvasPreview = forwardRef(({
 
               {/* SECTION 2: HERO NUMBER & UNIT */}
               <div className="flex flex-col items-center justify-center my-0.5 w-full">
-                {/* Optional Subtitle (e.g. "المساحة") */}
                 {showSubtitle && subtitle && (
                   <span
                     className="font-bold mb-0.5 tracking-wide"
@@ -371,8 +367,7 @@ const CanvasPreview = forwardRef(({
                 )}
 
                 {/* Giant Hero Number with Unit */}
-                <div className="flex items-baseline justify-center gap-2 rtl:flex-row ltr:flex-row">
-                  {/* Unit (م² / متر) */}
+                <div className="flex items-baseline justify-center gap-1.5 rtl:flex-row ltr:flex-row">
                   {heroUnit && (
                     <span
                       className="font-bold tracking-tight select-none"
@@ -387,14 +382,13 @@ const CanvasPreview = forwardRef(({
                     </span>
                   )}
 
-                  {/* Giant Number */}
                   <span
                     className={`font-black tracking-tighter select-none leading-none ${heroShimmer ? activeTheme.shimmerClass : ''}`}
                     style={{
                       fontFamily: heroFont ? `'${heroFont}', sans-serif` : 'inherit',
                       fontSize: `${heroNumberSize}px`,
                       color: heroShimmer ? 'transparent' : heroNumberColor,
-                      filter: heroShimmer ? 'none' : 'drop-shadow(0 6px 18px rgba(0, 0, 0, 0.85))'
+                      filter: heroShimmer ? 'none' : 'drop-shadow(0 6px 16px rgba(0, 0, 0, 0.85))'
                     }}
                   >
                     {heroNumber}
@@ -405,18 +399,18 @@ const CanvasPreview = forwardRef(({
               {/* DIVIDER 2 */}
               {renderDivider()}
 
-              {/* SECTION 3: BOTTOM CAPSULE PILL OR SUBTITLE */}
+              {/* SECTION 3: BOTTOM CAPSULE PILL */}
               {bottomText && (
                 <div className="w-full flex justify-center mt-1">
                   {bottomPillStyle === 'pill' ? (
                     <div
-                      className="px-6 py-2 rounded-2xl text-center w-full max-w-[92%] shadow-lg border transition-all"
+                      className="px-5 py-1.5 rounded-xl text-center w-full max-w-[92%] shadow-md border transition-all"
                       style={{
                         background: activeTheme.pillBg,
                         borderColor: activeTheme.pillBorder,
                         boxShadow: isGlossy
-                          ? '0 6px 20px rgba(0, 0, 0, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.5)'
-                          : '0 4px 12px rgba(0, 0, 0, 0.35)'
+                          ? '0 4px 16px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.5)'
+                          : '0 3px 10px rgba(0, 0, 0, 0.3)'
                       }}
                     >
                       <span
@@ -425,7 +419,7 @@ const CanvasPreview = forwardRef(({
                           fontFamily: bottomFont ? `'${bottomFont}', sans-serif` : 'inherit',
                           fontSize: `${bottomSize}px`,
                           color: bottomTextColor || activeTheme.pillTextColor,
-                          textShadow: '0 2px 6px rgba(0, 0, 0, 0.6)'
+                          textShadow: '0 2px 5px rgba(0, 0, 0, 0.6)'
                         }}
                       >
                         {bottomText}
@@ -452,9 +446,9 @@ const CanvasPreview = forwardRef(({
 
           {/* 7. Realistic TikTok Grid View Counter Overlay */}
           {showGridIndicator && (
-            <div className="no-export absolute bottom-4 right-4 z-30 flex items-center gap-1 text-white/90 font-bold text-xs bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-md drop-shadow">
+            <div className="no-export absolute bottom-3.5 right-3.5 z-30 flex items-center gap-1 text-white/90 font-bold text-[11px] bg-black/40 backdrop-blur-sm px-2 py-0.5 rounded-md drop-shadow">
               <span>{gridViewsCount}</span>
-              <span className="text-[10px]">▷</span>
+              <span className="text-[9px]">▷</span>
             </div>
           )}
 

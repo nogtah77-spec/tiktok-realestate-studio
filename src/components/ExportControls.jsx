@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Download, Copy, Check, Share2, Eye, Grid, Shield, Layers } from 'lucide-react';
+import { Download, Copy, Check, Share2, Grid, Shield, Layers, Smartphone, Eye, Sparkles } from 'lucide-react';
 import { exportCoverImage, exportTransparentGlassCard, copyCoverImageToClipboard } from '../utils/exportEngine';
 
 export default function ExportControls({
@@ -55,7 +55,7 @@ export default function ExportControls({
     try {
       await copyCoverImageToClipboard({ node: canvasRef.current });
       setCopiedSuccess(true);
-      setTimeout(() => setCopiedSuccess(false), 2500);
+      setTimeout(() => setCopiedSuccess(false), 2200);
     } catch (err) {
       alert('تعذر النسخ: ' + err.message);
     } finally {
@@ -64,79 +64,87 @@ export default function ExportControls({
   };
 
   return (
-    <div className="p-3 sm:p-4 rounded-2xl bg-slate-900/90 border border-slate-800 shadow-xl backdrop-blur-xl space-y-2.5 text-xs">
-      {/* 1. Main Action Buttons */}
-      <div className="grid grid-cols-2 gap-2">
-        <button
-          onClick={() => handleDownloadFull('png')}
-          disabled={isExporting}
-          className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs shadow-lg shadow-amber-500/20 transition-all active:scale-95 cursor-pointer disabled:opacity-50"
-        >
-          <Download className="w-4 h-4 stroke-[2.5]" />
-          <span>{isExporting ? 'جاري التصدير...' : 'تحميل الغلاف (1080×1920)'}</span>
-        </button>
+    <div className="p-2 sm:p-2.5 rounded-2xl bg-slate-900/90 border border-slate-800 shadow-xl backdrop-blur-xl flex items-center justify-between gap-1.5 text-xs select-none">
+      {/* 1. Main High-Res Download (Icon + Label) */}
+      <button
+        onClick={() => handleDownloadFull('png')}
+        disabled={isExporting}
+        className="flex-1 flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs shadow-md transition-all active:scale-95 cursor-pointer disabled:opacity-50"
+        title="تحميل الغلاف فائق الدقة (1080×1920)"
+      >
+        <Download className="w-3.5 h-3.5 stroke-[2.5]" />
+        <span className="whitespace-nowrap">{isExporting ? 'تصدير...' : 'تحميل 1080p'}</span>
+      </button>
 
-        <button
-          onClick={handleCopyClipboard}
-          disabled={isCopying}
-          className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-750 text-white font-bold text-xs border border-slate-700 shadow-md transition-all active:scale-95 cursor-pointer disabled:opacity-50"
-        >
-          {copiedSuccess ? (
-            <>
-              <Check className="w-4 h-4 text-emerald-400 stroke-[3]" />
-              <span className="text-emerald-400">تم النسخ!</span>
-            </>
-          ) : (
-            <>
-              <Copy className="w-4 h-4 text-amber-400" />
-              <span>{isCopying ? 'جاري النسخ...' : 'نسخ للحافظة'}</span>
-            </>
-          )}
-        </button>
-      </div>
+      {/* 2. Fast Copy to Clipboard (Icon + Label) */}
+      <button
+        onClick={handleCopyClipboard}
+        disabled={isCopying}
+        className="flex-1 flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl bg-slate-800 hover:bg-slate-750 text-white font-bold text-xs border border-slate-700 shadow transition-all active:scale-95 cursor-pointer disabled:opacity-50"
+        title="نسخ الصورة للحافظة ولصقها فوراً في برامج المونتاج"
+      >
+        {copiedSuccess ? (
+          <>
+            <Check className="w-3.5 h-3.5 text-emerald-400 stroke-[3]" />
+            <span className="text-emerald-400 whitespace-nowrap">تم النسخ!</span>
+          </>
+        ) : (
+          <>
+            <Copy className="w-3.5 h-3.5 text-amber-400" />
+            <span className="whitespace-nowrap">{isCopying ? 'معالجة...' : 'نسخ للحافظة'}</span>
+          </>
+        )}
+      </button>
 
-      {/* 2. Transparent Export + Quick Toggles */}
-      <div className="grid grid-cols-4 gap-1.5 pt-1 border-t border-slate-800">
+      {/* 3. Luxury Micro-Icon Toolbar Strip */}
+      <div className="flex items-center gap-1 shrink-0">
+        {/* Transparent PNG for video editors */}
         <button
           onClick={handleDownloadTransparent}
           disabled={isTransparentExporting}
-          className="flex items-center justify-center gap-1 py-1.5 px-1 rounded-lg bg-slate-950 border border-slate-800 text-slate-300 hover:text-white text-[11px] font-medium transition-colors"
-          title="كرت مفرغ بدون خلفية للمونتاج"
+          className="p-2 rounded-xl bg-slate-950 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-amber-300 transition-colors cursor-pointer"
+          title="تصدير كرت مفرغ بدون خلفية (PNG) للمونتاج"
         >
-          <Layers className="w-3.5 h-3.5 text-amber-400" />
-          <span>مفرغ PNG</span>
+          <Layers className="w-3.5 h-3.5" />
         </button>
 
+        {/* Grid lines toggle */}
         <button
           onClick={() => setShowGridLines(!showGridLines)}
-          className={`flex items-center justify-center gap-1 py-1.5 px-1 rounded-lg border text-[11px] font-medium transition-all ${
+          className={`p-2 rounded-xl border transition-all cursor-pointer ${
             showGridLines
               ? 'border-cyan-400 bg-cyan-500/20 text-cyan-300'
               : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'
           }`}
+          title="إظهار / إخفاء خطوط الجريد والمحاذاة"
         >
           <Grid className="w-3.5 h-3.5" />
-          <span>الجريد {showGridLines ? '✓' : ''}</span>
         </button>
 
+        {/* Logo toggle */}
         <button
           onClick={() => setShowLogo(!showLogo)}
-          className={`flex items-center justify-center gap-1 py-1.5 px-1 rounded-lg border text-[11px] font-medium transition-all ${
+          className={`p-2 rounded-xl border transition-all cursor-pointer ${
             showLogo
               ? 'border-amber-400 bg-amber-500/15 text-amber-300'
               : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'
           }`}
+          title="إظهار / إخفاء الشعار"
         >
           <Shield className="w-3.5 h-3.5" />
-          <span>الشعار {showLogo ? '✓' : '✕'}</span>
         </button>
 
+        {/* TikTok views counter toggle */}
         <button
-          onClick={onOpenCopywriterModal}
-          className="flex items-center justify-center gap-1 py-1.5 px-1 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 text-[11px] font-bold transition-colors"
+          onClick={() => setShowGridIndicator(!showGridIndicator)}
+          className={`p-2 rounded-xl border transition-all cursor-pointer ${
+            showGridIndicator
+              ? 'border-slate-700 bg-slate-800 text-slate-200'
+              : 'border-slate-800 bg-slate-950 text-slate-500 hover:text-slate-300'
+          }`}
+          title="مؤشر مشاهدات تيك توك ▷"
         >
-          <Share2 className="w-3.5 h-3.5" />
-          <span>مولد نصوص</span>
+          <Eye className="w-3.5 h-3.5" />
         </button>
       </div>
     </div>

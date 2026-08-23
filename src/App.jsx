@@ -22,7 +22,7 @@ export default function App() {
   const [presets, setPresets] = useState(getAllPresets);
   const [activePresetId, setActivePresetId] = useState('preset-sale-gold');
   const [customFonts, setCustomFonts] = useState([]);
-  const [viewMode, setViewMode] = useState('split'); // 'split' or 'full'
+  const [viewMode, setViewMode] = useState('split'); // 'split' (fixed top preview) or 'full'
 
   // 2. Modals
   const [isCopywriterOpen, setIsCopywriterOpen] = useState(false);
@@ -126,7 +126,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col antialiased selection:bg-amber-500/30 selection:text-amber-200">
-      {/* 1. Header (Slim 56px) */}
+      {/* 1. Slim Header (52px) */}
       <Header
         presets={presets}
         activePresetId={activePresetId}
@@ -138,15 +138,12 @@ export default function App() {
         onOpenCopywriterModal={() => setIsCopywriterOpen(true)}
       />
 
-      {/* 2. Main Studio Container */}
-      <main className="flex-1 max-w-[1550px] w-full mx-auto p-2 sm:p-4 grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-4 items-start pb-4">
+      {/* 2. Main Workspace Layout */}
+      <main className="flex-1 max-w-[1550px] w-full mx-auto p-2 sm:p-3 lg:p-4 grid grid-cols-1 lg:grid-cols-12 gap-3 items-start pb-4">
         
-        {/* RIGHT COLUMN (DESKTOP) / TOP STICKY BAR (MOBILE) */}
-        <div className={`lg:col-span-5 xl:col-span-5 flex flex-col items-center gap-2.5 z-30 ${
-          viewMode === 'split'
-            ? 'sticky top-14 bg-slate-950/98 lg:bg-transparent backdrop-blur-xl lg:backdrop-blur-none py-1.5 lg:py-0 border-b border-slate-800 lg:border-none shadow-xl lg:shadow-none lg:sticky lg:top-16'
-            : 'relative'
-        }`}>
+        {/* RIGHT COLUMN (DESKTOP) / TOP STICKY PREVIEW BAR (MOBILE) */}
+        <div className="lg:col-span-5 xl:col-span-5 flex flex-col items-center gap-2 lg:sticky lg:top-16 z-30">
+          
           {/* Mobile View Toggle Bar */}
           <div className="lg:hidden w-full flex items-center justify-between px-1 text-xs">
             <span className="font-bold text-slate-300 text-[11px]">المعاينة الحية:</span>
@@ -168,41 +165,47 @@ export default function App() {
             </button>
           </div>
 
-          {/* Scaled Preview Frame (Fixed height on mobile in split mode, 85-90% visible) */}
-          <div className={`transition-all duration-150 flex items-center justify-center ${
+          {/* Sticky Canvas Stage on Mobile */}
+          <div className={`w-full flex items-center justify-center transition-all ${
             viewMode === 'split'
-              ? 'h-[270px] sm:h-[310px] lg:h-auto overflow-hidden scale-[0.52] sm:scale-[0.58] lg:scale-100 origin-center -my-20 sm:-my-14 lg:my-0'
-              : 'w-full'
+              ? 'sticky top-13 lg:static bg-slate-950/98 lg:bg-transparent backdrop-blur-md py-1 rounded-2xl lg:rounded-none border-b lg:border-none border-slate-800'
+              : 'relative'
           }`}>
-            <CanvasPreview
-              ref={canvasRef}
-              imageUrl={imageUrl}
-              imageZoom={imageZoom}
-              imagePanX={imagePanX}
-              imagePanY={imagePanY}
-              imageBlur={imageBlur}
-              imageFilter={imageFilter}
-              overlayColor={overlayColor}
-              overlayOpacity={overlayOpacity}
-              hasVignette={hasVignette}
-              vignetteIntensity={vignetteIntensity}
-              themeId={themeId}
-              finish={finish}
-              cardData={cardData}
-              showLogo={showLogo}
-              logoUrl={logoUrl}
-              logoPosition={logoPosition}
-              logoScale={logoScale}
-              logoOpacity={logoOpacity}
-              isPhoneMockup={isPhoneMockup}
-              showGridLines={showGridLines}
-              showGridIndicator={showGridIndicator}
-              gridViewsCount="1916"
-            />
+            <div className={`transition-transform duration-150 flex items-center justify-center ${
+              viewMode === 'split'
+                ? 'h-[250px] sm:h-[290px] lg:h-auto overflow-hidden scale-[0.48] sm:scale-[0.55] lg:scale-100 origin-center -my-22 sm:-my-16 lg:my-0'
+                : 'w-full'
+            }`}>
+              <CanvasPreview
+                ref={canvasRef}
+                imageUrl={imageUrl}
+                imageZoom={imageZoom}
+                imagePanX={imagePanX}
+                imagePanY={imagePanY}
+                imageBlur={imageBlur}
+                imageFilter={imageFilter}
+                overlayColor={overlayColor}
+                overlayOpacity={overlayOpacity}
+                hasVignette={hasVignette}
+                vignetteIntensity={vignetteIntensity}
+                themeId={themeId}
+                finish={finish}
+                cardData={cardData}
+                showLogo={showLogo}
+                logoUrl={logoUrl}
+                logoPosition={logoPosition}
+                logoScale={logoScale}
+                logoOpacity={logoOpacity}
+                isPhoneMockup={isPhoneMockup}
+                showGridLines={showGridLines}
+                showGridIndicator={showGridIndicator}
+                gridViewsCount="1916"
+              />
+            </div>
           </div>
 
-          {/* Action Bar (Download & Toggles) */}
-          <div className="w-full max-w-[430px]">
+          {/* Quick Action Toolbar (Download, Copy, Toolstrip) */}
+          <div className="w-full max-w-[420px]">
             <ExportControls
               canvasRef={canvasRef}
               showGridLines={showGridLines}
@@ -217,7 +220,7 @@ export default function App() {
         </div>
 
         {/* LEFT COLUMN (DESKTOP) / BOTTOM CONTROL DECK (MOBILE) */}
-        <div className="lg:col-span-7 xl:col-span-7 space-y-2.5">
+        <div className="lg:col-span-7 xl:col-span-7 space-y-2">
           {/* Segmented Tabs Navigation with Luxury Dividers */}
           <div className="flex items-center p-1 rounded-2xl bg-slate-900/90 border border-slate-800 overflow-x-auto select-none shadow-md">
             {tabs.map((tab, index) => {
@@ -225,16 +228,16 @@ export default function App() {
               const isActive = activeTab === tab.id;
               return (
                 <React.Fragment key={tab.id}>
-                  {index > 0 && <div className="w-[1px] h-4 bg-slate-800 mx-0.5 shrink-0" />}
+                  {index > 0 && <div className="w-[1px] h-3.5 bg-slate-800 mx-0.5 shrink-0" />}
                   <button
                     onClick={() => setActiveTab(tab.id)}
-                    className={`flex-1 flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-xl text-[11px] font-bold whitespace-nowrap transition-all cursor-pointer ${
+                    className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-xl text-[11px] font-bold whitespace-nowrap transition-all cursor-pointer ${
                       isActive
                         ? 'bg-amber-500 text-slate-950 font-black shadow-md'
                         : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
                     }`}
                   >
-                    <Icon className="w-3.5 h-3.5" />
+                    <Icon className="w-3 h-3" />
                     <span>{tab.name}</span>
                   </button>
                 </React.Fragment>
@@ -242,7 +245,7 @@ export default function App() {
             })}
           </div>
 
-          {/* Control Deck Body (Clean fit, zero phantom space) */}
+          {/* Control Deck Body (Clean & Compact) */}
           <div className="p-3 sm:p-4 rounded-3xl bg-slate-900/75 border border-slate-800/80 backdrop-blur-xl shadow-xl">
             {activeTab === 'fields' && (
               <FieldsEditor
