@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, Palette, Sliders, Layers, Frame, Type, Maximize2 } from 'lucide-react';
+import { Sparkles, Palette, Sliders, Layers, Frame, Maximize2 } from 'lucide-react';
 import { LUXURY_THEMES, DIVIDER_STYLES } from '../utils/constants';
 
 export default function LayoutAndCardsPanel({
@@ -52,72 +52,34 @@ export default function LayoutAndCardsPanel({
         </div>
       </div>
 
-      {/* 2. Glass Finish & Typography Finish (Matte vs Glossy) */}
-      <div className="p-3.5 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3">
-        {/* Glass Finish Mode */}
-        <div>
-          <div className="flex items-center justify-between mb-1.5">
-            <span className="font-bold text-slate-200 flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-              <span>تشطيب الزجاج والبوكس:</span>
-            </span>
-          </div>
-          <div className="grid grid-cols-2 gap-2">
-            <button
-              onClick={() => setFinish('matte')}
-              className={`p-2 rounded-xl border text-center transition-all cursor-pointer ${
-                finish === 'matte'
-                  ? 'border-amber-400 bg-amber-500/15 text-amber-300 font-bold ring-1 ring-amber-400/40'
-                  : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              <div className="text-xs font-bold">✨ مطفي (Matte)</div>
-            </button>
+      {/* 2. Glass Finish Mode (Matte vs Glossy) */}
+      <div className="p-3.5 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-2">
+        <label className="font-bold text-slate-200 flex items-center gap-1.5">
+          <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+          <span>تشطيب زجاج القالب (Matte vs Glossy)</span>
+        </label>
+        <div className="grid grid-cols-2 gap-2">
+          <button
+            onClick={() => setFinish('matte')}
+            className={`p-2.5 rounded-xl border text-center transition-all cursor-pointer ${
+              finish === 'matte'
+                ? 'border-amber-400 bg-amber-500/15 text-amber-300 font-bold ring-1 ring-amber-400/40'
+                : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <div className="text-xs font-bold">✨ زجاج مطفي (Matte)</div>
+          </button>
 
-            <button
-              onClick={() => setFinish('glossy')}
-              className={`p-2 rounded-xl border text-center transition-all cursor-pointer ${
-                finish === 'glossy'
-                  ? 'border-amber-400 bg-amber-500/15 text-amber-300 font-bold ring-1 ring-amber-400/40'
-                  : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              <div className="text-xs font-bold">💎 بلمعة (Glossy)</div>
-            </button>
-          </div>
-        </div>
-
-        {/* Typography Finish Mode */}
-        <div className="pt-2 border-t border-slate-800">
-          <div className="flex items-center justify-between mb-1.5">
-            <span className="font-bold text-slate-200 flex items-center gap-1.5">
-              <Type className="w-3.5 h-3.5 text-amber-400" />
-              <span>تشطيب الخطوط والكتابة:</span>
-            </span>
-          </div>
-          <div className="grid grid-cols-2 gap-2">
-            <button
-              onClick={() => updateCardData('textFinish', 'matte')}
-              className={`p-2 rounded-xl border text-center transition-all cursor-pointer ${
-                cardData.textFinish === 'matte'
-                  ? 'border-amber-400 bg-amber-500/15 text-amber-300 font-bold ring-1 ring-amber-400/40'
-                  : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              <div className="text-xs font-bold">✨ كتابة مطفية (Matte)</div>
-            </button>
-
-            <button
-              onClick={() => updateCardData('textFinish', 'glossy')}
-              className={`p-2 rounded-xl border text-center transition-all cursor-pointer ${
-                (cardData.textFinish || 'glossy') === 'glossy'
-                  ? 'border-amber-400 bg-amber-500/15 text-amber-300 font-bold ring-1 ring-amber-400/40'
-                  : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              <div className="text-xs font-bold">💎 كتابة ميتاليك بلمعة (Glossy)</div>
-            </button>
-          </div>
+          <button
+            onClick={() => setFinish('glossy')}
+            className={`p-2.5 rounded-xl border text-center transition-all cursor-pointer ${
+              finish === 'glossy'
+                ? 'border-amber-400 bg-amber-500/15 text-amber-300 font-bold ring-1 ring-amber-400/40'
+                : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <div className="text-xs font-bold">💎 زجاج بلمعة (Glossy)</div>
+          </button>
         </div>
       </div>
 

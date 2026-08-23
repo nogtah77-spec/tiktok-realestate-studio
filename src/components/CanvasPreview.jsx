@@ -86,7 +86,6 @@ const CanvasPreview = forwardRef(({
     boxBlur = 20,
     boxOpacity = 60,
     verticalPosition = 50,
-    textFinish = 'glossy',
 
     borderWidth = 1.5,
     borderRadius = 32,
@@ -98,65 +97,10 @@ const CanvasPreview = forwardRef(({
     borderStyle = 'solid'
   } = cardData;
 
-  const isTextGlossy = textFinish === 'glossy';
-
   // Compute final border color & glow
   const effectiveBorderColor = borderColorMode === 'custom' && customBorderColor ? customBorderColor : activeTheme.borderColor;
   const effectiveGlowColor = glowColorMode === 'custom' && customGlowColor ? customGlowColor : (activeTheme.borderGlow || activeTheme.borderColor);
   const effectiveDividerColor = dividerCustomColor || activeTheme.dividerColor;
-
-  // Typography Finish Style Generators
-  const getTitleStyle = () => {
-    if (titleShimmer) {
-      return {
-        fontFamily: titleFont ? `'${titleFont}', sans-serif` : 'inherit',
-        fontSize: `${titleSize}px`
-      };
-    }
-    if (isTextGlossy) {
-      return {
-        fontFamily: titleFont ? `'${titleFont}', sans-serif` : 'inherit',
-        fontSize: `${titleSize}px`,
-        backgroundImage: activeTheme.glossyGradient,
-        WebkitBackgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
-        filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 8px rgba(255, 255, 255, 0.3))'
-      };
-    }
-    // Matte Typography
-    return {
-      fontFamily: titleFont ? `'${titleFont}', sans-serif` : 'inherit',
-      fontSize: `${titleSize}px`,
-      color: titleColor || activeTheme.matteColor,
-      filter: 'drop-shadow(0 3px 6px rgba(0, 0, 0, 0.95))'
-    };
-  };
-
-  const getHeroNumberStyle = () => {
-    if (heroShimmer) {
-      return {
-        fontFamily: heroFont ? `'${heroFont}', sans-serif` : 'inherit',
-        fontSize: `${heroNumberSize}px`
-      };
-    }
-    if (isTextGlossy) {
-      return {
-        fontFamily: heroFont ? `'${heroFont}', sans-serif` : 'inherit',
-        fontSize: `${heroNumberSize}px`,
-        backgroundImage: activeTheme.glossyGradient,
-        WebkitBackgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
-        filter: 'drop-shadow(0 6px 18px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 12px rgba(255, 255, 255, 0.4))'
-      };
-    }
-    // Matte Typography
-    return {
-      fontFamily: heroFont ? `'${heroFont}', sans-serif` : 'inherit',
-      fontSize: `${heroNumberSize}px`,
-      color: heroNumberColor || activeTheme.matteColor,
-      filter: 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.95))'
-    };
-  };
 
   // Logo position
   const getLogoPositionClass = () => {
@@ -398,7 +342,12 @@ const CanvasPreview = forwardRef(({
               <div className="w-full px-1">
                 <h2
                   className={`font-extrabold tracking-tight m-0 p-0 leading-tight ${titleShimmer ? activeTheme.shimmerClass : ''}`}
-                  style={getTitleStyle()}
+                  style={{
+                    fontFamily: titleFont ? `'${titleFont}', sans-serif` : 'inherit',
+                    fontSize: `${titleSize}px`,
+                    color: titleShimmer ? 'transparent' : (titleColor || '#ffffff'),
+                    filter: titleShimmer ? 'none' : 'drop-shadow(0 4px 10px rgba(0, 0, 0, 0.85))'
+                  }}
                 >
                   {title}
                 </h2>
@@ -432,7 +381,7 @@ const CanvasPreview = forwardRef(({
                         fontFamily: heroFont ? `'${heroFont}', sans-serif` : 'inherit',
                         fontSize: `${heroUnitSize}px`,
                         color: heroUnitColor || activeTheme.heroUnitColor,
-                        filter: isTextGlossy ? 'drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7))' : 'none'
+                        filter: 'drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7))'
                       }}
                     >
                       {heroUnit}
@@ -441,7 +390,12 @@ const CanvasPreview = forwardRef(({
 
                   <span
                     className={`font-black tracking-tighter select-none leading-none ${heroShimmer ? activeTheme.shimmerClass : ''}`}
-                    style={getHeroNumberStyle()}
+                    style={{
+                      fontFamily: heroFont ? `'${heroFont}', sans-serif` : 'inherit',
+                      fontSize: `${heroNumberSize}px`,
+                      color: heroShimmer ? 'transparent' : (heroNumberColor || '#ffffff'),
+                      filter: heroShimmer ? 'none' : 'drop-shadow(0 6px 16px rgba(0, 0, 0, 0.9))'
+                    }}
                   >
                     {heroNumber}
                   </span>
@@ -471,7 +425,7 @@ const CanvasPreview = forwardRef(({
                           fontFamily: bottomFont ? `'${bottomFont}', sans-serif` : 'inherit',
                           fontSize: `${bottomSize}px`,
                           color: bottomTextColor || activeTheme.pillTextColor,
-                          textShadow: isTextGlossy ? '0 2px 5px rgba(0, 0, 0, 0.6)' : 'none'
+                          textShadow: '0 2px 5px rgba(0, 0, 0, 0.6)'
                         }}
                       >
                         {bottomText}
