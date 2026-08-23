@@ -15,20 +15,22 @@ const CanvasPreview = forwardRef(({
   vignetteIntensity = 50,
 
   // Theme & Finish
-  themeId = 'champagne-gold',
+  themeId = 'sale-gold',
   finish = 'glossy', // 'glossy' or 'matte'
 
-  // Card Content & Typography
+  // Card Content & Controls
   cardData = {},
 
   // Logo props
-  logoUrl,
+  showLogo = true,
+  logoUrl = '',
   logoPosition = 'top-right',
   logoScale = 100,
   logoOpacity = 100,
 
   // View settings
   isPhoneMockup = true,
+  showGridLines = false,
   showGridIndicator = true,
   gridViewsCount = '1916'
 }, ref) => {
@@ -47,23 +49,25 @@ const CanvasPreview = forwardRef(({
   // Card parameters with defaults
   const {
     title = 'شقة للبيع',
-    titleFont = 'Alexandria',
-    titleSize = 34,
+    titleFont = 'Lalezar',
+    titleSize = 38,
     titleColor = '#ffffff',
+    titleShimmer = false,
 
     showSubtitle = false,
     subtitle = 'المساحة',
     subtitleFont = 'Alexandria',
     subtitleSize = 18,
-    subtitleColor = activeTheme.accent,
+    subtitleColor = '',
 
     heroNumber = '185',
     heroUnit = 'م²',
-    heroFont = 'Alexandria',
-    heroNumberSize = 68,
-    heroUnitSize = 26,
+    heroFont = 'Lalezar',
+    heroNumberSize = 76,
+    heroUnitSize = 28,
     heroNumberColor = '#ffffff',
-    heroUnitColor = activeTheme.heroUnitColor,
+    heroUnitColor = '',
+    heroShimmer = false,
 
     bottomText = 'حي النرجس',
     bottomFont = 'Alexandria',
@@ -72,14 +76,30 @@ const CanvasPreview = forwardRef(({
     bottomPillStyle = 'pill',
 
     showDividers = true,
-    dividerOrnament = 'diamond',
+    dividerStyle = 'fading',
+    dividerTagText = 'VIP',
+    dividerOpacity = 70,
+    dividerCustomColor = '',
 
     boxWidth = 84,
     boxBlur = 20,
     boxOpacity = 60,
-    borderGlowIntensity = 80,
-    verticalPosition = 50
+    verticalPosition = 50,
+
+    borderWidth = 1.5,
+    borderRadius = 32,
+    borderColorMode = 'theme',
+    customBorderColor = '#d4af37',
+    borderGlowIntensity = 75,
+    glowColorMode = 'theme',
+    customGlowColor = '#d4af37',
+    borderStyle = 'solid'
   } = cardData;
+
+  // Compute final border color & glow
+  const effectiveBorderColor = borderColorMode === 'custom' && customBorderColor ? customBorderColor : activeTheme.borderColor;
+  const effectiveGlowColor = glowColorMode === 'custom' && customGlowColor ? customGlowColor : (activeTheme.borderGlow || activeTheme.borderColor);
+  const effectiveDividerColor = dividerCustomColor || activeTheme.dividerColor;
 
   // Logo position
   const getLogoPositionClass = () => {
@@ -92,14 +112,98 @@ const CanvasPreview = forwardRef(({
     }
   };
 
+  // Render Architectural Divider Component
+  const renderDivider = () => {
+    if (!showDividers || dividerStyle === 'none') return null;
+
+    if (dividerStyle === 'fading') {
+      return (
+        <div className="w-full flex items-center justify-center my-2.5 px-4" style={{ opacity: dividerOpacity / 100 }}>
+          <div
+            className="w-full h-[1px]"
+            style={{
+              background: `linear-gradient(to right, transparent 0%, ${effectiveDividerColor} 50%, transparent 100%)`
+            }}
+          />
+        </div>
+      );
+    }
+
+    if (dividerStyle === 'double') {
+      return (
+        <div className="w-full flex flex-col items-center justify-center gap-1 my-2.5 px-6" style={{ opacity: dividerOpacity / 100 }}>
+          <div className="w-full h-[1px]" style={{ background: `linear-gradient(to right, transparent, ${effectiveDividerColor}, transparent)` }} />
+          <div className="w-3/4 h-[1px]" style={{ background: `linear-gradient(to right, transparent, ${effectiveDividerColor}, transparent)` }} />
+        </div>
+      );
+    }
+
+    if (dividerStyle === 'beam') {
+      return (
+        <div className="w-full flex items-center justify-center my-3 px-8" style={{ opacity: dividerOpacity / 100 }}>
+          <div
+            className="w-full h-[2px] rounded-full blur-[0.5px]"
+            style={{
+              background: `radial-gradient(ellipse at center, ${effectiveBorderColor} 0%, transparent 80%)`,
+              boxShadow: `0 0 10px ${effectiveGlowColor}`
+            }}
+          />
+        </div>
+      );
+    }
+
+    if (dividerStyle === 'micro-sparkle') {
+      return (
+        <div className="w-full flex items-center justify-center my-2.5 px-4 relative" style={{ opacity: dividerOpacity / 100 }}>
+          <div className="flex-1 h-[1px]" style={{ background: `linear-gradient(to right, transparent, ${effectiveDividerColor})` }} />
+          <span className="mx-2 text-[10px] leading-none" style={{ color: activeTheme.diamondColor, filter: `drop-shadow(0 0 4px ${effectiveGlowColor})` }}>
+            ✦
+          </span>
+          <div className="flex-1 h-[1px]" style={{ background: `linear-gradient(to left, transparent, ${effectiveDividerColor})` }} />
+        </div>
+      );
+    }
+
+    if (dividerStyle === 'tag') {
+      return (
+        <div className="w-full flex items-center justify-center my-2.5 px-4 relative" style={{ opacity: dividerOpacity / 100 }}>
+          <div className="flex-1 h-[1px]" style={{ background: `linear-gradient(to right, transparent, ${effectiveDividerColor})` }} />
+          <span
+            className="mx-2 px-2 py-0.5 rounded-full text-[9px] font-bold border tracking-wider"
+            style={{
+              borderColor: effectiveDividerColor,
+              color: effectiveBorderColor,
+              backgroundColor: 'rgba(0,0,0,0.4)'
+            }}
+          >
+            • {dividerTagText || 'VIP'} •
+          </span>
+          <div className="flex-1 h-[1px]" style={{ background: `linear-gradient(to left, transparent, ${effectiveDividerColor})` }} />
+        </div>
+      );
+    }
+
+    if (dividerStyle === 'dotted') {
+      return (
+        <div className="w-full flex items-center justify-center gap-1.5 my-2.5" style={{ opacity: dividerOpacity / 100 }}>
+          <span className="w-1 h-1 rounded-full" style={{ backgroundColor: effectiveDividerColor }} />
+          <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: effectiveBorderColor }} />
+          <span className="w-1 h-1 rounded-full" style={{ backgroundColor: effectiveDividerColor }} />
+        </div>
+      );
+    }
+
+    return null;
+  };
+
   return (
-    <div className={`relative flex items-center justify-center transition-all ${isPhoneMockup ? 'p-3' : 'p-0'}`}>
-      {/* Phone Mockup Frame */}
+    <div className={`relative flex items-center justify-center transition-all ${isPhoneMockup ? 'p-2 sm:p-3' : 'p-0'}`}>
+      {/* Phone Frame Container */}
       <div className={`relative ${isPhoneMockup ? 'rounded-[46px] p-2.5 bg-slate-900 ring-1 ring-slate-700/60 shadow-[0_30px_90px_rgba(0,0,0,0.85)]' : ''}`}>
         
         {/* Phone Dynamic Island */}
         {isPhoneMockup && (
-          <div className="absolute top-5 left-1/2 -translate-x-1/2 w-28 h-5 bg-black rounded-full z-40 flex items-center justify-end px-2.5 pointer-events-none shadow-sm">
+          <div className="no-export absolute top-5 left-1/2 -translate-x-1/2 w-28 h-5 bg-black rounded-full z-40 flex items-center justify-end px-2.5 pointer-events-none shadow-sm">
             <div className="w-2.5 h-2.5 rounded-full bg-slate-900 ring-1 ring-slate-800" />
           </div>
         )}
@@ -150,36 +254,55 @@ const CanvasPreview = forwardRef(({
             />
           )}
 
-          {/* 4. Brand Logo Layer */}
-          <div className={`absolute z-20 pointer-events-none ${getLogoPositionClass()}`}>
-            {logoUrl ? (
-              <img
-                src={logoUrl}
-                alt="Brand Logo"
-                className="object-contain transition-all drop-shadow-xl"
-                style={{
-                  height: `${(logoScale / 100) * 44}px`,
-                  opacity: logoOpacity / 100
-                }}
-              />
-            ) : (
-              <div
-                className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-950/75 backdrop-blur-md border border-amber-400/30 shadow-xl text-right"
-                style={{ opacity: logoOpacity / 100 }}
-              >
-                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-amber-300 via-amber-500 to-amber-700 flex items-center justify-center font-black text-slate-950 text-xs shadow-sm">
-                  ع
-                </div>
-                <div>
-                  <div className="text-[11px] font-extrabold text-white tracking-wide">العمودي للعقارات</div>
-                  <div className="text-[8px] font-medium text-amber-300/90 tracking-wider">AL-AMOUDI REAL ESTATE</div>
-                </div>
-              </div>
-            )}
-          </div>
+          {/* 4. Alignment Grid Lines & Crosshairs (Excluded from export) */}
+          {showGridLines && (
+            <div className="no-export absolute inset-0 z-30 pointer-events-none border border-cyan-400/20">
+              {/* Rule of Thirds Vertical Lines */}
+              <div className="absolute top-0 bottom-0 left-1/3 w-[1px] bg-cyan-400/30 border-r border-dashed border-cyan-400/40" />
+              <div className="absolute top-0 bottom-0 right-1/3 w-[1px] bg-cyan-400/30 border-r border-dashed border-cyan-400/40" />
+              {/* Rule of Thirds Horizontal Lines */}
+              <div className="absolute left-0 right-0 top-1/3 h-[1px] bg-cyan-400/30 border-b border-dashed border-cyan-400/40" />
+              <div className="absolute left-0 right-0 bottom-1/3 h-[1px] bg-cyan-400/30 border-b border-dashed border-cyan-400/40" />
+              {/* Center Crosshair */}
+              <div className="absolute top-0 bottom-0 left-1/2 w-[1px] bg-amber-400/35" />
+              <div className="absolute left-0 right-0 top-1/2 h-[1px] bg-amber-400/35" />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full border border-amber-400/50" />
+            </div>
+          )}
 
-          {/* 5. The Master 3-Tier Luxury Glass Box */}
+          {/* 5. Brand Logo Layer (with Toggle) */}
+          {showLogo && (
+            <div className={`absolute z-20 pointer-events-none ${getLogoPositionClass()}`}>
+              {logoUrl ? (
+                <img
+                  src={logoUrl}
+                  alt="Brand Logo"
+                  className="object-contain transition-all drop-shadow-xl"
+                  style={{
+                    height: `${(logoScale / 100) * 44}px`,
+                    opacity: logoOpacity / 100
+                  }}
+                />
+              ) : (
+                <div
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-950/75 backdrop-blur-md border border-amber-400/30 shadow-xl text-right"
+                  style={{ opacity: logoOpacity / 100 }}
+                >
+                  <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-amber-300 via-amber-500 to-amber-700 flex items-center justify-center font-black text-slate-950 text-xs shadow-sm">
+                    ع
+                  </div>
+                  <div>
+                    <div className="text-[11px] font-extrabold text-white tracking-wide">العمودي للعقارات</div>
+                    <div className="text-[8px] font-medium text-amber-300/90 tracking-wider">AL-AMOUDI REAL ESTATE</div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* 6. The Master 3-Tier Luxury Glass Box */}
           <div
+            id="tiktok-glass-card-root"
             className="absolute inset-x-0 z-20 flex items-center justify-center pointer-events-none px-4"
             style={{
               top: `${verticalPosition}%`,
@@ -191,22 +314,23 @@ const CanvasPreview = forwardRef(({
               style={{
                 width: `${boxWidth}%`,
                 padding: '24px 20px',
-                borderRadius: '32px',
-                backgroundColor: activeTheme.glassBg.replace('0.55', (boxOpacity / 100).toString()),
-                backdropFilter: `blur(${boxBlur}px)`,
-                WebkitBackdropFilter: `blur(${boxBlur}px)`,
-                border: `1.5px solid ${activeTheme.borderColor}`,
+                borderRadius: `${borderRadius}px`,
+                backgroundColor: activeTheme.glassBg.replace('0.55', (boxOpacity / 100).toString()).replace('0.65', (boxOpacity / 100).toString()).replace('0.6', (boxOpacity / 100).toString()),
+                backdropFilter: boxBlur > 0 ? `blur(${boxBlur}px)` : 'none',
+                WebkitBackdropFilter: boxBlur > 0 ? `blur(${boxBlur}px)` : 'none',
+                border: borderWidth > 0 ? `${borderWidth}px ${borderStyle === 'double' ? 'double' : 'solid'} ${effectiveBorderColor}` : 'none',
                 boxShadow: isGlossy
-                  ? `0 20px 60px rgba(0, 0, 0, 0.65), 0 0 ${borderGlowIntensity * 0.4}px ${activeTheme.borderGlow}, inset 0 1px 2px rgba(255, 255, 255, 0.45), inset 0 -1px 2px rgba(0, 0, 0, 0.4)`
-                  : `0 15px 40px rgba(0, 0, 0, 0.5), 0 0 ${borderGlowIntensity * 0.2}px ${activeTheme.borderGlow}`
+                  ? `0 20px 60px rgba(0, 0, 0, 0.65), 0 0 ${borderGlowIntensity * 0.45}px ${effectiveGlowColor}, inset 0 1px 2px rgba(255, 255, 255, 0.45), inset 0 -1px 2px rgba(0, 0, 0, 0.4)`
+                  : `0 15px 40px rgba(0, 0, 0, 0.5), 0 0 ${borderGlowIntensity * 0.25}px ${effectiveGlowColor}`
               }}
             >
               {/* Glossy Sheen Overlay */}
               {isGlossy && (
                 <div
-                  className="absolute inset-0 rounded-[32px] pointer-events-none overflow-hidden"
+                  className="absolute inset-0 pointer-events-none overflow-hidden"
                   style={{
-                    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.03) 40%, transparent 100%)'
+                    borderRadius: `${borderRadius}px`,
+                    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.03) 40%, transparent 100%)'
                   }}
                 />
               )}
@@ -214,53 +338,23 @@ const CanvasPreview = forwardRef(({
               {/* SECTION 1: TOP TITLE */}
               <div className="w-full px-2">
                 <h2
-                  className="font-extrabold tracking-tight m-0 p-0 leading-tight"
+                  className={`font-extrabold tracking-tight m-0 p-0 leading-tight ${titleShimmer ? activeTheme.shimmerClass : ''}`}
                   style={{
                     fontFamily: titleFont ? `'${titleFont}', sans-serif` : 'inherit',
                     fontSize: `${titleSize}px`,
-                    color: titleColor,
-                    filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.8))'
+                    color: titleShimmer ? 'transparent' : titleColor,
+                    filter: titleShimmer ? 'none' : 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.8))'
                   }}
                 >
                   {title}
                 </h2>
               </div>
 
-              {/* DIVIDER 1: Luxury Diamond Line */}
-              {showDividers && (
-                <div className="w-full flex items-center justify-center my-3 relative px-4">
-                  <div
-                    className="flex-1 h-[1px]"
-                    style={{
-                      background: `linear-gradient(to right, transparent, ${activeTheme.dividerColor})`
-                    }}
-                  />
-                  {dividerOrnament === 'diamond' && (
-                    <div
-                      className="w-2.5 h-2.5 rotate-45 mx-2.5 shrink-0 shadow-sm"
-                      style={{
-                        backgroundColor: activeTheme.diamondColor,
-                        boxShadow: `0 0 8px ${activeTheme.diamondColor}`
-                      }}
-                    />
-                  )}
-                  {dividerOrnament === 'star' && (
-                    <span className="mx-2 text-xs" style={{ color: activeTheme.diamondColor }}>✦</span>
-                  )}
-                  {dividerOrnament === 'dot' && (
-                    <div className="w-1.5 h-1.5 rounded-full mx-2" style={{ backgroundColor: activeTheme.diamondColor }} />
-                  )}
-                  <div
-                    className="flex-1 h-[1px]"
-                    style={{
-                      background: `linear-gradient(to left, transparent, ${activeTheme.dividerColor})`
-                    }}
-                  />
-                </div>
-              )}
+              {/* DIVIDER 1 */}
+              {renderDivider()}
 
               {/* SECTION 2: HERO NUMBER & UNIT */}
-              <div className="flex flex-col items-center justify-center my-1 w-full">
+              <div className="flex flex-col items-center justify-center my-0.5 w-full">
                 {/* Optional Subtitle (e.g. "المساحة") */}
                 {showSubtitle && subtitle && (
                   <span
@@ -295,12 +389,12 @@ const CanvasPreview = forwardRef(({
 
                   {/* Giant Number */}
                   <span
-                    className="font-black tracking-tighter select-none leading-none"
+                    className={`font-black tracking-tighter select-none leading-none ${heroShimmer ? activeTheme.shimmerClass : ''}`}
                     style={{
                       fontFamily: heroFont ? `'${heroFont}', sans-serif` : 'inherit',
                       fontSize: `${heroNumberSize}px`,
-                      color: heroNumberColor,
-                      filter: 'drop-shadow(0 6px 16px rgba(0, 0, 0, 0.85))'
+                      color: heroShimmer ? 'transparent' : heroNumberColor,
+                      filter: heroShimmer ? 'none' : 'drop-shadow(0 6px 18px rgba(0, 0, 0, 0.85))'
                     }}
                   >
                     {heroNumber}
@@ -308,38 +402,8 @@ const CanvasPreview = forwardRef(({
                 </div>
               </div>
 
-              {/* DIVIDER 2: Luxury Diamond Line */}
-              {showDividers && (
-                <div className="w-full flex items-center justify-center my-3 relative px-4">
-                  <div
-                    className="flex-1 h-[1px]"
-                    style={{
-                      background: `linear-gradient(to right, transparent, ${activeTheme.dividerColor})`
-                    }}
-                  />
-                  {dividerOrnament === 'diamond' && (
-                    <div
-                      className="w-2.5 h-2.5 rotate-45 mx-2.5 shrink-0 shadow-sm"
-                      style={{
-                        backgroundColor: activeTheme.diamondColor,
-                        boxShadow: `0 0 8px ${activeTheme.diamondColor}`
-                      }}
-                    />
-                  )}
-                  {dividerOrnament === 'star' && (
-                    <span className="mx-2 text-xs" style={{ color: activeTheme.diamondColor }}>✦</span>
-                  )}
-                  {dividerOrnament === 'dot' && (
-                    <div className="w-1.5 h-1.5 rounded-full mx-2" style={{ backgroundColor: activeTheme.diamondColor }} />
-                  )}
-                  <div
-                    className="flex-1 h-[1px]"
-                    style={{
-                      background: `linear-gradient(to left, transparent, ${activeTheme.dividerColor})`
-                    }}
-                  />
-                </div>
-              )}
+              {/* DIVIDER 2 */}
+              {renderDivider()}
 
               {/* SECTION 3: BOTTOM CAPSULE PILL OR SUBTITLE */}
               {bottomText && (
@@ -386,7 +450,7 @@ const CanvasPreview = forwardRef(({
             </div>
           </div>
 
-          {/* 6. Realistic TikTok Grid View Counter Overlay (Bottom Right Thumbnail) */}
+          {/* 7. Realistic TikTok Grid View Counter Overlay */}
           {showGridIndicator && (
             <div className="no-export absolute bottom-4 right-4 z-30 flex items-center gap-1 text-white/90 font-bold text-xs bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-md drop-shadow">
               <span>{gridViewsCount}</span>

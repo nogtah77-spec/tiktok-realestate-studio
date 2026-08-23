@@ -1,88 +1,64 @@
 @import "tailwindcss";
 
-@layer base {
-  :root {
-    --font-alexandria: 'Alexandria', sans-serif;
-    --font-ibm: 'IBM Plex Sans Arabic', sans-serif;
-    --font-readex: 'Readex Pro', sans-serif;
-    --font-almarai: 'Almarai', sans-serif;
-    --font-tajawal: 'Tajawal', sans-serif;
-    --font-cairo: 'Cairo', sans-serif;
-    --font-jakarta: 'Plus Jakarta Sans', sans-serif;
-    --font-outfit: 'Outfit', sans-serif;
+@layer utilities {
+  /* Metallic Text Shimmers */
+  .text-shimmer-gold {
+    background: linear-gradient(135deg, #ffffff 0%, #fde047 25%, #d4af37 55%, #fef08a 85%, #ffffff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.8));
   }
 
-  body {
-    font-family: var(--font-ibm);
-    background-color: #090d16;
-    color: #f1f5f9;
-    overflow-x: hidden;
+  .text-shimmer-chrome {
+    background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 30%, #94a3b8 60%, #ffffff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.8));
+  }
+
+  .text-shimmer-teal {
+    background: linear-gradient(135deg, #ffffff 0%, #5eead4 30%, #14b8a6 65%, #ffffff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.8));
+  }
+
+  .text-shimmer-bronze {
+    background: linear-gradient(135deg, #ffffff 0%, #fed7aa 25%, #c28854 60%, #ffedd5 90%, #ffffff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.8));
+  }
+
+  .text-shimmer-ruby {
+    background: linear-gradient(135deg, #ffffff 0%, #fda4af 30%, #e11d48 65%, #ffffff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.8));
   }
 }
 
-/* Custom modern scrollbar */
+/* Custom Smooth Dark Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
+
 ::-webkit-scrollbar-track {
   background: rgba(15, 23, 42, 0.6);
 }
+
 ::-webkit-scrollbar-thumb {
-  background: rgba(71, 85, 105, 0.6);
-  border-radius: 9999px;
+  background: rgba(148, 163, 184, 0.25);
+  border-radius: 4px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(148, 163, 184, 0.8);
+  background: rgba(212, 175, 55, 0.5);
 }
 
-/* Glassmorphic & luxury utilities */
-.glass-panel {
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+/* Base resets for mobile */
+html, body {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
-
-.glass-card-matte {
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
-}
-
-.glass-card-glossy {
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), inset 0 1px 1px 0 rgba(255, 255, 255, 0.45), inset 0 -1px 1px 0 rgba(0, 0, 0, 0.3);
-  position: relative;
-  overflow: hidden;
-}
-
-.glass-card-glossy::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 200%;
-  height: 100%;
-  background: linear-gradient(
-    115deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.08) 40%,
-    rgba(255, 255, 255, 0.22) 50%,
-    rgba(255, 255, 255, 0.08) 60%,
-    transparent 100%
-  );
-  pointer-events: none;
-}
-
-/* Animations */
-@keyframes pulseGlow {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.8; }
-}
-
-.animate-pulse-glow {
-  animation: pulseGlow 3s ease-in-out infinite;
-}
-
