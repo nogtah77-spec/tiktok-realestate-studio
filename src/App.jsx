@@ -22,7 +22,7 @@ export default function App() {
   const [presets, setPresets] = useState(getAllPresets);
   const [activePresetId, setActivePresetId] = useState('preset-sale-gold');
   const [customFonts, setCustomFonts] = useState([]);
-  const [viewMode, setViewMode] = useState('split'); // 'split' or 'full'
+  const [viewMode, setViewMode] = useState('split'); // 'split' (fixed compact top preview) or 'full'
 
   // 2. Modals
   const [isCopywriterOpen, setIsCopywriterOpen] = useState(false);
@@ -135,7 +135,7 @@ export default function App() {
 
   return (
     <div className="bg-slate-950 text-slate-100 flex flex-col antialiased selection:bg-amber-500/30 selection:text-amber-200">
-      {/* 1. Header (Slim 52px) */}
+      {/* 1. Slim Header (50px) */}
       <Header
         presets={presets}
         activePresetId={activePresetId}
@@ -150,12 +150,12 @@ export default function App() {
       {/* 2. Main Studio Workspace Layout */}
       <main className="max-w-[1550px] w-full mx-auto p-2 sm:p-3 lg:p-4 grid grid-cols-1 lg:grid-cols-12 gap-3 items-start">
         
-        {/* RIGHT COLUMN (DESKTOP) / TOP STICKY PREVIEW STAGE (MOBILE) */}
-        <div className="lg:col-span-5 xl:col-span-5 flex flex-col items-center gap-2 sticky top-13 lg:top-15 self-start z-30 bg-slate-950/98 lg:bg-transparent backdrop-blur-xl lg:backdrop-blur-none py-1.5 lg:py-0 border-b border-slate-800 lg:border-none shadow-xl lg:shadow-none">
+        {/* RIGHT COLUMN (DESKTOP) / COMPACT STICKY PREVIEW STAGE (MOBILE) */}
+        <div className="lg:col-span-5 xl:col-span-5 flex flex-col items-center gap-1.5 sticky top-12 lg:top-15 self-start z-30 bg-slate-950/98 lg:bg-transparent backdrop-blur-xl lg:backdrop-blur-none py-1 lg:py-0 border-b border-slate-800/90 lg:border-none shadow-xl lg:shadow-none w-full">
           
           {/* Mobile View Toggle Bar */}
-          <div className="lg:hidden w-full flex items-center justify-between px-1 text-xs">
-            <span className="font-bold text-slate-300 text-[11px]">المعاينة الحية:</span>
+          <div className="lg:hidden w-full flex items-center justify-between px-1 text-[11px]">
+            <span className="font-bold text-slate-300">المعاينة الحية:</span>
             <button
               onClick={() => setViewMode(viewMode === 'split' ? 'full' : 'split')}
               className="flex items-center gap-1 text-[10px] font-bold text-amber-300 bg-slate-900 border border-slate-800 px-2 py-0.5 rounded-lg transition-colors cursor-pointer"
@@ -174,18 +174,81 @@ export default function App() {
             </button>
           </div>
 
-          {/* Dedicated Stage Bay: Flanked by Right and Left Wings */}
-          <div className="w-full flex items-center justify-center gap-2 py-1">
+          {/* Stage Bay: Flanked by Right and Left Wings */}
+          <div className="w-full flex items-center justify-center gap-2 sm:gap-3 py-0.5">
             {/* Right Wing: الجريد والشعار */}
             {sideWings.rightWing}
 
-            {/* Center Canvas Preview Stage: 100% visible height */}
-            <div className={`transition-all duration-150 flex items-center justify-center ${
-              viewMode === 'split'
-                ? 'w-[170px] sm:w-[210px] lg:w-[320px] xl:w-[350px]'
-                : 'w-full max-w-[380px]'
-            }`}>
-              <div className={viewMode === 'split' ? 'scale-[0.50] sm:scale-[0.62] lg:scale-[0.88] xl:scale-100 origin-center' : 'w-full'}>
+            {/* Center Canvas Preview: Exact pixel footprint on mobile with zero dead space */}
+            <div className="flex items-center justify-center">
+              {/* MOBILE COMPACT SPLIT VIEW CONTAINER (130px x 231px) */}
+              <div className="lg:hidden">
+                {viewMode === 'split' ? (
+                  <div className="w-[130px] h-[231px] relative overflow-hidden rounded-[20px] bg-slate-900 shadow-xl ring-1 ring-slate-800/80">
+                    <div
+                      className="absolute top-0 left-0 origin-top-left"
+                      style={{ transform: 'scale(0.3823)' }}
+                    >
+                      <CanvasPreview
+                        ref={canvasRef}
+                        imageUrl={imageUrl}
+                        imageZoom={imageZoom}
+                        imagePanX={imagePanX}
+                        imagePanY={imagePanY}
+                        imageBlur={imageBlur}
+                        imageFilter={imageFilter}
+                        overlayColor={overlayColor}
+                        overlayOpacity={overlayOpacity}
+                        hasVignette={hasVignette}
+                        vignetteIntensity={vignetteIntensity}
+                        themeId={themeId}
+                        finish={finish}
+                        cardData={cardData}
+                        showLogo={showLogo}
+                        logoUrl={logoUrl}
+                        logoPosition={logoPosition}
+                        logoScale={logoScale}
+                        logoOpacity={logoOpacity}
+                        isPhoneMockup={false}
+                        showGridLines={showGridLines}
+                        showGridIndicator={showGridIndicator}
+                        gridViewsCount="1916"
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="w-full max-w-[340px]">
+                    <CanvasPreview
+                      ref={canvasRef}
+                      imageUrl={imageUrl}
+                      imageZoom={imageZoom}
+                      imagePanX={imagePanX}
+                      imagePanY={imagePanY}
+                      imageBlur={imageBlur}
+                      imageFilter={imageFilter}
+                      overlayColor={overlayColor}
+                      overlayOpacity={overlayOpacity}
+                      hasVignette={hasVignette}
+                      vignetteIntensity={vignetteIntensity}
+                      themeId={themeId}
+                      finish={finish}
+                      cardData={cardData}
+                      showLogo={showLogo}
+                      logoUrl={logoUrl}
+                      logoPosition={logoPosition}
+                      logoScale={logoScale}
+                      logoOpacity={logoOpacity}
+                      isPhoneMockup={isPhoneMockup}
+                      showGridLines={showGridLines}
+                      showGridIndicator={showGridIndicator}
+                      gridViewsCount="1916"
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* DESKTOP FULL-SIZE CANVAS */}
+              <div className="hidden lg:block w-full max-w-[380px]">
                 <CanvasPreview
                   ref={canvasRef}
                   imageUrl={imageUrl}
@@ -218,14 +281,10 @@ export default function App() {
             {sideWings.leftWing}
           </div>
 
-          {/* Bottom Action Bar: High-Res Download & Views */}
-          <div className="w-full max-w-[420px]">
+          {/* Compact Bottom Action Bar: High-Res Download & Views */}
+          <div className="w-full max-w-[360px] lg:max-w-[420px]">
             <ExportControls
               canvasRef={canvasRef}
-              showGridLines={showGridLines}
-              setShowGridLines={setShowGridLines}
-              showLogo={showLogo}
-              setShowLogo={setShowLogo}
               showGridIndicator={showGridIndicator}
               setShowGridIndicator={setShowGridIndicator}
             />
