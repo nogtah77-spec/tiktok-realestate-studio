@@ -161,27 +161,29 @@ export default function App() {
   });
 
   return (
-    <div className="bg-slate-950 text-slate-100 flex flex-col antialiased selection:bg-amber-500/30 selection:text-amber-200">
-      {/* 1. Header (Slim 50px) */}
-      <Header
-        presets={presets}
-        activePresetId={activePresetId}
-        onSelectPreset={handleSelectPreset}
-        onSavePreset={handleSavePreset}
-        onDeletePreset={handleDeletePreset}
-        onResetToDefault={handleResetToDefault}
-        onOpenSupabaseModal={() => setIsSupabaseOpen(true)}
-        onOpenCopywriterModal={() => setIsCopywriterOpen(true)}
-      />
+    <div className="h-[100dvh] max-h-[100dvh] bg-slate-950 text-slate-100 flex flex-col overflow-hidden antialiased selection:bg-amber-500/30 selection:text-amber-200">
+      {/* 1. Header (Fixed Height 48px) */}
+      <div className="flex-none">
+        <Header
+          presets={presets}
+          activePresetId={activePresetId}
+          onSelectPreset={handleSelectPreset}
+          onSavePreset={handleSavePreset}
+          onDeletePreset={handleDeletePreset}
+          onResetToDefault={handleResetToDefault}
+          onOpenSupabaseModal={() => setIsSupabaseOpen(true)}
+          onOpenCopywriterModal={() => setIsCopywriterOpen(true)}
+        />
+      </div>
 
-      {/* 2. Main Studio Workspace Layout */}
-      <main className="max-w-[1550px] w-full mx-auto p-2 sm:p-3 lg:p-4 grid grid-cols-1 lg:grid-cols-12 gap-2.5 items-start">
+      {/* 2. Main Studio Workspace (Mobile: Vertical Split Flex / Desktop: 12-Col Grid) */}
+      <main className="flex-1 overflow-hidden flex flex-col lg:grid lg:grid-cols-12 max-w-[1550px] w-full mx-auto p-2 sm:p-3 lg:p-4 gap-2.5 lg:overflow-y-auto">
         
-        {/* RIGHT COLUMN (DESKTOP) / COMPACT STICKY PREVIEW STAGE (MOBILE) */}
-        <div className="lg:col-span-5 xl:col-span-5 flex flex-col items-center gap-1.5 sticky top-12 lg:top-15 self-start z-30 bg-slate-950/98 lg:bg-transparent backdrop-blur-xl lg:backdrop-blur-none py-1 lg:py-0 border-b border-slate-800/90 lg:border-none shadow-xl lg:shadow-none w-full">
+        {/* TOP PREVIEW STAGE (MOBILE: Fixed non-scrolling top / DESKTOP: Sticky column) */}
+        <div className="flex-none lg:col-span-5 xl:col-span-5 flex flex-col items-center gap-1 bg-slate-950/98 lg:bg-transparent py-1 border-b border-slate-800/80 lg:border-none shadow-md lg:shadow-none w-full">
           
           {/* Mobile Top Bar: Title + Open Fullscreen Lightbox Button */}
-          <div className="lg:hidden w-full flex items-center justify-between px-1 text-[11px]">
+          <div className="lg:hidden w-full flex items-center justify-between px-1 text-[11px] pb-0.5">
             <span className="font-bold text-slate-300">المعاينة الحية:</span>
             <button
               onClick={() => setIsFullscreenPreviewOpen(true)}
@@ -193,7 +195,7 @@ export default function App() {
           </div>
 
           {/* Stage Bay: Flanked by Right and Left Wings */}
-          <div className="w-full flex items-center justify-center gap-2 sm:gap-3 py-0.5">
+          <div className="w-full flex items-center justify-center gap-2 sm:gap-3">
             {/* Right Wing: الجريد والشعار */}
             {sideWings.rightWing}
 
@@ -232,7 +234,7 @@ export default function App() {
           </div>
 
           {/* Compact Bottom Action Bar: High-Res Download & Views */}
-          <div className="w-full max-w-[360px] lg:max-w-[420px]">
+          <div className="w-full max-w-[360px] lg:max-w-[420px] pt-1">
             <ExportControls
               canvasRef={canvasRef}
               showGridIndicator={showGridIndicator}
@@ -241,10 +243,10 @@ export default function App() {
           </div>
         </div>
 
-        {/* LEFT COLUMN (DESKTOP) / BOTTOM CONTROL DECK (MOBILE) */}
-        <div className="lg:col-span-7 xl:col-span-7 space-y-2">
+        {/* BOTTOM CONTROL DECK (MOBILE: Scrollable independent pane / DESKTOP: Left column) */}
+        <div className="flex-1 overflow-y-auto lg:overflow-visible lg:col-span-7 xl:col-span-7 space-y-2 overscroll-contain pr-0.5">
           {/* Segmented Tabs Navigation with Luxury Dividers */}
-          <div className="flex items-center p-1 rounded-2xl bg-slate-900/90 border border-slate-800 overflow-x-auto select-none shadow-md">
+          <div className="flex items-center p-1 rounded-2xl bg-slate-900/90 border border-slate-800 overflow-x-auto select-none shadow-md sticky top-0 z-20 backdrop-blur-md">
             {tabs.map((tab, index) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -267,8 +269,8 @@ export default function App() {
             })}
           </div>
 
-          {/* Control Deck Body (Clean, Ends strictly at last box) */}
-          <div className="p-3 sm:p-4 rounded-3xl bg-slate-900/75 border border-slate-800/80 backdrop-blur-xl shadow-xl">
+          {/* Control Deck Body (Ends strictly at last box with ZERO dead space) */}
+          <div className="p-3 sm:p-4 rounded-3xl bg-slate-900/75 border border-slate-800/80 backdrop-blur-xl shadow-xl mb-3">
             {activeTab === 'fields' && (
               <FieldsEditor
                 cardData={cardData}
@@ -340,7 +342,7 @@ export default function App() {
         </div>
       </main>
 
-      {/* Fullscreen Lightbox Modal for Mobile and Desktop Inspection */}
+      {/* Fullscreen Lightbox Dedicated Page */}
       <FullscreenPreviewModal
         isOpen={isFullscreenPreviewOpen}
         onClose={() => setIsFullscreenPreviewOpen(false)}
