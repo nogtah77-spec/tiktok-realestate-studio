@@ -194,8 +194,8 @@ export default function App() {
             </button>
           </div>
 
-          {/* Stage Bay: Flanked by Right and Left Wings */}
-          <div className="w-full flex items-center justify-center gap-2 sm:gap-3">
+          {/* Stage Bay: Flanked by Right and Left Wings with refined 2mm spacing (gap-3.5 sm:gap-4) */}
+          <div className="w-full flex items-center justify-center gap-3.5 sm:gap-4">
             {/* Right Wing: الجريد والشعار */}
             {sideWings.rightWing}
 
