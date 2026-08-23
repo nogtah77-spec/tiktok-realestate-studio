@@ -1,179 +1,143 @@
-export const BUILTIN_FONTS = [
-  { id: 'Lalezar', name: 'لاله زار (عريض)', fontClass: "'Lalezar', cursive, sans-serif" },
-  { id: 'Aref Ruqaa', name: 'عارف رقعة (ديواني)', fontClass: "'Aref Ruqaa', serif" },
-  { id: 'Noto Kufi Arabic', name: 'نوتو كوفي (معماري)', fontClass: "'Noto Kufi Arabic', sans-serif" },
-  { id: 'El Messiri', name: 'المسيري (فني)', fontClass: "'El Messiri', sans-serif" },
-  { id: 'Amiri', name: 'أميري (رسمي)', fontClass: "'Amiri', serif" },
-  { id: 'Changa', name: 'تشانجا (مضلع)', fontClass: "'Changa', sans-serif" },
-  { id: 'Alexandria', name: 'الإسكندرية (مودرن)', fontClass: "'Alexandria', sans-serif" },
-  { id: 'Cairo', name: 'كايرو (متزن)', fontClass: "'Cairo', sans-serif" },
-  { id: 'Plus Jakarta Sans', name: 'Jakarta (إنجليزي)', fontClass: "'Plus Jakarta Sans', sans-serif" }
-];
-
+// Real Estate Theme Definitions with Exact Color Mapping
 export const LUXURY_THEMES = [
   {
     id: 'sale-gold',
-    category: 'sale',
-    categoryLabel: '👑 للبيع',
-    name: 'الذهب والشامبين الفندقي',
+    name: 'شامبين وذهب ملكي',
+    categoryLabel: 'للبيع (VIP)',
     borderColor: '#d4af37',
     borderGlow: 'rgba(212, 175, 55, 0.45)',
-    dividerColor: 'rgba(212, 175, 55, 0.55)',
-    diamondColor: '#fde047',
-    heroUnitColor: '#d4af37',
+    glassBg: 'rgba(20, 16, 10, 0.62)',
+    accent: '#ffd700',
+    heroUnitColor: '#f6d365',
+    pillBg: 'linear-gradient(135deg, rgba(212, 175, 55, 0.28), rgba(0, 0, 0, 0.75))',
+    pillBorder: 'rgba(212, 175, 55, 0.5)',
+    pillTextColor: '#fff7d6',
+    diamondColor: '#ffd700',
+    dividerColor: 'rgba(212, 175, 55, 0.4)',
     shimmerClass: 'text-shimmer-gold',
-    pillBg: 'linear-gradient(135deg, rgba(212, 175, 55, 0.88) 0%, rgba(160, 120, 25, 0.96) 100%)',
-    pillBorder: 'rgba(255, 235, 150, 0.65)',
-    pillTextColor: '#ffffff',
-    glassBg: 'rgba(20, 16, 10, 0.55)',
-    accent: '#d4af37'
+    glossyGradient: 'linear-gradient(135deg, #ffffff 0%, #ffd700 35%, #ffffff 50%, #d4af37 75%, #aa771c 100%)',
+    matteColor: '#fffdf5'
   },
   {
     id: 'rent-navy',
-    category: 'rent',
-    categoryLabel: '🔑 للإيجار',
-    name: 'الكحلي الملكي والبلاتين',
-    borderColor: '#94a3b8',
-    borderGlow: 'rgba(148, 163, 184, 0.5)',
-    dividerColor: 'rgba(148, 163, 184, 0.5)',
-    diamondColor: '#e2e8f0',
-    heroUnitColor: '#94a3b8',
+    name: 'كحلي وبلاتينيوم',
+    categoryLabel: 'للإيجار',
+    borderColor: '#93c5fd',
+    borderGlow: 'rgba(59, 130, 246, 0.35)',
+    glassBg: 'rgba(10, 18, 32, 0.65)',
+    accent: '#60a5fa',
+    heroUnitColor: '#93c5fd',
+    pillBg: 'linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(10, 18, 32, 0.8))',
+    pillBorder: 'rgba(147, 197, 253, 0.45)',
+    pillTextColor: '#eff6ff',
+    diamondColor: '#60a5fa',
+    dividerColor: 'rgba(147, 197, 253, 0.35)',
     shimmerClass: 'text-shimmer-chrome',
-    pillBg: 'linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%)',
-    pillBorder: 'rgba(148, 163, 184, 0.6)',
-    pillTextColor: '#ffffff',
-    glassBg: 'rgba(15, 23, 42, 0.65)',
-    accent: '#94a3b8'
+    glossyGradient: 'linear-gradient(135deg, #ffffff 0%, #93c5fd 35%, #ffffff 50%, #60a5fa 75%, #2563eb 100%)',
+    matteColor: '#f8fafc'
   },
   {
     id: 'furnished-bronze',
-    category: 'furnished',
-    categoryLabel: '🛋️ مفروش',
-    name: 'الجرافيت والبرونز الدافئ',
-    borderColor: '#c28854',
-    borderGlow: 'rgba(194, 136, 84, 0.5)',
-    dividerColor: 'rgba(194, 136, 84, 0.55)',
-    diamondColor: '#fed7aa',
-    heroUnitColor: '#c28854',
+    name: 'برونز وجرافيت',
+    categoryLabel: 'مفروش فاخر',
+    borderColor: '#ca8a04',
+    borderGlow: 'rgba(202, 138, 4, 0.35)',
+    glassBg: 'rgba(24, 18, 12, 0.65)',
+    accent: '#eab308',
+    heroUnitColor: '#facc15',
+    pillBg: 'linear-gradient(135deg, rgba(202, 138, 4, 0.25), rgba(24, 18, 12, 0.8))',
+    pillBorder: 'rgba(234, 179, 8, 0.45)',
+    pillTextColor: '#fefce8',
+    diamondColor: '#eab308',
+    dividerColor: 'rgba(202, 138, 4, 0.35)',
     shimmerClass: 'text-shimmer-bronze',
-    pillBg: 'linear-gradient(135deg, rgba(67, 48, 38, 0.92) 0%, rgba(45, 30, 22, 0.98) 100%)',
-    pillBorder: 'rgba(194, 136, 84, 0.6)',
-    pillTextColor: '#ffffff',
-    glassBg: 'rgba(30, 24, 20, 0.6)',
-    accent: '#c28854'
+    glossyGradient: 'linear-gradient(135deg, #ffffff 0%, #facc15 35%, #ffffff 50%, #ca8a04 75%, #854d0e 100%)',
+    matteColor: '#fefce8'
   },
   {
     id: 'commercial-cyan',
-    category: 'commercial',
-    categoryLabel: '🏢 تجاري وإداري',
-    name: 'الأزرق والسماوي المعماري',
+    name: 'سماوي وأزرق معماري',
+    categoryLabel: 'تجاري وإداري',
     borderColor: '#38bdf8',
-    borderGlow: 'rgba(56, 189, 248, 0.5)',
-    dividerColor: 'rgba(56, 189, 248, 0.55)',
-    diamondColor: '#bae6fd',
-    heroUnitColor: '#38bdf8',
-    shimmerClass: 'text-shimmer-chrome',
-    pillBg: 'linear-gradient(135deg, rgba(3, 105, 161, 0.9) 0%, rgba(12, 74, 110, 0.98) 100%)',
-    pillBorder: 'rgba(125, 211, 252, 0.6)',
-    pillTextColor: '#ffffff',
-    glassBg: 'rgba(8, 28, 44, 0.65)',
-    accent: '#38bdf8'
+    borderGlow: 'rgba(56, 189, 248, 0.4)',
+    glassBg: 'rgba(8, 24, 38, 0.65)',
+    accent: '#38bdf8',
+    heroUnitColor: '#7dd3fc',
+    pillBg: 'linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(8, 24, 38, 0.8))',
+    pillBorder: 'rgba(56, 189, 248, 0.45)',
+    pillTextColor: '#f0f9ff',
+    diamondColor: '#38bdf8',
+    dividerColor: 'rgba(56, 189, 248, 0.35)',
+    shimmerClass: 'text-shimmer-teal',
+    glossyGradient: 'linear-gradient(135deg, #ffffff 0%, #38bdf8 35%, #ffffff 50%, #0284c7 75%, #0369a1 100%)',
+    matteColor: '#f0f9ff'
   },
   {
     id: 'medical-emerald',
-    category: 'medical',
-    categoryLabel: '🏥 طبي وعيادات',
-    name: 'الزمردي والتيفاني الطبي',
+    name: 'زمرد وتيفاني طبي',
+    categoryLabel: 'طبي وعيادات',
     borderColor: '#10b981',
-    borderGlow: 'rgba(16, 185, 129, 0.5)',
-    dividerColor: 'rgba(16, 185, 129, 0.55)',
-    diamondColor: '#6ee7b7',
-    heroUnitColor: '#10b981',
+    borderGlow: 'rgba(16, 185, 129, 0.35)',
+    glassBg: 'rgba(8, 28, 20, 0.65)',
+    accent: '#34d399',
+    heroUnitColor: '#6ee7b7',
+    pillBg: 'linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(8, 28, 20, 0.8))',
+    pillBorder: 'rgba(52, 211, 153, 0.45)',
+    pillTextColor: '#ecfdf5',
+    diamondColor: '#34d399',
+    dividerColor: 'rgba(16, 185, 129, 0.35)',
     shimmerClass: 'text-shimmer-teal',
-    pillBg: 'linear-gradient(135deg, rgba(6, 95, 70, 0.92) 0%, rgba(4, 120, 87, 0.98) 100%)',
-    pillBorder: 'rgba(110, 231, 183, 0.6)',
-    pillTextColor: '#ffffff',
-    glassBg: 'rgba(6, 30, 24, 0.65)',
-    accent: '#10b981'
+    glossyGradient: 'linear-gradient(135deg, #ffffff 0%, #34d399 35%, #ffffff 50%, #059669 75%, #065f46 100%)',
+    matteColor: '#ecfdf5'
   },
   {
     id: 'auction-ruby',
-    category: 'auction',
-    categoryLabel: '⚡ مزاد وفرص',
-    name: 'العنبر الملكي والياقوت',
+    name: 'ياقوت ملكي',
+    categoryLabel: 'مزاد علني / فرصة',
     borderColor: '#f43f5e',
-    borderGlow: 'rgba(244, 63, 94, 0.55)',
-    dividerColor: 'rgba(244, 63, 94, 0.55)',
-    diamondColor: '#fecdd3',
-    heroUnitColor: '#fb7185',
+    borderGlow: 'rgba(244, 63, 94, 0.4)',
+    glassBg: 'rgba(30, 10, 16, 0.65)',
+    accent: '#fb7185',
+    heroUnitColor: '#fda4af',
+    pillBg: 'linear-gradient(135deg, rgba(244, 63, 94, 0.25), rgba(30, 10, 16, 0.8))',
+    pillBorder: 'rgba(251, 113, 133, 0.45)',
+    pillTextColor: '#fff1f2',
+    diamondColor: '#fb7185',
+    dividerColor: 'rgba(244, 63, 94, 0.35)',
     shimmerClass: 'text-shimmer-ruby',
-    pillBg: 'linear-gradient(135deg, rgba(190, 18, 60, 0.92) 0%, rgba(136, 19, 55, 0.98) 100%)',
-    pillBorder: 'rgba(251, 113, 133, 0.6)',
-    pillTextColor: '#ffffff',
-    glassBg: 'rgba(38, 10, 18, 0.65)',
-    accent: '#f43f5e'
+    glossyGradient: 'linear-gradient(135deg, #ffffff 0%, #fb7185 35%, #ffffff 50%, #e11d48 75%, #9f1239 100%)',
+    matteColor: '#fff1f2'
   }
 ];
 
 export const DIVIDER_STYLES = [
-  { id: 'tag', name: 'الشارة المدمجة (Tag Divider)', desc: 'خط متلاشي يتوسطه كود أو علامة • VIP •' },
-  { id: 'fading', name: 'الفاصل الحريري (Fading Hairline)', desc: 'خط فائق النحافة يتلاشى عند الأطراف' },
-  { id: 'double', name: 'الفاصل المزدوج (Double Rule)', desc: 'خطان متوازيان فائقا النحافة' },
-  { id: 'beam', name: 'الحزمة الضوئية (Light Beam)', desc: 'توهج ضوئي خافت في المنتصف' },
-  { id: 'micro-sparkle', name: 'نجمة الميكرو (Micro Sparkle)', desc: 'نجمة بريق كريستالية دقيقة' },
-  { id: 'dotted', name: 'النقاط الناعمة (Dotted Axis)', desc: 'نقاط معدنية خافتة بين الأقسام' },
-  { id: 'none', name: 'بدون فاصل', desc: 'مظهر خالص يعتمد على المسافات' }
+  { id: 'tag', name: 'شارة مدمجة (VIP)' },
+  { id: 'fading', name: 'تلاشي تدريجي' },
+  { id: 'double', name: 'خط معماري مزدوج' },
+  { id: 'beam', name: 'شعاع نيون' },
+  { id: 'micro-sparkle', name: 'نجمة ماسية' },
+  { id: 'dotted', name: 'نقاط كلاسيكية' },
+  { id: 'none', name: 'بدون فواصل' }
+];
+
+export const BUILTIN_FONTS = [
+  { id: 'Lalezar', name: 'لاله زار (عريض)', fontClass: "'Lalezar', cursive", type: 'builtin' },
+  { id: 'Aref Ruqaa', name: 'عارف رقعة (ديواني)', fontClass: "'Aref Ruqaa', serif", type: 'builtin' },
+  { id: 'Noto Kufi Arabic', name: 'نوتو كوفي (معماري)', fontClass: "'Noto Kufi Arabic', sans-serif", type: 'builtin' },
+  { id: 'El Messiri', name: 'المسيري (فني)', fontClass: "'El Messiri', sans-serif", type: 'builtin' },
+  { id: 'Amiri', name: 'أميري (رسمي)', fontClass: "'Amiri', serif", type: 'builtin' },
+  { id: 'Changa', name: 'تشانجا (مضلع)', fontClass: "'Changa', sans-serif", type: 'builtin' },
+  { id: 'Alexandria', name: 'الإسكندرية (مودرن)', fontClass: "'Alexandria', sans-serif", type: 'builtin' },
+  { id: 'Cairo', name: 'كايرو (متزن)', fontClass: "'Cairo', sans-serif", type: 'builtin' },
+  { id: 'Plus Jakarta Sans', name: 'Jakarta (إنجليزي)', fontClass: "'Plus Jakarta Sans', sans-serif", type: 'builtin' }
 ];
 
 export const QUICK_TEXT_PRESETS = [
-  { title: 'شقة للبيع', subtitle: 'المساحة', heroNumber: '185', heroUnit: 'م²', bottomText: 'حي النرجس' },
-  { title: 'فيلا مودرن', subtitle: 'المساحة', heroNumber: '420', heroUnit: 'م²', bottomText: 'شمال الرياض - حطين' },
-  { title: 'بنتهاوس للإيجار', subtitle: 'المساحة', heroNumber: '260', heroUnit: 'م²', bottomText: 'إطلالة بانورامية' },
-  { title: 'شقة مفروشة VIP', subtitle: 'المساحة', heroNumber: '150', heroUnit: 'م²', bottomText: '3 غرف نوم' },
-  { title: 'مكتب إداري', subtitle: 'المساحة', heroNumber: '310', heroUnit: 'م²', bottomText: 'طريق الملك فهد' },
-  { title: 'فرصة مزاد', subtitle: 'السعر يبدأ من', heroNumber: '3.5', heroUnit: 'مليون ر.س', bottomText: 'موقع استثماري حصري' }
-];
-
-export const OVERLAY_COLOR_PRESETS = [
-  { id: 'black', name: 'أسود كربوني', color: '#000000', defaultOpacity: 35 },
-  { id: 'espresso', name: 'بني إسبريسو', color: '#2b1b12', defaultOpacity: 40 },
-  { id: 'dark-gray', name: 'رمادي جرافيت', color: '#1e242d', defaultOpacity: 40 },
-  { id: 'light-gray', name: 'رمادي فضي', color: '#94a3b8', defaultOpacity: 25 },
-  { id: 'white', name: 'أبيض حليبي', color: '#ffffff', defaultOpacity: 20 },
-  { id: 'navy', name: 'كحلي ليلي', color: '#09152b', defaultOpacity: 45 },
-  { id: 'emerald', name: 'زمردي داكن', color: '#062119', defaultOpacity: 40 }
-];
-
-export const IMAGE_FILTER_PRESETS = [
-  { id: 'none', name: 'طبيعي', css: 'none' },
-  { id: 'monochrome', name: 'أبيض وأسود (B&W)', css: 'grayscale(100%) contrast(115%) brightness(95%)' },
-  { id: 'warm', name: 'سينمائي دافئ', css: 'sepia(30%) saturate(130%) brightness(102%) contrast(105%)' },
-  { id: 'cool', name: 'معماري بارد', css: 'hue-rotate(185deg) saturate(90%) contrast(108%)' },
-  { id: 'vivid', name: 'ألوان حيوية', css: 'saturate(145%) contrast(110%) brightness(103%)' },
-  { id: 'moody', name: 'درامي داكن', css: 'contrast(125%) brightness(85%) saturate(110%)' }
-];
-
-export const SAMPLE_IMAGES = [
-  {
-    id: 'sample1',
-    name: 'شقة فاخرة بإضاءة مودرن',
-    url: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80'
-  },
-  {
-    id: 'sample2',
-    name: 'غرفة نوم فندقية',
-    url: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1200&q=80'
-  },
-  {
-    id: 'sample3',
-    name: 'صالة معيشة VIP',
-    url: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80'
-  },
-  {
-    id: 'sample4',
-    name: 'فيلا مودرن بمسبح',
-    url: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1200&q=80'
-  }
+  { title: 'شقة للبيع', heroNumber: '185', heroUnit: 'م²', bottomText: 'حي النرجس', subtitle: 'المساحة' },
+  { title: 'فيلا مودرن', heroNumber: '375', heroUnit: 'م²', bottomText: 'حي الياسمين', subtitle: 'المساحة الإجمالية' },
+  { title: 'دور فاخر للإيجار', heroNumber: '4', heroUnit: 'غرف', bottomText: 'حي الملقا', subtitle: 'عدد الغرف' },
+  { title: 'مكتب تجاري', heroNumber: '120', heroUnit: 'م²', bottomText: 'طريق الملك فهد', subtitle: 'المساحة الصافية' },
+  { title: 'مجمع عيادات', heroNumber: '6', heroUnit: 'أدوار', bottomText: 'شارع التحلية', subtitle: 'الترخيص الطبي' }
 ];
 
 export const DEFAULT_GLASS_CARD_DATA = {
@@ -205,15 +169,17 @@ export const DEFAULT_GLASS_CARD_DATA = {
   bottomPillStyle: 'pill',
 
   showDividers: true,
-  dividerStyle: 'tag', // Tag divider as requested
+  dividerStyle: 'tag',
   dividerTagText: 'VIP',
   dividerOpacity: 75,
   dividerCustomColor: '',
 
   boxWidth: 84,
+  boxPaddingY: 20,
   boxBlur: 20,
   boxOpacity: 60,
   verticalPosition: 50,
+  textFinish: 'glossy',
 
   borderWidth: 1.5,
   borderRadius: 32,
@@ -224,3 +190,26 @@ export const DEFAULT_GLASS_CARD_DATA = {
   customGlowColor: '#d4af37',
   borderStyle: 'solid'
 };
+
+export const SAMPLE_IMAGES = [
+  { id: 'luxury-villa', name: 'فيلا فاخرة', url: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1080&q=80' },
+  { id: 'modern-apartment', name: 'شقة عصرية', url: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1080&q=80' },
+  { id: 'penthouse-night', name: 'بنتهاوس ليلي', url: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1080&q=80' },
+  { id: 'commercial-tower', name: 'برج تجاري', url: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1080&q=80' }
+];
+
+export const OVERLAY_COLOR_PRESETS = [
+  { id: 'dark-navy', name: 'كحلي داكن', color: '#090d16', defaultOpacity: 45 },
+  { id: 'rich-black', name: 'أسود فحمي', color: '#050505', defaultOpacity: 40 },
+  { id: 'champagne-gold', name: 'ذهبي خافت', color: '#2c220f', defaultOpacity: 35 },
+  { id: 'emerald-night', name: 'زمردي ليلي', color: '#091612', defaultOpacity: 40 }
+];
+
+export const IMAGE_FILTER_PRESETS = [
+  { id: 'none', name: 'طبيعي' },
+  { id: 'warm', name: 'دافئ وذهبي' },
+  { id: 'cool', name: 'بارد وعصري' },
+  { id: 'vivid', name: 'حيوي وعميق' },
+  { id: 'moody', name: 'سينمائي غامق' },
+  { id: 'monochrome', name: 'أبيض وأسود' }
+];

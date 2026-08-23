@@ -82,9 +82,11 @@ const CanvasPreview = forwardRef(({
     dividerCustomColor = '',
 
     boxWidth = 84,
+    boxPaddingY = 20,
     boxBlur = 20,
     boxOpacity = 60,
     verticalPosition = 50,
+    textFinish = 'glossy',
 
     borderWidth = 1.5,
     borderRadius = 32,
@@ -96,10 +98,65 @@ const CanvasPreview = forwardRef(({
     borderStyle = 'solid'
   } = cardData;
 
+  const isTextGlossy = textFinish === 'glossy';
+
   // Compute final border color & glow
   const effectiveBorderColor = borderColorMode === 'custom' && customBorderColor ? customBorderColor : activeTheme.borderColor;
   const effectiveGlowColor = glowColorMode === 'custom' && customGlowColor ? customGlowColor : (activeTheme.borderGlow || activeTheme.borderColor);
   const effectiveDividerColor = dividerCustomColor || activeTheme.dividerColor;
+
+  // Typography Finish Style Generators
+  const getTitleStyle = () => {
+    if (titleShimmer) {
+      return {
+        fontFamily: titleFont ? `'${titleFont}', sans-serif` : 'inherit',
+        fontSize: `${titleSize}px`
+      };
+    }
+    if (isTextGlossy) {
+      return {
+        fontFamily: titleFont ? `'${titleFont}', sans-serif` : 'inherit',
+        fontSize: `${titleSize}px`,
+        backgroundImage: activeTheme.glossyGradient,
+        WebkitBackgroundClip: 'text',
+        WebkitTextFillColor: 'transparent',
+        filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 8px rgba(255, 255, 255, 0.3))'
+      };
+    }
+    // Matte Typography
+    return {
+      fontFamily: titleFont ? `'${titleFont}', sans-serif` : 'inherit',
+      fontSize: `${titleSize}px`,
+      color: titleColor || activeTheme.matteColor,
+      filter: 'drop-shadow(0 3px 6px rgba(0, 0, 0, 0.95))'
+    };
+  };
+
+  const getHeroNumberStyle = () => {
+    if (heroShimmer) {
+      return {
+        fontFamily: heroFont ? `'${heroFont}', sans-serif` : 'inherit',
+        fontSize: `${heroNumberSize}px`
+      };
+    }
+    if (isTextGlossy) {
+      return {
+        fontFamily: heroFont ? `'${heroFont}', sans-serif` : 'inherit',
+        fontSize: `${heroNumberSize}px`,
+        backgroundImage: activeTheme.glossyGradient,
+        WebkitBackgroundClip: 'text',
+        WebkitTextFillColor: 'transparent',
+        filter: 'drop-shadow(0 6px 18px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 12px rgba(255, 255, 255, 0.4))'
+      };
+    }
+    // Matte Typography
+    return {
+      fontFamily: heroFont ? `'${heroFont}', sans-serif` : 'inherit',
+      fontSize: `${heroNumberSize}px`,
+      color: heroNumberColor || activeTheme.matteColor,
+      filter: 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.95))'
+    };
+  };
 
   // Logo position
   const getLogoPositionClass = () => {
@@ -310,9 +367,9 @@ const CanvasPreview = forwardRef(({
               className="relative flex flex-col items-center justify-center text-center transition-all duration-150"
               style={{
                 width: `${boxWidth}%`,
-                padding: '20px 16px',
+                padding: `${boxPaddingY || 20}px 16px`,
                 borderRadius: `${borderRadius}px`,
-                backgroundColor: activeTheme.glassBg.replace('0.55', (boxOpacity / 100).toString()).replace('0.65', (boxOpacity / 100).toString()).replace('0.6', (boxOpacity / 100).toString()),
+                backgroundColor: activeTheme.glassBg.replace('0.55', (boxOpacity / 100).toString()).replace('0.65', (boxOpacity / 100).toString()).replace('0.62', (boxOpacity / 100).toString()).replace('0.6', (boxOpacity / 100).toString()),
                 backdropFilter: boxBlur > 0 ? `blur(${boxBlur}px)` : 'none',
                 WebkitBackdropFilter: boxBlur > 0 ? `blur(${boxBlur}px)` : 'none',
                 border: borderWidth > 0 ? `${borderWidth}px ${borderStyle === 'double' ? 'double' : 'solid'} ${effectiveBorderColor}` : 'none',
@@ -336,12 +393,7 @@ const CanvasPreview = forwardRef(({
               <div className="w-full px-1">
                 <h2
                   className={`font-extrabold tracking-tight m-0 p-0 leading-tight ${titleShimmer ? activeTheme.shimmerClass : ''}`}
-                  style={{
-                    fontFamily: titleFont ? `'${titleFont}', sans-serif` : 'inherit',
-                    fontSize: `${titleSize}px`,
-                    color: titleShimmer ? 'transparent' : titleColor,
-                    filter: titleShimmer ? 'none' : 'drop-shadow(0 4px 10px rgba(0, 0, 0, 0.8))'
-                  }}
+                  style={getTitleStyle()}
                 >
                   {title}
                 </h2>
@@ -375,7 +427,7 @@ const CanvasPreview = forwardRef(({
                         fontFamily: heroFont ? `'${heroFont}', sans-serif` : 'inherit',
                         fontSize: `${heroUnitSize}px`,
                         color: heroUnitColor || activeTheme.heroUnitColor,
-                        filter: 'drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7))'
+                        filter: isTextGlossy ? 'drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7))' : 'none'
                       }}
                     >
                       {heroUnit}
@@ -384,12 +436,7 @@ const CanvasPreview = forwardRef(({
 
                   <span
                     className={`font-black tracking-tighter select-none leading-none ${heroShimmer ? activeTheme.shimmerClass : ''}`}
-                    style={{
-                      fontFamily: heroFont ? `'${heroFont}', sans-serif` : 'inherit',
-                      fontSize: `${heroNumberSize}px`,
-                      color: heroShimmer ? 'transparent' : heroNumberColor,
-                      filter: heroShimmer ? 'none' : 'drop-shadow(0 6px 16px rgba(0, 0, 0, 0.85))'
-                    }}
+                    style={getHeroNumberStyle()}
                   >
                     {heroNumber}
                   </span>
@@ -419,7 +466,7 @@ const CanvasPreview = forwardRef(({
                           fontFamily: bottomFont ? `'${bottomFont}', sans-serif` : 'inherit',
                           fontSize: `${bottomSize}px`,
                           color: bottomTextColor || activeTheme.pillTextColor,
-                          textShadow: '0 2px 5px rgba(0, 0, 0, 0.6)'
+                          textShadow: isTextGlossy ? '0 2px 5px rgba(0, 0, 0, 0.6)' : 'none'
                         }}
                       >
                         {bottomText}

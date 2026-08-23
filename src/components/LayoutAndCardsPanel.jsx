@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, Palette, Sliders, Layers, Frame } from 'lucide-react';
+import { Sparkles, Palette, Sliders, Layers, Frame, Type, Maximize2 } from 'lucide-react';
 import { LUXURY_THEMES, DIVIDER_STYLES } from '../utils/constants';
 
 export default function LayoutAndCardsPanel({
@@ -17,7 +17,7 @@ export default function LayoutAndCardsPanel({
   const activeTheme = LUXURY_THEMES.find(t => t.id === themeId) || LUXURY_THEMES[0];
 
   return (
-    <div className="space-y-4 text-xs">
+    <div className="space-y-3.5 text-xs">
       {/* 1. Real Estate Luxury Themes */}
       <div className="p-3.5 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-2.5">
         <label className="font-bold text-slate-100 flex items-center gap-1.5">
@@ -52,94 +52,176 @@ export default function LayoutAndCardsPanel({
         </div>
       </div>
 
-      {/* 2. Finish Mode */}
-      <div className="p-3.5 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-2.5">
-        <label className="font-bold text-slate-200 flex items-center gap-1.5">
-          <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-          <span>التشطيب (Matte vs Glossy)</span>
-        </label>
-        <div className="grid grid-cols-2 gap-2">
-          <button
-            onClick={() => setFinish('matte')}
-            className={`p-2.5 rounded-xl border text-center transition-all cursor-pointer ${
-              finish === 'matte'
-                ? 'border-amber-400 bg-amber-500/10 text-white ring-1 ring-amber-400/40 font-bold'
-                : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            <div className="text-xs font-bold">✨ مطفي (Matte)</div>
-          </button>
+      {/* 2. Glass Finish & Typography Finish (Matte vs Glossy) */}
+      <div className="p-3.5 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3">
+        {/* Glass Finish Mode */}
+        <div>
+          <div className="flex items-center justify-between mb-1.5">
+            <span className="font-bold text-slate-200 flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+              <span>تشطيب الزجاج والبوكس:</span>
+            </span>
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              onClick={() => setFinish('matte')}
+              className={`p-2 rounded-xl border text-center transition-all cursor-pointer ${
+                finish === 'matte'
+                  ? 'border-amber-400 bg-amber-500/15 text-amber-300 font-bold ring-1 ring-amber-400/40'
+                  : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              <div className="text-xs font-bold">✨ مطفي (Matte)</div>
+            </button>
 
-          <button
-            onClick={() => setFinish('glossy')}
-            className={`p-2.5 rounded-xl border text-center transition-all cursor-pointer ${
-              finish === 'glossy'
-                ? 'border-amber-400 bg-amber-500/10 text-white ring-1 ring-amber-400/40 font-bold'
-                : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            <div className="text-xs font-bold">💎 بلمعة (Glossy)</div>
-          </button>
+            <button
+              onClick={() => setFinish('glossy')}
+              className={`p-2 rounded-xl border text-center transition-all cursor-pointer ${
+                finish === 'glossy'
+                  ? 'border-amber-400 bg-amber-500/15 text-amber-300 font-bold ring-1 ring-amber-400/40'
+                  : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              <div className="text-xs font-bold">💎 بلمعة (Glossy)</div>
+            </button>
+          </div>
+        </div>
+
+        {/* Typography Finish Mode */}
+        <div className="pt-2 border-t border-slate-800">
+          <div className="flex items-center justify-between mb-1.5">
+            <span className="font-bold text-slate-200 flex items-center gap-1.5">
+              <Type className="w-3.5 h-3.5 text-amber-400" />
+              <span>تشطيب الخطوط والكتابة:</span>
+            </span>
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              onClick={() => updateCardData('textFinish', 'matte')}
+              className={`p-2 rounded-xl border text-center transition-all cursor-pointer ${
+                cardData.textFinish === 'matte'
+                  ? 'border-amber-400 bg-amber-500/15 text-amber-300 font-bold ring-1 ring-amber-400/40'
+                  : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              <div className="text-xs font-bold">✨ كتابة مطفية (Matte)</div>
+            </button>
+
+            <button
+              onClick={() => updateCardData('textFinish', 'glossy')}
+              className={`p-2 rounded-xl border text-center transition-all cursor-pointer ${
+                (cardData.textFinish || 'glossy') === 'glossy'
+                  ? 'border-amber-400 bg-amber-500/15 text-amber-300 font-bold ring-1 ring-amber-400/40'
+                  : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              <div className="text-xs font-bold">💎 كتابة ميتاليك بلمعة (Glossy)</div>
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* 3. Glass & Blur */}
+      {/* 3. Box Dimensions & Proportions (Width & Height) */}
+      <div className="p-3.5 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3">
+        <label className="font-bold text-slate-200 flex items-center gap-1.5">
+          <Maximize2 className="w-3.5 h-3.5 text-amber-400" />
+          <span>أبعاد البوكس (العرض والارتفاع)</span>
+        </label>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {/* Box Width */}
+          <div>
+            <div className="flex justify-between text-slate-400 mb-1 text-[11px]">
+              <span>عرض البوكس</span>
+              <span className="text-amber-400 font-mono">{cardData.boxWidth ?? 84}%</span>
+            </div>
+            <input
+              type="range"
+              min="65"
+              max="95"
+              value={cardData.boxWidth ?? 84}
+              onChange={(e) => updateCardData('boxWidth', Number(e.target.value))}
+              className="w-full accent-amber-500 cursor-pointer"
+            />
+          </div>
+
+          {/* Box Height / Padding */}
+          <div>
+            <div className="flex justify-between text-slate-400 mb-1 text-[11px]">
+              <span>ارتفاع وتمدد البوكس</span>
+              <span className="text-amber-400 font-mono">{cardData.boxPaddingY ?? 20}px</span>
+            </div>
+            <input
+              type="range"
+              min="10"
+              max="42"
+              value={cardData.boxPaddingY ?? 20}
+              onChange={(e) => updateCardData('boxPaddingY', Number(e.target.value))}
+              className="w-full accent-amber-500 cursor-pointer"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* 4. Glass Transparency & Blur */}
       <div className="p-3.5 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3">
         <label className="font-bold text-slate-200 flex items-center gap-1.5">
           <Layers className="w-3.5 h-3.5 text-amber-400" />
-          <span>الزجاج، البلور، والموضع</span>
+          <span>الشفافية، البلور، والموضع</span>
         </label>
 
-        {/* Glass Opacity */}
-        <div>
-          <div className="flex justify-between text-slate-400 mb-1">
-            <span>شفافية الزجاج</span>
-            <span className="text-amber-400 font-mono">{cardData.boxOpacity ?? 60}%</span>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+          {/* Glass Opacity */}
+          <div>
+            <div className="flex justify-between text-slate-400 mb-1 text-[11px]">
+              <span>الشفافية</span>
+              <span className="text-amber-400 font-mono">{cardData.boxOpacity ?? 60}%</span>
+            </div>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value={cardData.boxOpacity ?? 60}
+              onChange={(e) => updateCardData('boxOpacity', Number(e.target.value))}
+              className="w-full accent-amber-500 cursor-pointer"
+            />
           </div>
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value={cardData.boxOpacity ?? 60}
-            onChange={(e) => updateCardData('boxOpacity', Number(e.target.value))}
-            className="w-full accent-amber-500 cursor-pointer"
-          />
-        </div>
 
-        {/* Glass Blur */}
-        <div>
-          <div className="flex justify-between text-slate-400 mb-1">
-            <span>تمويه بلور الزجاج</span>
-            <span className="text-amber-400 font-mono">{cardData.boxBlur ?? 20} px</span>
+          {/* Glass Blur */}
+          <div>
+            <div className="flex justify-between text-slate-400 mb-1 text-[11px]">
+              <span>بلور الزجاج</span>
+              <span className="text-amber-400 font-mono">{cardData.boxBlur ?? 20}px</span>
+            </div>
+            <input
+              type="range"
+              min="0"
+              max="45"
+              value={cardData.boxBlur ?? 20}
+              onChange={(e) => updateCardData('boxBlur', Number(e.target.value))}
+              className="w-full accent-amber-500 cursor-pointer"
+            />
           </div>
-          <input
-            type="range"
-            min="0"
-            max="45"
-            value={cardData.boxBlur ?? 20}
-            onChange={(e) => updateCardData('boxBlur', Number(e.target.value))}
-            className="w-full accent-amber-500 cursor-pointer"
-          />
-        </div>
 
-        {/* Vertical Position */}
-        <div>
-          <div className="flex justify-between text-slate-400 mb-1">
-            <span>الموضع الرأسي للبوكس</span>
-            <span className="text-amber-400 font-mono">{cardData.verticalPosition || 50}%</span>
+          {/* Vertical Position */}
+          <div>
+            <div className="flex justify-between text-slate-400 mb-1 text-[11px]">
+              <span>الموضع الرأسي</span>
+              <span className="text-amber-400 font-mono">{cardData.verticalPosition || 50}%</span>
+            </div>
+            <input
+              type="range"
+              min="25"
+              max="75"
+              value={cardData.verticalPosition || 50}
+              onChange={(e) => updateCardData('verticalPosition', Number(e.target.value))}
+              className="w-full accent-amber-500 cursor-pointer"
+            />
           </div>
-          <input
-            type="range"
-            min="25"
-            max="75"
-            value={cardData.verticalPosition || 50}
-            onChange={(e) => updateCardData('verticalPosition', Number(e.target.value))}
-            className="w-full accent-amber-500 cursor-pointer"
-          />
         </div>
       </div>
 
-      {/* 4. Border & Glow */}
+      {/* 5. Border & Glow */}
       <div className="p-3.5 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3">
         <label className="font-bold text-slate-200 flex items-center gap-1.5">
           <Frame className="w-3.5 h-3.5 text-amber-400" />
@@ -148,7 +230,7 @@ export default function LayoutAndCardsPanel({
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
           <div>
-            <div className="flex justify-between text-slate-400 mb-1">
+            <div className="flex justify-between text-slate-400 mb-1 text-[11px]">
               <span>سماكة الحد</span>
               <span className="text-amber-400 font-mono">{cardData.borderWidth ?? 1.5}px</span>
             </div>
@@ -164,7 +246,7 @@ export default function LayoutAndCardsPanel({
           </div>
 
           <div>
-            <div className="flex justify-between text-slate-400 mb-1">
+            <div className="flex justify-between text-slate-400 mb-1 text-[11px]">
               <span>انحناء الزوايا</span>
               <span className="text-amber-400 font-mono">{cardData.borderRadius ?? 32}px</span>
             </div>
@@ -179,7 +261,7 @@ export default function LayoutAndCardsPanel({
           </div>
 
           <div>
-            <div className="flex justify-between text-slate-400 mb-1">
+            <div className="flex justify-between text-slate-400 mb-1 text-[11px]">
               <span>شدة التوهج</span>
               <span className="text-amber-400 font-mono">{cardData.borderGlowIntensity ?? 75}%</span>
             </div>
@@ -224,7 +306,7 @@ export default function LayoutAndCardsPanel({
         </div>
       </div>
 
-      {/* 5. Architectural Dividers */}
+      {/* 6. Architectural Dividers */}
       <div className="p-3.5 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-2.5">
         <label className="font-bold text-slate-200 flex items-center gap-1.5">
           <Sliders className="w-3.5 h-3.5 text-amber-400" />
