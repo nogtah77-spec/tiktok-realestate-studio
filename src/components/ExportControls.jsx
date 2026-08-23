@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Download, Copy, Check, Sparkles, Share2, Eye, EyeOff, Smartphone } from 'lucide-react';
+import { Download, Copy, Check, Share2, Eye, EyeOff, Smartphone } from 'lucide-react';
 import { exportCoverImage, copyCoverImageToClipboard } from '../utils/exportEngine';
 
 export default function ExportControls({
   canvasRef,
-  showSafeZone,
-  setShowSafeZone,
+  showGridIndicator,
+  setShowGridIndicator,
   isPhoneMockup,
   setIsPhoneMockup,
   onOpenCopywriterModal
@@ -46,6 +46,7 @@ export default function ExportControls({
 
   return (
     <div className="p-4 lg:p-5 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-2xl backdrop-blur-xl space-y-3.5">
+      {/* Main Download & Copy Actions */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <button
           onClick={() => handleDownload('png')}
@@ -75,19 +76,22 @@ export default function ExportControls({
         </button>
       </div>
 
+      {/* Auxiliary Toggles */}
       <div className="flex items-center justify-between pt-2 border-t border-slate-800/80 text-xs flex-wrap gap-2">
+        {/* TikTok Grid Views Indicator Toggle */}
         <button
-          onClick={() => setShowSafeZone(!showSafeZone)}
+          onClick={() => setShowGridIndicator(!showGridIndicator)}
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border transition-all cursor-pointer ${
-            showSafeZone
+            showGridIndicator
               ? 'border-amber-400 bg-amber-500/15 text-amber-300 font-bold'
               : 'border-slate-800 bg-slate-950/60 text-slate-400 hover:text-slate-200'
           }`}
         >
-          {showSafeZone ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
-          <span>واجهة أزرار تيك توك ({showSafeZone ? 'مفعلة' : 'مخفية'})</span>
+          {showGridIndicator ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
+          <span>مؤشر مشاهدات تيك توك ▷ ({showGridIndicator ? 'ظاهر' : 'مخفي'})</span>
         </button>
 
+        {/* Phone Mockup Toggle */}
         <button
           onClick={() => setIsPhoneMockup(!isPhoneMockup)}
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border transition-all cursor-pointer ${
@@ -100,6 +104,7 @@ export default function ExportControls({
           <span>إطار الهاتف ({isPhoneMockup ? 'ظاهر' : 'مخفي'})</span>
         </button>
 
+        {/* Social Copywriter Trigger */}
         <button
           onClick={onOpenCopywriterModal}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-amber-400 hover:text-amber-300 hover:bg-amber-500/10 font-bold transition-all cursor-pointer mr-auto"

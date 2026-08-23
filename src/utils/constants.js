@@ -9,61 +9,62 @@ export const BUILTIN_FONTS = [
   { id: 'Outfit', name: 'Outfit (فاخر عالمي)', fontClass: "'Outfit', sans-serif", type: 'builtin' }
 ];
 
-export const PROPERTY_THEMES = [
+export const LUXURY_THEMES = [
   {
-    id: 'sale',
-    label: '🏷️ للبيع (كحلي ملكي وذهبي)',
-    badgeText: 'للـبـيـع',
-    primaryColor: '#0b192c',
-    accentColor: '#d4af37',
-    textColor: '#ffffff',
-    badgeBg: 'rgba(212, 175, 55, 0.15)',
-    badgeBorder: 'rgba(212, 175, 55, 0.4)',
-    badgeTextCol: '#fde047'
+    id: 'champagne-gold',
+    name: '👑 الشامبين والذهب الفندقي (Champagne Gold)',
+    borderColor: '#d4af37',
+    borderGlow: 'rgba(212, 175, 55, 0.4)',
+    dividerColor: 'rgba(212, 175, 55, 0.5)',
+    diamondColor: '#fde047',
+    heroUnitColor: '#d4af37',
+    pillBg: 'linear-gradient(135deg, rgba(212, 175, 55, 0.85) 0%, rgba(180, 140, 30, 0.95) 100%)',
+    pillBorder: 'rgba(255, 235, 150, 0.6)',
+    pillTextColor: '#ffffff',
+    glassBg: 'rgba(20, 16, 10, 0.55)',
+    accent: '#d4af37'
   },
   {
-    id: 'rent',
-    label: '🔑 للإيجار (جرافيت وفضي)',
-    badgeText: 'للإيـجـار',
-    primaryColor: '#181a20',
-    accentColor: '#94a3b8',
-    textColor: '#ffffff',
-    badgeBg: 'rgba(148, 163, 184, 0.15)',
-    badgeBorder: 'rgba(148, 163, 184, 0.4)',
-    badgeTextCol: '#e2e8f0'
+    id: 'tiffany-emerald',
+    name: '💎 التيفاني والزمردي العصري (Tiffany & Emerald)',
+    borderColor: '#2dd4bf',
+    borderGlow: 'rgba(45, 212, 191, 0.45)',
+    dividerColor: 'rgba(45, 212, 191, 0.5)',
+    diamondColor: '#5eead4',
+    heroUnitColor: '#2dd4bf',
+    pillBg: 'linear-gradient(135deg, rgba(13, 148, 136, 0.88) 0%, rgba(15, 118, 110, 0.95) 100%)',
+    pillBorder: 'rgba(94, 234, 212, 0.5)',
+    pillTextColor: '#ffffff',
+    glassBg: 'rgba(10, 25, 25, 0.55)',
+    accent: '#2dd4bf'
   },
   {
-    id: 'furnished',
-    label: '🛋️ مفروش فندقي (برونزي وإسبريسو)',
-    badgeText: 'مفروش فاخر',
-    primaryColor: '#251a14',
-    accentColor: '#c28854',
-    textColor: '#ffffff',
-    badgeBg: 'rgba(194, 136, 84, 0.18)',
-    badgeBorder: 'rgba(194, 136, 84, 0.45)',
-    badgeTextCol: '#fed7aa'
+    id: 'royal-navy',
+    name: '🏛️ الكحلي الليلي والبلاتين (Royal Navy & Platinum)',
+    borderColor: '#94a3b8',
+    borderGlow: 'rgba(148, 163, 184, 0.5)',
+    dividerColor: 'rgba(148, 163, 184, 0.45)',
+    diamondColor: '#e2e8f0',
+    heroUnitColor: '#94a3b8',
+    pillBg: 'linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%)',
+    pillBorder: 'rgba(148, 163, 184, 0.6)',
+    pillTextColor: '#ffffff',
+    glassBg: 'rgba(15, 23, 42, 0.65)',
+    accent: '#94a3b8'
   },
   {
-    id: 'exclusive',
-    label: '✨ عرض حصري (زمردي فاخر)',
-    badgeText: 'حـصـريـاً',
-    primaryColor: '#062822',
-    accentColor: '#10b981',
-    textColor: '#ffffff',
-    badgeBg: 'rgba(16, 185, 129, 0.18)',
-    badgeBorder: 'rgba(16, 185, 129, 0.45)',
-    badgeTextCol: '#6ee7b7'
-  },
-  {
-    id: 'auction',
-    label: '🔨 مزاد عقاري (عنابي فاخر)',
-    badgeText: 'مـزاد عـقـاري',
-    primaryColor: '#2a0a14',
-    accentColor: '#f43f5e',
-    textColor: '#ffffff',
-    badgeBg: 'rgba(244, 63, 94, 0.18)',
-    badgeBorder: 'rgba(244, 63, 94, 0.45)',
-    badgeTextCol: '#fda4af'
+    id: 'bronze-graphite',
+    name: '🛋️ الجرافيت والبرونز الدافئ (Dark Graphite & Bronze)',
+    borderColor: '#c28854',
+    borderGlow: 'rgba(194, 136, 84, 0.45)',
+    dividerColor: 'rgba(194, 136, 84, 0.5)',
+    diamondColor: '#fed7aa',
+    heroUnitColor: '#c28854',
+    pillBg: 'linear-gradient(135deg, rgba(67, 48, 38, 0.92) 0%, rgba(45, 30, 22, 0.98) 100%)',
+    pillBorder: 'rgba(194, 136, 84, 0.55)',
+    pillTextColor: '#ffffff',
+    glassBg: 'rgba(30, 24, 20, 0.6)',
+    accent: '#c28854'
   }
 ];
 
@@ -89,69 +90,58 @@ export const IMAGE_FILTER_PRESETS = [
 export const SAMPLE_IMAGES = [
   {
     id: 'sample1',
-    name: 'فيلا مودرن فاخرة مع مسبح',
-    url: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1200&q=80'
+    name: 'شقة فاخرة مع إضاءة جدارية مودرن',
+    url: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80'
   },
   {
     id: 'sample2',
-    name: 'شقة بنتهاوس بإطلالة بانورامية',
-    url: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80'
+    name: 'غرفة نوم فندقية سوبر لوكس',
+    url: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1200&q=80'
   },
   {
     id: 'sample3',
-    name: 'مجلس وصالة فندقية راقية',
+    name: 'صالة ومعيشة فندقية VIP',
     url: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80'
   },
   {
     id: 'sample4',
-    name: 'واجهة قصر معماري معاصر',
-    url: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80'
+    name: 'واجهة فيلا مودرن مع مسبح',
+    url: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1200&q=80'
   }
 ];
 
-export const DEFAULT_FIELDS = [
-  {
-    id: 'f1',
-    text: 'فيلا مودرن بتصميم أندلسي حديث',
-    fontId: 'Alexandria',
-    fontSize: 26,
-    fontWeight: '700',
-    color: '#ffffff',
-    icon: '✨',
-    highlight: true,
-    highlightColor: '#d4af37'
-  },
-  {
-    id: 'f2',
-    text: 'شمال الرياض - حي حطين النموذجي',
-    fontId: 'Readex Pro',
-    fontSize: 20,
-    fontWeight: '500',
-    color: '#e2e8f0',
-    icon: '📍',
-    highlight: false,
-    highlightColor: '#ffffff'
-  },
-  {
-    id: 'f3',
-    text: 'مساحة 450 م² | شارع 25م | مسبح ومصعد',
-    fontId: 'IBM Plex Sans Arabic',
-    fontSize: 18,
-    fontWeight: '400',
-    color: '#cbd5e1',
-    icon: '📐',
-    highlight: false,
-    highlightColor: '#ffffff'
-  },
-  {
-    id: 'f4',
-    text: 'السعر: 4,850,000 ر.س (مباشر وحصري)',
-    fontId: 'Alexandria',
-    fontSize: 24,
-    fontWeight: '800',
-    color: '#fde047',
-    icon: '🏷️',
-    highlight: true,
-    highlightColor: '#fde047'
-  }
-];
+export const DEFAULT_GLASS_CARD_DATA = {
+  title: 'شقة للبيع',
+  titleFont: 'Alexandria',
+  titleSize: 34,
+  titleColor: '#ffffff',
+
+  showSubtitle: false,
+  subtitle: 'المساحة',
+  subtitleFont: 'Alexandria',
+  subtitleSize: 18,
+  subtitleColor: '#d4af37',
+
+  heroNumber: '185',
+  heroUnit: 'م²',
+  heroFont: 'Alexandria',
+  heroNumberSize: 68,
+  heroUnitSize: 26,
+  heroNumberColor: '#ffffff',
+  heroUnitColor: '#d4af37',
+
+  bottomText: 'حي النرجس',
+  bottomFont: 'Alexandria',
+  bottomSize: 18,
+  bottomTextColor: '#ffffff',
+  bottomPillStyle: 'pill', // 'pill' or 'text'
+
+  showDividers: true,
+  dividerOrnament: 'diamond', // 'diamond', 'star', 'dot', 'none'
+  
+  boxWidth: 84, // in % of canvas width
+  boxBlur: 20,
+  boxOpacity: 60,
+  borderGlowIntensity: 80,
+  verticalPosition: 50 // % from top (center is 50)
+};

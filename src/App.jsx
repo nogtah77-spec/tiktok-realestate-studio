@@ -9,7 +9,7 @@ import LogoPanel from './components/LogoPanel';
 import ExportControls from './components/ExportControls';
 import SocialCopywriterModal from './components/SocialCopywriterModal';
 import SupabaseModal from './components/SupabaseModal';
-import { DEFAULT_FIELDS, SAMPLE_IMAGES } from './utils/constants';
+import { DEFAULT_GLASS_CARD_DATA, SAMPLE_IMAGES, LUXURY_THEMES } from './utils/constants';
 import { getAllPresets, saveUserPreset, deleteUserPreset, BUILTIN_PRESETS } from './utils/presetStorage';
 import { loadSavedCustomFonts } from './utils/fontLoader';
 import { Image as ImageIcon, Type, LayoutGrid, FileText, Shield } from 'lucide-react';
@@ -18,9 +18,9 @@ export default function App() {
   const canvasRef = useRef(null);
 
   // 1. App State & Navigation Tabs
-  const [activeTab, setActiveTab] = useState('image');
+  const [activeTab, setActiveTab] = useState('fields'); // default to 'fields' for instant typography edit
   const [presets, setPresets] = useState(getAllPresets);
-  const [activePresetId, setActivePresetId] = useState('preset-luxury-villa');
+  const [activePresetId, setActivePresetId] = useState('preset-champagne-gold');
   const [customFonts, setCustomFonts] = useState([]);
 
   // 2. Modals
@@ -35,32 +35,24 @@ export default function App() {
   const [imageBlur, setImageBlur] = useState(0);
   const [imageFilter, setImageFilter] = useState('none');
   const [overlayColor, setOverlayColor] = useState('#000000');
-  const [overlayOpacity, setOverlayOpacity] = useState(40);
+  const [overlayOpacity, setOverlayOpacity] = useState(35);
   const [hasVignette, setHasVignette] = useState(true);
-  const [vignetteIntensity, setVignetteIntensity] = useState(65);
+  const [vignetteIntensity, setVignetteIntensity] = useState(50);
 
-  // 4. Layout & Card State
-  const [layout, setLayout] = useState('pills');
+  // 4. Luxury Glass Card & Theme State
+  const [themeId, setThemeId] = useState('champagne-gold');
   const [finish, setFinish] = useState('glossy');
-  const [themeId, setThemeId] = useState('sale');
-  const [customThemeBadge, setCustomThemeBadge] = useState('');
-  const [cardBlur, setCardBlur] = useState(16);
-  const [cardOpacity, setCardOpacity] = useState(85);
-  const [cardPosition, setCardPosition] = useState('bottom');
+  const [cardData, setCardData] = useState(DEFAULT_GLASS_CARD_DATA);
 
-  // 5. Fields State
-  const [fields, setFields] = useState(DEFAULT_FIELDS);
-
-  // 6. Logo State
+  // 5. Logo State
   const [logoUrl, setLogoUrl] = useState('');
   const [logoPosition, setLogoPosition] = useState('top-right');
   const [logoScale, setLogoScale] = useState(100);
   const [logoOpacity, setLogoOpacity] = useState(100);
 
-  // 7. Preview Toggles
-  const [showSafeZone, setShowSafeZone] = useState(false);
-  const [safeZoneOpacity, setSafeZoneOpacity] = useState(85);
+  // 6. Preview Toggles
   const [isPhoneMockup, setIsPhoneMockup] = useState(true);
+  const [showGridIndicator, setShowGridIndicator] = useState(true);
 
   // Load custom fonts from IndexedDB on startup
   useEffect(() => {
@@ -76,16 +68,13 @@ export default function App() {
     setActivePresetId(preset.id);
     if (preset.themeId) setThemeId(preset.themeId);
     if (preset.finish) setFinish(preset.finish);
-    if (preset.layout) setLayout(preset.layout);
-    if (preset.cardBlur !== undefined) setCardBlur(preset.cardBlur);
-    if (preset.cardOpacity !== undefined) setCardOpacity(preset.cardOpacity);
     if (preset.overlayColor) setOverlayColor(preset.overlayColor);
     if (preset.overlayOpacity !== undefined) setOverlayOpacity(preset.overlayOpacity);
     if (preset.imageBlur !== undefined) setImageBlur(preset.imageBlur);
     if (preset.imageFilter) setImageFilter(preset.imageFilter);
     if (preset.hasVignette !== undefined) setHasVignette(preset.hasVignette);
     if (preset.vignetteIntensity !== undefined) setVignetteIntensity(preset.vignetteIntensity);
-    if (preset.fields && preset.fields.length > 0) setFields(preset.fields);
+    if (preset.cardData) setCardData(preset.cardData);
   };
 
   const handleSavePreset = (name) => {
@@ -94,16 +83,13 @@ export default function App() {
       name,
       themeId,
       finish,
-      layout,
-      cardBlur,
-      cardOpacity,
       overlayColor,
       overlayOpacity,
       imageBlur,
       imageFilter,
       hasVignette,
       vignetteIntensity,
-      fields
+      cardData
     };
     saveUserPreset(newPreset);
     setPresets(getAllPresets());
@@ -121,11 +107,18 @@ export default function App() {
   };
 
   const tabs = [
+    { id: 'fields', name: 'نصوص وأرقام البوكس الزجاجي', icon: FileText },
+    { id: 'layout', name: 'الثيم اللوني وأبعاد البوكس', icon: LayoutGrid },
     { id: 'image', name: 'الصورة والفلاتر والبلور', icon: ImageIcon },
-    { id: 'fields', name: 'النصوص والخانات', icon: FileText },
-    { id: 'layout', name: 'القالب واللمعان (Matte/Glossy)', icon: LayoutGrid },
-    { id: 'typography', name: 'الخطوط الخاصة', icon: Type },
+    { id: 'typography', name: 'الخطوط الخاصة المرفوعة', icon: Type },
     { id: 'logo', name: 'شعار وهوية البراند', icon: Shield }
+  ];
+
+  // Helper fields for copywriter
+  const copyFields = [
+    { text: cardData.title },
+    { text: cardData.bottomText },
+    { text: `${cardData.subtitle || 'المساحة'}: ${cardData.heroNumber} ${cardData.heroUnit}` }
   ];
 
   return (
@@ -156,28 +149,23 @@ export default function App() {
             overlayOpacity={overlayOpacity}
             hasVignette={hasVignette}
             vignetteIntensity={vignetteIntensity}
-            layout={layout}
-            finish={finish}
             themeId={themeId}
-            customThemeBadge={customThemeBadge}
-            cardBlur={cardBlur}
-            cardOpacity={cardOpacity}
-            cardPosition={cardPosition}
-            fields={fields}
+            finish={finish}
+            cardData={cardData}
             logoUrl={logoUrl}
             logoPosition={logoPosition}
             logoScale={logoScale}
             logoOpacity={logoOpacity}
-            showSafeZone={showSafeZone}
-            safeZoneOpacity={safeZoneOpacity}
             isPhoneMockup={isPhoneMockup}
+            showGridIndicator={showGridIndicator}
+            gridViewsCount="1916"
           />
 
           <div className="w-full max-w-[430px]">
             <ExportControls
               canvasRef={canvasRef}
-              showSafeZone={showSafeZone}
-              setShowSafeZone={setShowSafeZone}
+              showGridIndicator={showGridIndicator}
+              setShowGridIndicator={setShowGridIndicator}
               isPhoneMockup={isPhoneMockup}
               setIsPhoneMockup={setIsPhoneMockup}
               onOpenCopywriterModal={() => setIsCopywriterOpen(true)}
@@ -211,6 +199,25 @@ export default function App() {
 
           {/* Active Panel Box */}
           <div className="p-5 rounded-3xl bg-slate-900/70 border border-slate-800/80 backdrop-blur-xl shadow-xl">
+            {activeTab === 'fields' && (
+              <FieldsEditor
+                cardData={cardData}
+                onCardDataChange={setCardData}
+                customFonts={customFonts}
+              />
+            )}
+
+            {activeTab === 'layout' && (
+              <LayoutAndCardsPanel
+                themeId={themeId}
+                setThemeId={setThemeId}
+                finish={finish}
+                setFinish={setFinish}
+                cardData={cardData}
+                setCardData={setCardData}
+              />
+            )}
+
             {activeTab === 'image' && (
               <ImageFXPanel
                 imageUrl={imageUrl}
@@ -233,33 +240,6 @@ export default function App() {
                 setHasVignette={setHasVignette}
                 vignetteIntensity={vignetteIntensity}
                 setVignetteIntensity={setVignetteIntensity}
-              />
-            )}
-
-            {activeTab === 'fields' && (
-              <FieldsEditor
-                fields={fields}
-                onFieldsChange={setFields}
-                customFonts={customFonts}
-              />
-            )}
-
-            {activeTab === 'layout' && (
-              <LayoutAndCardsPanel
-                layout={layout}
-                setLayout={setLayout}
-                finish={finish}
-                setFinish={setFinish}
-                themeId={themeId}
-                setThemeId={setThemeId}
-                customThemeBadge={customThemeBadge}
-                setCustomThemeBadge={setCustomThemeBadge}
-                cardBlur={cardBlur}
-                setCardBlur={setCardBlur}
-                cardOpacity={cardOpacity}
-                setCardOpacity={setCardOpacity}
-                cardPosition={cardPosition}
-                setCardPosition={setCardPosition}
               />
             )}
 
@@ -289,7 +269,7 @@ export default function App() {
       <SocialCopywriterModal
         isOpen={isCopywriterOpen}
         onClose={() => setIsCopywriterOpen(false)}
-        fields={fields}
+        fields={copyFields}
         themeId={themeId}
       />
 
