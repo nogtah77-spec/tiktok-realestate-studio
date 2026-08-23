@@ -12,7 +12,7 @@ import SocialCopywriterModal from './components/SocialCopywriterModal';
 import FullscreenPreviewModal from './components/FullscreenPreviewModal';
 import SupabaseModal from './components/SupabaseModal';
 import { DEFAULT_GLASS_CARD_DATA, SAMPLE_IMAGES, LUXURY_THEMES } from './utils/constants';
-import { getAllPresets, saveUserPreset, deleteUserPreset, BUILTIN_PRESETS } from './utils/presetStorage';
+import { getAllPresets, saveUserPreset, deleteUserPreset, BUILTIN_PRESETS, saveWorkspaceSession, loadWorkspaceSession, clearWorkspaceSession } from './utils/presetStorage';
 import { loadSavedCustomFonts } from './utils/fontLoader';
 import { MASTER_PALETTES, getSavedPlatformThemeId, savePlatformThemeId, applyThemeToCSS } from './utils/themeEngine';
 import { Image as ImageIcon, Type, LayoutGrid, FileText, Shield, Maximize2, Palette } from 'lucide-react';
@@ -21,16 +21,19 @@ export default function App() {
   const canvasRef = useRef(null);
   const fullscreenCanvasRef = useRef(null);
 
+  // Load initial saved workspace session if available
+  const initialSession = loadWorkspaceSession();
+
   // 1. Navigation & View State
   const [activeTab, setActiveTab] = useState('fields');
   const [presets, setPresets] = useState(getAllPresets);
-  const [activePresetId, setActivePresetId] = useState('preset-sale-gold');
+  const [activePresetId, setActivePresetId] = useState(initialSession?.activePresetId || 'preset-sale-gold');
   const [customFonts, setCustomFonts] = useState([]);
   const [isFullscreenPreviewOpen, setIsFullscreenPreviewOpen] = useState(false);
 
   // 2. 8 Pro Palettes Theme Engine
-  const [activePlatformThemeId, setActivePlatformThemeId] = useState(getSavedPlatformThemeId);
-  const [activeCardPaletteId, setActiveCardPaletteId] = useState(null);
+  const [activePlatformThemeId, setActivePlatformThemeId] = useState(() => initialSession?.activePlatformThemeId || getSavedPlatformThemeId());
+  const [activeCardPaletteId, setActiveCardPaletteId] = useState(initialSession?.activeCardPaletteId || null);
   const activeThemeObj = MASTER_PALETTES.find(p => p.id === activePlatformThemeId) || MASTER_PALETTES[1];
 
   // 3. Modals
@@ -38,28 +41,28 @@ export default function App() {
   const [isSupabaseOpen, setIsSupabaseOpen] = useState(false);
 
   // 4. Image State
-  const [imageUrl, setImageUrl] = useState(SAMPLE_IMAGES[0].url);
-  const [imageZoom, setImageZoom] = useState(100);
-  const [imagePanX, setImagePanX] = useState(0);
-  const [imagePanY, setImagePanY] = useState(0);
-  const [imageBlur, setImageBlur] = useState(0);
-  const [imageFilter, setImageFilter] = useState('none');
-  const [overlayColor, setOverlayColor] = useState('#000000');
-  const [overlayOpacity, setOverlayOpacity] = useState(35);
-  const [hasVignette, setHasVignette] = useState(true);
-  const [vignetteIntensity, setVignetteIntensity] = useState(50);
+  const [imageUrl, setImageUrl] = useState(initialSession?.imageUrl || SAMPLE_IMAGES[0].url);
+  const [imageZoom, setImageZoom] = useState(initialSession?.imageZoom ?? 100);
+  const [imagePanX, setImagePanX] = useState(initialSession?.imagePanX ?? 0);
+  const [imagePanY, setImagePanY] = useState(initialSession?.imagePanY ?? 0);
+  const [imageBlur, setImageBlur] = useState(initialSession?.imageBlur ?? 0);
+  const [imageFilter, setImageFilter] = useState(initialSession?.imageFilter || 'none');
+  const [overlayColor, setOverlayColor] = useState(initialSession?.overlayColor || '#000000');
+  const [overlayOpacity, setOverlayOpacity] = useState(initialSession?.overlayOpacity ?? 35);
+  const [hasVignette, setHasVignette] = useState(initialSession?.hasVignette ?? true);
+  const [vignetteIntensity, setVignetteIntensity] = useState(initialSession?.vignetteIntensity ?? 50);
 
   // 5. Luxury Glass Card & Theme State
-  const [themeId, setThemeId] = useState('sale-gold');
-  const [finish, setFinish] = useState('glossy');
-  const [cardData, setCardData] = useState(DEFAULT_GLASS_CARD_DATA);
+  const [themeId, setThemeId] = useState(initialSession?.themeId || 'sale-gold');
+  const [finish, setFinish] = useState(initialSession?.finish || 'glossy');
+  const [cardData, setCardData] = useState(initialSession?.cardData || DEFAULT_GLASS_CARD_DATA);
 
   // 6. Logo State
-  const [showLogo, setShowLogo] = useState(true);
-  const [logoUrl, setLogoUrl] = useState('');
-  const [logoPosition, setLogoPosition] = useState('top-right');
-  const [logoScale, setLogoScale] = useState(100);
-  const [logoOpacity, setLogoOpacity] = useState(100);
+  const [showLogo, setShowLogo] = useState(initialSession?.showLogo ?? true);
+  const [logoUrl, setLogoUrl] = useState(initialSession?.logoUrl || '');
+  const [logoPosition, setLogoPosition] = useState(initialSession?.logoPosition || 'top-right');
+  const [logoScale, setLogoScale] = useState(initialSession?.logoScale ?? 100);
+  const [logoOpacity, setLogoOpacity] = useState(initialSession?.logoOpacity ?? 100);
 
   // 7. Preview Toggles
   const [isPhoneMockup, setIsPhoneMockup] = useState(true);
@@ -75,6 +78,59 @@ export default function App() {
       }
     });
   }, []);
+
+  // Auto-save session state to local storage
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      saveWorkspaceSession({
+        activePresetId,
+        activePlatformThemeId,
+        activeCardPaletteId,
+        imageUrl,
+        imageZoom,
+        imagePanX,
+        imagePanY,
+        imageBlur,
+        imageFilter,
+        overlayColor,
+        overlayOpacity,
+        hasVignette,
+        vignetteIntensity,
+        themeId,
+        finish,
+        cardData,
+        showLogo,
+        logoUrl,
+        logoPosition,
+        logoScale,
+        logoOpacity
+      });
+    }, 400);
+
+    return () => clearTimeout(timer);
+  }, [
+    activePresetId,
+    activePlatformThemeId,
+    activeCardPaletteId,
+    imageUrl,
+    imageZoom,
+    imagePanX,
+    imagePanY,
+    imageBlur,
+    imageFilter,
+    overlayColor,
+    overlayOpacity,
+    hasVignette,
+    vignetteIntensity,
+    themeId,
+    finish,
+    cardData,
+    showLogo,
+    logoUrl,
+    logoPosition,
+    logoScale,
+    logoOpacity
+  ]);
 
   const handleSelectPlatformTheme = (newThemeId) => {
     setActivePlatformThemeId(newThemeId);
@@ -143,6 +199,7 @@ export default function App() {
   };
 
   const handleResetToDefault = () => {
+    clearWorkspaceSession();
     handleSelectPreset(BUILTIN_PRESETS[0]);
     setImageUrl(SAMPLE_IMAGES[0].url);
   };

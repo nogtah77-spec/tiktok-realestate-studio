@@ -1,4 +1,5 @@
 const PRESETS_STORAGE_KEY = 'alamoudi_cover_presets_v3';
+const WORKSPACE_STORAGE_KEY = 'alamoudi_studio_workspace_session_v1';
 
 export const BUILTIN_PRESETS = [
   {
@@ -42,6 +43,7 @@ export const BUILTIN_PRESETS = [
       dividerOpacity: 70,
       dividerCustomColor: '',
       boxWidth: 84,
+      boxPaddingY: 20,
       boxBlur: 20,
       boxOpacity: 60,
       verticalPosition: 50,
@@ -96,6 +98,7 @@ export const BUILTIN_PRESETS = [
       dividerOpacity: 70,
       dividerCustomColor: '',
       boxWidth: 84,
+      boxPaddingY: 20,
       boxBlur: 22,
       boxOpacity: 65,
       verticalPosition: 50,
@@ -150,6 +153,7 @@ export const BUILTIN_PRESETS = [
       dividerOpacity: 75,
       dividerCustomColor: '',
       boxWidth: 84,
+      boxPaddingY: 20,
       boxBlur: 20,
       boxOpacity: 65,
       verticalPosition: 50,
@@ -204,6 +208,7 @@ export const BUILTIN_PRESETS = [
       dividerOpacity: 75,
       dividerCustomColor: '',
       boxWidth: 84,
+      boxPaddingY: 20,
       boxBlur: 20,
       boxOpacity: 60,
       verticalPosition: 50,
@@ -258,6 +263,7 @@ export const BUILTIN_PRESETS = [
       dividerOpacity: 85,
       dividerCustomColor: '',
       boxWidth: 84,
+      boxPaddingY: 20,
       boxBlur: 22,
       boxOpacity: 65,
       verticalPosition: 50,
@@ -311,4 +317,32 @@ export function deleteUserPreset(presetId) {
     console.error('Error deleting preset:', e);
     return [];
   }
+}
+
+// Workspace Session Persistence (Auto-Save State)
+export function saveWorkspaceSession(state) {
+  try {
+    if (!state) return;
+    localStorage.setItem(WORKSPACE_STORAGE_KEY, JSON.stringify(state));
+  } catch (e) {
+    console.warn('Unable to auto-save session state:', e);
+  }
+}
+
+export function loadWorkspaceSession() {
+  try {
+    const saved = localStorage.getItem(WORKSPACE_STORAGE_KEY);
+    if (saved) {
+      return JSON.parse(saved);
+    }
+  } catch (e) {
+    console.warn('Unable to load saved session state:', e);
+  }
+  return null;
+}
+
+export function clearWorkspaceSession() {
+  try {
+    localStorage.removeItem(WORKSPACE_STORAGE_KEY);
+  } catch (e) {}
 }
