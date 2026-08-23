@@ -6,7 +6,8 @@ export default function SocialCopywriterModal({
   isOpen,
   onClose,
   fields = [],
-  themeId = 'sale-gold'
+  themeId = 'sale-gold',
+  activeThemeObj
 }) {
   if (!isOpen) return null;
 
@@ -21,6 +22,19 @@ export default function SocialCopywriterModal({
   // Custom edited copy per tab
   const [customText, setCustomText] = useState('');
   const [copiedTab, setCopiedTab] = useState('');
+
+  // Fallback theme colors
+  const theme = activeThemeObj || {
+    bgDark: '#0f172a',
+    bgSurface: '#1e293b',
+    bgCard: '#1e293b',
+    border: 'rgba(255,255,255,0.15)',
+    borderSubtle: 'rgba(255,255,255,0.08)',
+    accent: '#ffffff',
+    accentGlow: 'rgba(255,255,255,0.3)',
+    textPrimary: '#f8fafc',
+    textMuted: '#94a3b8'
+  };
 
   // Generate base copies
   const copies = generateMarketingCopies({
@@ -64,77 +78,129 @@ export default function SocialCopywriterModal({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 text-xs select-none animate-in fade-in duration-150">
-      <div className="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-3xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
+      <div
+        className="border rounded-3xl w-full max-w-3xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh] transition-colors duration-200"
+        style={{
+          backgroundColor: theme.bgDark,
+          borderColor: theme.border,
+          color: theme.textPrimary
+        }}
+      >
         {/* Modal Header */}
-        <div className="px-5 py-3.5 bg-slate-950 border-b border-slate-800 flex items-center justify-between">
+        <div
+          className="px-5 py-3.5 border-b flex items-center justify-between transition-colors duration-200"
+          style={{
+            backgroundColor: theme.bgSurface,
+            borderColor: theme.borderSubtle
+          }}
+        >
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-xl bg-white/10 text-white flex items-center justify-center shadow-inner">
+            <div
+              className="w-8 h-8 rounded-xl flex items-center justify-center shadow-inner"
+              style={{
+                backgroundColor: theme.bgCard,
+                color: theme.accent,
+                border: `1px solid ${theme.borderSubtle}`
+              }}
+            >
               <Sparkles className="w-4 h-4" />
             </div>
             <div className="space-y-0.5">
-              <h3 className="font-extrabold text-slate-100 text-sm tracking-tight">صانع النصوص الإعلانية والكابشن PRO</h3>
-              <p className="text-[11px] text-slate-400 font-medium pt-0.5">نصوص دعائية مهيأة للسوشيال ميديا</p>
+              <h3 className="font-extrabold text-sm tracking-tight text-white">صانع النصوص الإعلانية والكابشن PRO</h3>
+              <p className="text-[11px] font-medium pt-0.5 opacity-80" style={{ color: theme.textMuted }}>
+                نصوص دعائية مهيأة للسوشيال ميديا
+              </p>
             </div>
           </div>
 
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+            className="w-8 h-8 rounded-full flex items-center justify-center transition-colors cursor-pointer border"
+            style={{
+              backgroundColor: theme.bgCard,
+              borderColor: theme.borderSubtle,
+              color: theme.textMuted
+            }}
           >
-            <X className="w-4 h-4" />
+            <X className="w-4 h-4 hover:text-white" />
           </button>
         </div>
 
         {/* Modal Body */}
-        <div className="p-4 sm:p-5 overflow-y-auto space-y-4 flex-1">
+        <div className="p-4 sm:p-5 overflow-y-auto space-y-4 flex-1 luxury-scrollbar">
           {/* 1. Quick Info (Agent & Phone) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-950/60 p-3 rounded-2xl border border-slate-800">
+          <div
+            className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3 rounded-2xl border transition-colors duration-200"
+            style={{
+              backgroundColor: theme.bgSurface,
+              borderColor: theme.borderSubtle
+            }}
+          >
             <div>
-              <span className="text-[11px] text-slate-300 block mb-1 font-bold">اسم البراند / الشركة:</span>
+              <span className="text-[11px] block mb-1 font-bold" style={{ color: theme.textPrimary }}>
+                اسم البراند / الشركة:
+              </span>
               <input
                 type="text"
                 value={agentName}
                 onChange={(e) => setAgentName(e.target.value)}
-                className="w-full px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white outline-none focus:border-slate-500 font-bold"
+                className="w-full px-3 py-1.5 rounded-xl border text-xs text-white outline-none font-bold transition-colors"
+                style={{
+                  backgroundColor: theme.bgDark,
+                  borderColor: theme.borderSubtle
+                }}
               />
             </div>
 
             <div>
-              <span className="text-[11px] text-slate-300 block mb-1 font-bold">رقم الموبايل / الواتساب:</span>
+              <span className="text-[11px] block mb-1 font-bold" style={{ color: theme.textPrimary }}>
+                رقم الموبايل / الواتساب:
+              </span>
               <input
                 type="text"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="01xxxxxxxxx"
-                className="w-full px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white outline-none focus:border-slate-500 font-mono"
+                className="w-full px-3 py-1.5 rounded-xl border text-xs text-white outline-none font-mono transition-colors"
+                style={{
+                  backgroundColor: theme.bgDark,
+                  borderColor: theme.borderSubtle
+                }}
               />
             </div>
           </div>
 
           {/* 2. Tone Selector */}
           <div>
-            <span className="text-[11px] font-bold text-slate-300 block mb-1.5">نبرة الخطاب التسويقي:</span>
+            <span className="text-[11px] font-bold block mb-1.5" style={{ color: theme.textPrimary }}>
+              نبرة الخطاب التسويقي:
+            </span>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-              {TONES.map((t) => (
-                <button
-                  key={t.id}
-                  onClick={() => setSelectedTone(t.id)}
-                  className={`py-2 px-2.5 rounded-xl text-[11px] font-bold border transition-all text-center cursor-pointer ${
-                    selectedTone === t.id
-                      ? 'border-white bg-slate-800 text-white shadow-sm ring-1 ring-white/30'
-                      : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'
-                  }`}
-                >
-                  {t.label}
-                </button>
-              ))}
+              {TONES.map((t) => {
+                const isSelected = selectedTone === t.id;
+                return (
+                  <button
+                    key={t.id}
+                    onClick={() => setSelectedTone(t.id)}
+                    className="py-2 px-2.5 rounded-xl text-[11px] font-bold border transition-all text-center cursor-pointer shadow-sm"
+                    style={{
+                      backgroundColor: isSelected ? theme.accent : theme.bgSurface,
+                      color: isSelected ? theme.bgDark : theme.textMuted,
+                      borderColor: isSelected ? theme.accent : theme.borderSubtle,
+                      boxShadow: isSelected ? `0 0 10px ${theme.accentGlow}` : 'none'
+                    }}
+                  >
+                    {t.label}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
           {/* 3. One-Click Quick Property Features (Egyptian & Universal terms) */}
           <div className="space-y-1.5">
-            <span className="text-[11px] font-bold text-slate-300 flex items-center gap-1.5">
-              <Tag className="w-3.5 h-3.5 text-slate-400" />
+            <span className="text-[11px] font-bold flex items-center gap-1.5" style={{ color: theme.textPrimary }}>
+              <Tag className="w-3.5 h-3.5 opacity-70" />
               <span>أزرار المميزات السريعة (اضغط لتضمينها بالنص):</span>
             </span>
             <div className="flex flex-wrap gap-1.5">
@@ -144,11 +210,12 @@ export default function SocialCopywriterModal({
                   <button
                     key={feat.id}
                     onClick={() => toggleFeature(feat.label)}
-                    className={`py-1 px-2.5 rounded-lg text-[10px] font-bold border transition-all cursor-pointer ${
-                      isSelected
-                        ? 'border-white bg-slate-800 text-white shadow-sm ring-1 ring-white/30'
-                        : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'
-                    }`}
+                    className="py-1 px-2.5 rounded-lg text-[10px] font-bold border transition-all cursor-pointer"
+                    style={{
+                      backgroundColor: isSelected ? theme.accent : theme.bgSurface,
+                      color: isSelected ? theme.bgDark : theme.textMuted,
+                      borderColor: isSelected ? theme.accent : theme.borderSubtle
+                    }}
                   >
                     {isSelected ? '✓ ' : '+ '}
                     {feat.label}
@@ -159,8 +226,16 @@ export default function SocialCopywriterModal({
           </div>
 
           {/* 4. Customizable Outro & Closing */}
-          <div className="space-y-2 bg-slate-950/60 p-3 rounded-2xl border border-slate-800">
-            <span className="text-[11px] font-bold text-slate-300 block">خاتمة الإعلان ودعوة للتواصل (Closing & CTA):</span>
+          <div
+            className="space-y-2 p-3 rounded-2xl border transition-colors duration-200"
+            style={{
+              backgroundColor: theme.bgSurface,
+              borderColor: theme.borderSubtle
+            }}
+          >
+            <span className="text-[11px] font-bold block" style={{ color: theme.textPrimary }}>
+              خاتمة الإعلان ودعوة للتواصل (Closing & CTA):
+            </span>
             
             {/* Quick Outro Presets */}
             <div className="flex flex-wrap gap-1.5">
@@ -170,11 +245,12 @@ export default function SocialCopywriterModal({
                   <button
                     key={outro.id}
                     onClick={() => setClosingText(isCurrent ? '' : outro.label)}
-                    className={`py-1 px-2.5 rounded-lg text-[10px] font-bold border transition-all cursor-pointer ${
-                      isCurrent
-                        ? 'border-white bg-slate-800 text-white shadow-sm ring-1 ring-white/30'
-                        : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'
-                    }`}
+                    className="py-1 px-2.5 rounded-lg text-[10px] font-bold border transition-all cursor-pointer"
+                    style={{
+                      backgroundColor: isCurrent ? theme.accent : theme.bgDark,
+                      color: isCurrent ? theme.bgDark : theme.textMuted,
+                      borderColor: isCurrent ? theme.accent : theme.borderSubtle
+                    }}
                   >
                     {isCurrent ? '✓ ' : ''}
                     {outro.label}
@@ -189,12 +265,22 @@ export default function SocialCopywriterModal({
               value={closingText}
               onChange={(e) => setClosingText(e.target.value)}
               placeholder="اكتب خاتمة مخصصة أو اختر من الأزرار أعلاه..."
-              className="w-full px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white outline-none focus:border-slate-500 font-medium"
+              className="w-full px-3 py-1.5 rounded-xl border text-xs text-white outline-none font-medium transition-colors"
+              style={{
+                backgroundColor: theme.bgDark,
+                borderColor: theme.borderSubtle
+              }}
             />
           </div>
 
           {/* 5. Platform Tabs */}
-          <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-slate-950 border border-slate-800">
+          <div
+            className="flex items-center gap-2 p-1.5 rounded-2xl border transition-colors duration-200"
+            style={{
+              backgroundColor: theme.bgSurface,
+              borderColor: theme.borderSubtle
+            }}
+          >
             {[
               { id: 'tiktok', label: 'كابشن تيك توك', icon: Video },
               { id: 'instagram', label: 'إنستغرام وفيسبوك', icon: Camera },
@@ -207,11 +293,12 @@ export default function SocialCopywriterModal({
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl font-bold text-[11px] transition-all cursor-pointer ${
-                    isActive
-                      ? 'bg-white text-slate-950 font-black shadow'
-                      : 'text-slate-400 hover:text-slate-200'
-                  }`}
+                  className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl font-bold text-[11px] transition-all cursor-pointer"
+                  style={{
+                    backgroundColor: isActive ? theme.accent : 'transparent',
+                    color: isActive ? theme.bgDark : theme.textMuted,
+                    boxShadow: isActive ? `0 0 10px ${theme.accentGlow}` : 'none'
+                  }}
                 >
                   <Icon className="w-3.5 h-3.5" />
                   <span>{tab.label}</span>
@@ -220,14 +307,19 @@ export default function SocialCopywriterModal({
             })}
           </div>
 
-          {/* 6. Live Editable Textarea with Controls */}
+          {/* 6. Live Editable Textarea with Controls & Custom Grab Scrollbar */}
           <div className="space-y-1.5">
-            <div className="flex items-center justify-between text-[11px] text-slate-400 px-1">
+            <div className="flex items-center justify-between text-[11px] px-1" style={{ color: theme.textMuted }}>
               <span>يمكنك الكتابة والتعديل بحرية داخل الصندوق قبل النسخ:</span>
               <div className="flex items-center gap-2">
                 <button
                   onClick={handleResetToAuto}
-                  className="flex items-center gap-1 text-[10px] font-bold text-slate-300 hover:text-white bg-slate-800 px-2 py-0.5 rounded-md transition-colors cursor-pointer"
+                  className="flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-md transition-colors cursor-pointer border"
+                  style={{
+                    backgroundColor: theme.bgSurface,
+                    borderColor: theme.borderSubtle,
+                    color: theme.textPrimary
+                  }}
                   title="استعادة النص المولد تلقائياً"
                 >
                   <RotateCcw className="w-3 h-3" />
@@ -235,7 +327,11 @@ export default function SocialCopywriterModal({
                 </button>
                 <button
                   onClick={handleClear}
-                  className="flex items-center gap-1 text-[10px] font-bold text-slate-400 hover:text-rose-400 bg-slate-800 px-2 py-0.5 rounded-md transition-colors cursor-pointer"
+                  className="flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-md transition-colors cursor-pointer border text-rose-400 hover:text-rose-300"
+                  style={{
+                    backgroundColor: theme.bgSurface,
+                    borderColor: theme.borderSubtle
+                  }}
                   title="تفريغ النص بالكامل"
                 >
                   <Trash2 className="w-3 h-3" />
@@ -244,18 +340,30 @@ export default function SocialCopywriterModal({
               </div>
             </div>
 
-            <textarea
-              value={customText}
-              onChange={(e) => setCustomText(e.target.value)}
-              rows={7}
-              placeholder="اكتب أو عدل النص هنا بحرية..."
-              className="w-full p-3.5 rounded-2xl bg-slate-950/90 border border-slate-800 text-xs text-slate-200 font-mono leading-relaxed outline-none resize-none focus:border-slate-500"
-            />
+            <div className="relative">
+              <textarea
+                value={customText}
+                onChange={(e) => setCustomText(e.target.value)}
+                rows={7}
+                placeholder="اكتب أو عدل النص هنا بحرية..."
+                className="w-full p-3.5 rounded-2xl border text-xs text-slate-100 font-mono leading-relaxed outline-none resize-none luxury-scrollbar transition-colors"
+                style={{
+                  backgroundColor: theme.bgSurface,
+                  borderColor: theme.borderSubtle
+                }}
+              />
+            </div>
           </div>
         </div>
 
         {/* Modal Footer */}
-        <div className="px-5 py-3.5 bg-slate-950 border-t border-slate-800 flex items-center justify-between gap-3">
+        <div
+          className="px-5 py-3.5 border-t flex items-center justify-between gap-3 transition-colors duration-200"
+          style={{
+            backgroundColor: theme.bgSurface,
+            borderColor: theme.borderSubtle
+          }}
+        >
           {activeTab === 'whatsapp' ? (
             <a
               href={whatsAppDirectUrl}
@@ -269,7 +377,12 @@ export default function SocialCopywriterModal({
           ) : (
             <button
               onClick={() => handleCopy(copies.hashtags, 'hashtags_only')}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-750 text-slate-300 hover:text-white font-bold text-[11px] border border-slate-700 transition-all cursor-pointer"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl font-bold text-[11px] border transition-all cursor-pointer"
+              style={{
+                backgroundColor: theme.bgDark,
+                borderColor: theme.borderSubtle,
+                color: theme.textPrimary
+              }}
             >
               {copiedTab === 'hashtags_only' ? (
                 <>
@@ -287,12 +400,17 @@ export default function SocialCopywriterModal({
 
           <button
             onClick={() => handleCopy(customText, 'main_copy')}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white hover:bg-slate-200 text-slate-950 font-black text-xs shadow-lg transition-all active:scale-95 cursor-pointer"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-black text-xs shadow-lg transition-all active:scale-95 cursor-pointer"
+            style={{
+              backgroundColor: theme.accent,
+              color: theme.bgDark,
+              boxShadow: `0 0 12px ${theme.accentGlow}`
+            }}
           >
             {copiedTab === 'main_copy' ? (
               <>
-                <Check className="w-4 h-4 text-emerald-600 stroke-[3]" />
-                <span className="text-emerald-700">تم النسخ للحافظة بنجاح!</span>
+                <Check className="w-4 h-4 stroke-[3]" />
+                <span>تم النسخ للحافظة بنجاح!</span>
               </>
             ) : (
               <>

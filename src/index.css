@@ -98,27 +98,49 @@ input[type="range"].luxury-slider::-moz-range-thumb {
   background-image: none;
 }
 
-/* Custom Smooth Dark Scrollbar */
+/* Custom Ergonomic Scrollbar (Prevents I-Beam text cursor on scroll thumb) */
+.luxury-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  cursor: default !important;
+}
+
+.luxury-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 9999px;
+  cursor: default !important;
+}
+
+.luxury-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+  cursor: grab !important;
+}
+
+.luxury-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.45);
+  background-clip: content-box;
+  cursor: grab !important;
+}
+
+.luxury-scrollbar::-webkit-scrollbar-thumb:active {
+  cursor: grabbing !important;
+}
+
+/* Global scrollbars for body and decks */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
-
 ::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.6);
+  background: transparent;
 }
-
 ::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.25);
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 4px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--theme-accent, rgba(212, 163, 115, 0.5));
-}
-
-/* Base resets for mobile */
-html, body {
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
+  background: rgba(255, 255, 255, 0.3);
 }

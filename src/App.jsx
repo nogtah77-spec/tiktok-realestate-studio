@@ -502,6 +502,7 @@ export default function App() {
         onClose={() => setIsFullscreenPreviewOpen(false)}
         canvasRef={fullscreenCanvasRef}
         previewProps={previewProps}
+        activeThemeObj={activeThemeObj}
       />
 
       <SocialCopywriterModal
@@ -509,11 +510,13 @@ export default function App() {
         onClose={() => setIsCopywriterOpen(false)}
         fields={copyFields}
         themeId={themeId}
+        activeThemeObj={activeThemeObj}
       />
 
       <SupabaseModal
         isOpen={isSupabaseOpen}
         onClose={() => setIsSupabaseOpen(false)}
+        activeThemeObj={activeThemeObj}
       />
     </div>
   );
