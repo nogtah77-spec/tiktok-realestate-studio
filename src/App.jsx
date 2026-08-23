@@ -14,7 +14,7 @@ import SupabaseModal from './components/SupabaseModal';
 import { DEFAULT_GLASS_CARD_DATA, SAMPLE_IMAGES, LUXURY_THEMES } from './utils/constants';
 import { getAllPresets, saveUserPreset, deleteUserPreset, BUILTIN_PRESETS } from './utils/presetStorage';
 import { loadSavedCustomFonts } from './utils/fontLoader';
-import { MASTER_PALETTES, getSavedPlatformThemeId, savePlatformThemeId } from './utils/themeEngine';
+import { MASTER_PALETTES, getSavedPlatformThemeId, savePlatformThemeId, applyThemeToCSS } from './utils/themeEngine';
 import { Image as ImageIcon, Type, LayoutGrid, FileText, Shield, Maximize2, Palette } from 'lucide-react';
 
 export default function App() {
@@ -65,8 +65,9 @@ export default function App() {
   const [showGridLines, setShowGridLines] = useState(false);
   const [showGridIndicator, setShowGridIndicator] = useState(true);
 
-  // Load custom fonts on startup
+  // Load custom fonts & apply theme CSS variables on startup
   useEffect(() => {
+    applyThemeToCSS(activeThemeObj);
     loadSavedCustomFonts().then((loaded) => {
       if (loaded && loaded.length > 0) {
         setCustomFonts(loaded);
@@ -77,6 +78,10 @@ export default function App() {
   const handleSelectPlatformTheme = (newThemeId) => {
     setActivePlatformThemeId(newThemeId);
     savePlatformThemeId(newThemeId);
+    const foundTheme = MASTER_PALETTES.find(p => p.id === newThemeId);
+    if (foundTheme) {
+      applyThemeToCSS(foundTheme);
+    }
   };
 
   const handleApplyPaletteToCard = (palette) => {
@@ -211,11 +216,11 @@ export default function App() {
       </div>
 
       {/* 2. Main Studio Workspace (Mobile: Vertical Split Flex / Desktop: 12-Col Grid) */}
-      <main className="flex-1 overflow-hidden flex flex-col lg:grid lg:grid-cols-12 max-w-[1550px] w-full mx-auto p-2 sm:p-3 lg:p-4 gap-2.5 lg:overflow-y-auto">
+      <main className="flex-1 overflow-hidden flex flex-col lg:grid lg:grid-cols-12 max-w-[1550px] w-full mx-auto p-2 sm:p-3 lg:p-4 gap-3 lg:overflow-y-auto">
         
         {/* TOP PREVIEW STAGE (MOBILE: Fixed non-scrolling top / DESKTOP: Sticky column) */}
         <div
-          className="flex-none lg:col-span-5 xl:col-span-5 flex flex-col items-center gap-1 py-1 border-b lg:border-none shadow-md lg:shadow-none w-full transition-colors duration-200"
+          className="flex-none lg:col-span-5 xl:col-span-5 flex flex-col items-center gap-1.5 py-1.5 border-b lg:border-none shadow-md lg:shadow-none w-full transition-colors duration-200"
           style={{
             backgroundColor: activeThemeObj.bgSurface,
             borderColor: activeThemeObj.borderSubtle
@@ -227,7 +232,7 @@ export default function App() {
             <span className="font-bold text-slate-300">المعاينة الحية:</span>
             <button
               onClick={() => setIsFullscreenPreviewOpen(true)}
-              className="flex items-center gap-1 text-[10px] font-bold px-2.5 py-0.5 rounded-lg transition-all active:scale-95 cursor-pointer shadow-sm border"
+              className="flex items-center gap-1 text-[10px] font-bold px-2.5 py-1 rounded-lg transition-all active:scale-95 cursor-pointer shadow-sm border"
               style={{
                 backgroundColor: activeThemeObj.bgDark,
                 borderColor: activeThemeObj.border,
@@ -293,10 +298,10 @@ export default function App() {
         </div>
 
         {/* BOTTOM CONTROL DECK (MOBILE: Scrollable independent pane / DESKTOP: Left column) */}
-        <div className="flex-1 overflow-y-auto lg:overflow-visible lg:col-span-7 xl:col-span-7 space-y-2 overscroll-contain pr-0.5">
-          {/* Segmented Tabs Navigation with Luxury Dividers */}
+        <div className="flex-1 overflow-y-auto lg:overflow-visible lg:col-span-7 xl:col-span-7 space-y-3 overscroll-contain pr-0.5">
+          {/* Segmented Tabs Navigation with Clear Luxury Dividers */}
           <div
-            className="flex items-center p-1 rounded-2xl border overflow-x-auto select-none shadow-md sticky top-0 z-20 backdrop-blur-md transition-colors duration-200"
+            className="flex items-center p-1.5 rounded-2xl border overflow-x-auto select-none shadow-md sticky top-0 z-20 backdrop-blur-md transition-colors duration-200"
             style={{
               backgroundColor: activeThemeObj.bgSurface,
               borderColor: activeThemeObj.borderSubtle
@@ -307,23 +312,28 @@ export default function App() {
               const isActive = activeTab === tab.id;
               return (
                 <React.Fragment key={tab.id}>
-                  {index > 0 && <div className="w-[1px] h-3.5 mx-0.5 shrink-0 opacity-40" style={{ backgroundColor: activeThemeObj.border }} />}
+                  {index > 0 && (
+                    <div
+                      className="w-[1px] h-4 mx-1 shrink-0 opacity-40"
+                      style={{ backgroundColor: activeThemeObj.border }}
+                    />
+                  )}
                   <button
                     onClick={() => setActiveTab(tab.id)}
-                    className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-xl text-[11px] font-bold whitespace-nowrap transition-all cursor-pointer ${
-                      isActive ? 'shadow-md font-black' : 'text-slate-400 hover:text-slate-200'
+                    className={`flex-1 flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-xl text-[11px] font-bold whitespace-nowrap transition-all cursor-pointer ${
+                      isActive ? 'shadow-md font-black scale-[1.02]' : 'text-slate-400 hover:text-slate-200'
                     }`}
                     style={
                       isActive
                         ? {
                             backgroundColor: activeThemeObj.accent,
                             color: activeThemeObj.bgDark,
-                            boxShadow: `0 0 10px ${activeThemeObj.accentGlow}`
+                            boxShadow: `0 0 12px ${activeThemeObj.accentGlow}`
                           }
                         : {}
                     }
                   >
-                    <Icon className="w-3 h-3" />
+                    <Icon className="w-3.5 h-3.5" />
                     <span>{tab.name}</span>
                   </button>
                 </React.Fragment>
@@ -331,9 +341,9 @@ export default function App() {
             })}
           </div>
 
-          {/* Control Deck Body (Clean & Reactive to Active Platform Theme) */}
+          {/* Control Deck Body (Clean, Breathable & Reactive to Active Platform Theme) */}
           <div
-            className="p-3 sm:p-4 rounded-3xl border shadow-xl mb-3 transition-colors duration-200"
+            className="p-3.5 sm:p-5 rounded-3xl border shadow-xl mb-3 transition-colors duration-200"
             style={{
               backgroundColor: activeThemeObj.bgCard,
               borderColor: activeThemeObj.borderSubtle

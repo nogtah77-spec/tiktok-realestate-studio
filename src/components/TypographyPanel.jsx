@@ -61,21 +61,21 @@ export default function TypographyPanel({
   };
 
   return (
-    <div className="space-y-3.5 text-xs">
+    <div className="space-y-4 text-xs">
       {/* Upload Custom Font Header */}
-      <div className="p-3.5 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-2.5">
-        <div className="flex items-center justify-between">
-          <label className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-            <Type className="w-3.5 h-3.5 text-amber-400" />
+      <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3">
+        <div className="flex items-center justify-between pb-1 border-b border-slate-800">
+          <label className="text-xs font-extrabold text-slate-100 flex items-center gap-2">
+            <Type className="w-4 h-4 text-slate-300" />
             <span>رفع خط مخصص (عربي أو إنجليزي)</span>
           </label>
-          <span className="text-[9px] text-slate-500 font-mono tracking-wider bg-slate-950 px-2 py-0.5 rounded-md border border-slate-800 mr-2">
+          <span className="text-[10px] text-slate-400 font-mono tracking-wider bg-slate-950 px-2 py-0.5 rounded-md border border-slate-800">
             TTF, OTF, WOFF
           </span>
         </div>
 
         {errorMsg && (
-          <div className="p-2 rounded-xl bg-rose-500/10 border border-rose-500/30 text-xs text-rose-300 flex items-center gap-2">
+          <div className="p-2.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-xs text-rose-300 flex items-center gap-2">
             <AlertCircle className="w-4 h-4 shrink-0" />
             <span>{errorMsg}</span>
           </div>
@@ -83,7 +83,7 @@ export default function TypographyPanel({
 
         <div
           onClick={() => fileInputRef.current?.click()}
-          className="flex items-center justify-center gap-2 p-3 border border-dashed border-slate-700 hover:border-amber-400/70 rounded-xl bg-slate-950/60 hover:bg-slate-950 transition-all cursor-pointer text-xs font-bold text-amber-300"
+          className="flex items-center justify-center gap-2 p-3.5 border border-dashed border-slate-700 hover:border-slate-500 rounded-xl bg-slate-950/60 hover:bg-slate-950 transition-all cursor-pointer text-xs font-bold text-white shadow-sm"
         >
           <input
             type="file"
@@ -92,23 +92,23 @@ export default function TypographyPanel({
             accept=".ttf,.otf,.woff,.woff2"
             className="hidden"
           />
-          <Upload className="w-3.5 h-3.5" />
-          <span>{isUploading ? 'جاري تسجيل الخط...' : 'اختر ملف الخط من جهازك'}</span>
+          <Upload className="w-4 h-4 text-slate-300" />
+          <span>{isUploading ? 'جاري تسجيل الخط في المتصفح...' : 'اختر ملف الخط من جهازك'}</span>
         </div>
       </div>
 
       {/* User Custom Uploaded Fonts */}
       {customFonts.length > 0 && (
-        <div className="p-3 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-2">
-          <span className="text-[11px] font-bold text-amber-400">خطوطك الخاصة المرفوعة ({customFonts.length}):</span>
-          <div className="space-y-1.5">
+        <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-2.5">
+          <span className="text-[11px] font-bold text-slate-200">خطوطك الخاصة المرفوعة ({customFonts.length}):</span>
+          <div className="space-y-2">
             {customFonts.map((font) => (
               <div
                 key={font.id}
-                className="flex items-center justify-between p-2.5 rounded-xl bg-slate-950 border border-amber-500/30 text-xs text-slate-200"
+                className="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-200 shadow-sm"
               >
                 <div className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                  <span className="w-2 h-2 rounded-full bg-emerald-400" />
                   <span className="font-bold text-sm" style={{ fontFamily: font.fontClass }}>
                     {font.name} — العمودي للعقارات 2026
                   </span>
@@ -118,7 +118,7 @@ export default function TypographyPanel({
                   className="text-slate-500 hover:text-rose-400 p-1 cursor-pointer transition-colors"
                   title="حذف الخط"
                 >
-                  <Trash2 className="w-3.5 h-3.5" />
+                  <Trash2 className="w-4 h-4" />
                 </button>
               </div>
             ))}
@@ -127,13 +127,13 @@ export default function TypographyPanel({
       )}
 
       {/* Pre-installed Luxury Fonts List */}
-      <div className="p-3 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-2">
-        <span className="text-[11px] font-bold text-slate-300">الخطوط المثبتة مسبقاً:</span>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+      <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-2.5">
+        <span className="text-[11px] font-bold text-slate-300">الخطوط الفاخرة المثبتة مسبقاً:</span>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {BUILTIN_FONTS.map((font) => (
             <div
               key={font.id}
-              className="p-2.5 rounded-xl bg-slate-950 border border-slate-850 text-xs space-y-0.5"
+              className="p-3 rounded-xl bg-slate-950 border border-slate-850 text-xs space-y-1"
             >
               <div className="flex items-center justify-between text-slate-400 text-[10px]">
                 <span className="font-semibold text-slate-300">{font.name}</span>

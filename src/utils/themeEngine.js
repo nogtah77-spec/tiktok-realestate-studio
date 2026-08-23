@@ -258,3 +258,16 @@ export function savePlatformThemeId(themeId) {
     localStorage.setItem('alamoudi_studio_theme', themeId);
   } catch {}
 }
+
+export function applyThemeToCSS(theme) {
+  if (!theme) return;
+  const root = document.documentElement;
+  root.style.setProperty('--theme-accent', theme.accent);
+  root.style.setProperty('--theme-accent-glow', theme.accentGlow);
+  root.style.setProperty('--theme-bg-dark', theme.bgDark);
+  root.style.setProperty('--theme-bg-surface', theme.bgSurface);
+  root.style.setProperty('--theme-bg-card', theme.bgCard);
+  root.style.setProperty('--theme-border', theme.border);
+  root.style.setProperty('--theme-text-primary', theme.textPrimary);
+  root.style.setProperty('--theme-text-muted', theme.textSecondary);
+}
