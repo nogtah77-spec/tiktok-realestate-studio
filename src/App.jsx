@@ -12,17 +12,17 @@ import SupabaseModal from './components/SupabaseModal';
 import { DEFAULT_GLASS_CARD_DATA, SAMPLE_IMAGES, LUXURY_THEMES } from './utils/constants';
 import { getAllPresets, saveUserPreset, deleteUserPreset, BUILTIN_PRESETS } from './utils/presetStorage';
 import { loadSavedCustomFonts } from './utils/fontLoader';
-import { Image as ImageIcon, Type, LayoutGrid, FileText, Shield, Smartphone, Maximize2, Split } from 'lucide-react';
+import { Image as ImageIcon, Type, LayoutGrid, FileText, Shield, Maximize2, Split } from 'lucide-react';
 
 export default function App() {
   const canvasRef = useRef(null);
 
-  // 1. App State & Navigation Tabs
+  // 1. Navigation & View State
   const [activeTab, setActiveTab] = useState('fields');
   const [presets, setPresets] = useState(getAllPresets);
-  const [activePresetId, setActivePresetId] = useState('preset-champagne-gold');
+  const [activePresetId, setActivePresetId] = useState('preset-sale-gold');
   const [customFonts, setCustomFonts] = useState([]);
-  const [viewMode, setViewMode] = useState('split'); // 'split' or 'full'
+  const [viewMode, setViewMode] = useState('split'); // 'split' (fixed top preview) or 'full'
 
   // 2. Modals
   const [isCopywriterOpen, setIsCopywriterOpen] = useState(false);
@@ -110,11 +110,11 @@ export default function App() {
   };
 
   const tabs = [
-    { id: 'fields', name: 'نصوص وأرقام البوكس', icon: FileText },
-    { id: 'layout', name: 'الثيم اللوني، الحدود والفواصل', icon: LayoutGrid },
-    { id: 'image', name: 'صورة العقار والبلور', icon: ImageIcon },
-    { id: 'typography', name: 'الخطوط الخاصة', icon: Type },
-    { id: 'logo', name: 'شعار البراند', icon: Shield }
+    { id: 'fields', name: 'النصوص والأرقام', icon: FileText },
+    { id: 'layout', name: 'الثيم والحدود', icon: LayoutGrid },
+    { id: 'image', name: 'الصورة والبلور', icon: ImageIcon },
+    { id: 'typography', name: 'الخطوط', icon: Type },
+    { id: 'logo', name: 'الشعار', icon: Shield }
   ];
 
   // Helper fields for copywriter
@@ -125,7 +125,8 @@ export default function App() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col antialiased selection:bg-amber-500/30 selection:text-amber-200">
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col antialiased selection:bg-amber-500/30 selection:text-amber-200 overflow-x-hidden">
+      {/* 1. Header (Slim 56px) */}
       <Header
         presets={presets}
         activePresetId={activePresetId}
@@ -137,20 +138,21 @@ export default function App() {
         onOpenCopywriterModal={() => setIsCopywriterOpen(true)}
       />
 
+      {/* 2. Main Studio Container */}
       <main className="flex-1 max-w-[1600px] w-full mx-auto p-2 sm:p-4 lg:p-6 grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-start">
         
-        {/* RIGHT COLUMN (DESKTOP) / TOP STICKY BAR (MOBILE): Live Preview & Export Toolbar */}
+        {/* RIGHT COLUMN (DESKTOP) / TOP FIXED PREVIEW DECK (MOBILE) */}
         <div className={`lg:col-span-5 xl:col-span-5 flex flex-col items-center gap-3 z-30 ${
           viewMode === 'split'
-            ? 'sticky top-0 bg-slate-950/95 lg:bg-transparent backdrop-blur-xl lg:backdrop-blur-none py-2 lg:py-0 border-b border-slate-800/80 lg:border-none shadow-2xl lg:shadow-none lg:sticky lg:top-20'
+            ? 'sticky top-14 bg-slate-950/98 lg:bg-transparent backdrop-blur-xl lg:backdrop-blur-none py-2 lg:py-0 border-b border-slate-800 lg:border-none shadow-2xl lg:shadow-none lg:sticky lg:top-20'
             : 'relative'
         }`}>
-          {/* Mobile View Mode Switcher */}
-          <div className="lg:hidden w-full flex items-center justify-between px-2 pb-1 text-xs text-slate-400">
-            <span className="font-bold text-slate-200">المعاينة الحية التفاعلية</span>
+          {/* Mobile View Toggle Bar */}
+          <div className="lg:hidden w-full flex items-center justify-between px-2 text-xs">
+            <span className="font-bold text-slate-300">المعاينة الحية:</span>
             <button
               onClick={() => setViewMode(viewMode === 'split' ? 'full' : 'split')}
-              className="flex items-center gap-1 text-[11px] font-bold text-amber-400 bg-slate-900 border border-slate-800 px-2.5 py-1 rounded-lg"
+              className="flex items-center gap-1 text-[11px] font-bold text-amber-300 bg-slate-900 border border-slate-800 px-2.5 py-1 rounded-lg transition-colors"
             >
               {viewMode === 'split' ? (
                 <>
@@ -166,9 +168,11 @@ export default function App() {
             </button>
           </div>
 
-          {/* Scaling wrapper for mobile split-view */}
-          <div className={`transition-all duration-200 flex justify-center ${
-            viewMode === 'split' ? 'max-h-[38vh] sm:max-h-[44vh] lg:max-h-none overflow-hidden scale-[0.62] sm:scale-[0.75] lg:scale-100 origin-top -my-14 sm:-my-10 lg:my-0' : 'w-full'
+          {/* Scaled Preview Frame (Fixed height on mobile in split mode) */}
+          <div className={`transition-all duration-150 flex items-center justify-center ${
+            viewMode === 'split'
+              ? 'h-[230px] sm:h-[280px] lg:h-auto overflow-hidden scale-[0.44] sm:scale-[0.52] lg:scale-100 origin-center -my-24 sm:-my-16 lg:my-0'
+              : 'w-full'
           }`}>
             <CanvasPreview
               ref={canvasRef}
@@ -197,7 +201,7 @@ export default function App() {
             />
           </div>
 
-          {/* Action Bar (Download, Copy, Toggles) */}
+          {/* Action Bar (Download & Toggles) */}
           <div className="w-full max-w-[430px]">
             <ExportControls
               canvasRef={canvasRef}
@@ -207,19 +211,15 @@ export default function App() {
               setShowLogo={setShowLogo}
               showGridIndicator={showGridIndicator}
               setShowGridIndicator={setShowGridIndicator}
-              isPhoneMockup={isPhoneMockup}
-              setIsPhoneMockup={setIsPhoneMockup}
               onOpenCopywriterModal={() => setIsCopywriterOpen(true)}
-              viewMode={viewMode}
-              setViewMode={setViewMode}
             />
           </div>
         </div>
 
-        {/* LEFT COLUMN (DESKTOP) / BOTTOM CONTROL DECK (MOBILE): Studio Controls & Tabs */}
-        <div className="lg:col-span-7 xl:col-span-7 space-y-3 sm:space-y-4">
-          {/* Main Navigation Tabs */}
-          <div className="flex items-center gap-1.5 p-1.5 rounded-2xl bg-slate-900/90 border border-slate-800 overflow-x-auto select-none shadow-lg">
+        {/* LEFT COLUMN (DESKTOP) / BOTTOM SCROLLABLE CONTROL DECK (MOBILE) */}
+        <div className="lg:col-span-7 xl:col-span-7 space-y-3">
+          {/* Tabs Navigation */}
+          <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-slate-900/90 border border-slate-800 overflow-x-auto select-none">
             {tabs.map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -227,9 +227,9 @@ export default function App() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-1.5 px-3 py-2 sm:px-3.5 sm:py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
+                  className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
                     isActive
-                      ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/25 font-black'
+                      ? 'bg-amber-500 text-slate-950 font-black shadow-md'
                       : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
                   }`}
                 >
@@ -240,8 +240,8 @@ export default function App() {
             })}
           </div>
 
-          {/* Active Panel Body */}
-          <div className="p-4 sm:p-5 rounded-3xl bg-slate-900/75 border border-slate-800/80 backdrop-blur-xl shadow-xl">
+          {/* Control Deck Body */}
+          <div className="p-3.5 sm:p-4 rounded-3xl bg-slate-900/75 border border-slate-800/80 backdrop-blur-xl shadow-xl">
             {activeTab === 'fields' && (
               <FieldsEditor
                 cardData={cardData}
