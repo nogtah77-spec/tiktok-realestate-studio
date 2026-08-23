@@ -8,21 +8,23 @@ import FieldsEditor from './components/FieldsEditor';
 import LogoPanel from './components/LogoPanel';
 import ExportControls, { SideActionWings } from './components/ExportControls';
 import SocialCopywriterModal from './components/SocialCopywriterModal';
+import FullscreenPreviewModal from './components/FullscreenPreviewModal';
 import SupabaseModal from './components/SupabaseModal';
 import { DEFAULT_GLASS_CARD_DATA, SAMPLE_IMAGES, LUXURY_THEMES } from './utils/constants';
 import { getAllPresets, saveUserPreset, deleteUserPreset, BUILTIN_PRESETS } from './utils/presetStorage';
 import { loadSavedCustomFonts } from './utils/fontLoader';
-import { Image as ImageIcon, Type, LayoutGrid, FileText, Shield, Maximize2, Split } from 'lucide-react';
+import { Image as ImageIcon, Type, LayoutGrid, FileText, Shield, Maximize2 } from 'lucide-react';
 
 export default function App() {
   const canvasRef = useRef(null);
+  const fullscreenCanvasRef = useRef(null);
 
   // 1. Navigation & View State
   const [activeTab, setActiveTab] = useState('fields');
   const [presets, setPresets] = useState(getAllPresets);
   const [activePresetId, setActivePresetId] = useState('preset-sale-gold');
   const [customFonts, setCustomFonts] = useState([]);
-  const [viewMode, setViewMode] = useState('split'); // 'split' (fixed compact top preview) or 'full'
+  const [isFullscreenPreviewOpen, setIsFullscreenPreviewOpen] = useState(false);
 
   // 2. Modals
   const [isCopywriterOpen, setIsCopywriterOpen] = useState(false);
@@ -124,6 +126,31 @@ export default function App() {
     { text: `${cardData.subtitle || 'المساحة'}: ${cardData.heroNumber} ${cardData.heroUnit}` }
   ];
 
+  // Shared preview props
+  const previewProps = {
+    imageUrl,
+    imageZoom,
+    imagePanX,
+    imagePanY,
+    imageBlur,
+    imageFilter,
+    overlayColor,
+    overlayOpacity,
+    hasVignette,
+    vignetteIntensity,
+    themeId,
+    finish,
+    cardData,
+    showLogo,
+    logoUrl,
+    logoPosition,
+    logoScale,
+    logoOpacity,
+    showGridLines,
+    showGridIndicator,
+    gridViewsCount: '1916'
+  };
+
   // Get Side Action Wings for the Stage Bay
   const sideWings = SideActionWings({
     canvasRef,
@@ -135,7 +162,7 @@ export default function App() {
 
   return (
     <div className="bg-slate-950 text-slate-100 flex flex-col antialiased selection:bg-amber-500/30 selection:text-amber-200">
-      {/* 1. Slim Header (50px) */}
+      {/* 1. Header (Slim 50px) */}
       <Header
         presets={presets}
         activePresetId={activePresetId}
@@ -148,29 +175,20 @@ export default function App() {
       />
 
       {/* 2. Main Studio Workspace Layout */}
-      <main className="max-w-[1550px] w-full mx-auto p-2 sm:p-3 lg:p-4 grid grid-cols-1 lg:grid-cols-12 gap-3 items-start">
+      <main className="max-w-[1550px] w-full mx-auto p-2 sm:p-3 lg:p-4 grid grid-cols-1 lg:grid-cols-12 gap-2.5 items-start">
         
         {/* RIGHT COLUMN (DESKTOP) / COMPACT STICKY PREVIEW STAGE (MOBILE) */}
         <div className="lg:col-span-5 xl:col-span-5 flex flex-col items-center gap-1.5 sticky top-12 lg:top-15 self-start z-30 bg-slate-950/98 lg:bg-transparent backdrop-blur-xl lg:backdrop-blur-none py-1 lg:py-0 border-b border-slate-800/90 lg:border-none shadow-xl lg:shadow-none w-full">
           
-          {/* Mobile View Toggle Bar */}
+          {/* Mobile Top Bar: Title + Open Fullscreen Lightbox Button */}
           <div className="lg:hidden w-full flex items-center justify-between px-1 text-[11px]">
             <span className="font-bold text-slate-300">المعاينة الحية:</span>
             <button
-              onClick={() => setViewMode(viewMode === 'split' ? 'full' : 'split')}
-              className="flex items-center gap-1 text-[10px] font-bold text-amber-300 bg-slate-900 border border-slate-800 px-2 py-0.5 rounded-lg transition-colors cursor-pointer"
+              onClick={() => setIsFullscreenPreviewOpen(true)}
+              className="flex items-center gap-1 text-[10px] font-bold text-amber-300 bg-slate-900 hover:bg-slate-850 border border-slate-800 px-2.5 py-0.5 rounded-lg transition-all active:scale-95 cursor-pointer shadow-sm"
             >
-              {viewMode === 'split' ? (
-                <>
-                  <Maximize2 className="w-2.5 h-2.5" />
-                  <span>معاينة مكبرة</span>
-                </>
-              ) : (
-                <>
-                  <Split className="w-2.5 h-2.5" />
-                  <span>وضع منقسم</span>
-                </>
-              )}
+              <Maximize2 className="w-3 h-3 text-amber-400" />
+              <span>تكبير المعاينة 🔍</span>
             </button>
           </div>
 
@@ -181,98 +199,30 @@ export default function App() {
 
             {/* Center Canvas Preview: Exact pixel footprint on mobile with zero dead space */}
             <div className="flex items-center justify-center">
-              {/* MOBILE COMPACT SPLIT VIEW CONTAINER (130px x 231px) */}
-              <div className="lg:hidden">
-                {viewMode === 'split' ? (
-                  <div className="w-[130px] h-[231px] relative overflow-hidden rounded-[20px] bg-slate-900 shadow-xl ring-1 ring-slate-800/80">
-                    <div
-                      className="absolute top-0 left-0 origin-top-left"
-                      style={{ transform: 'scale(0.3823)' }}
-                    >
-                      <CanvasPreview
-                        ref={canvasRef}
-                        imageUrl={imageUrl}
-                        imageZoom={imageZoom}
-                        imagePanX={imagePanX}
-                        imagePanY={imagePanY}
-                        imageBlur={imageBlur}
-                        imageFilter={imageFilter}
-                        overlayColor={overlayColor}
-                        overlayOpacity={overlayOpacity}
-                        hasVignette={hasVignette}
-                        vignetteIntensity={vignetteIntensity}
-                        themeId={themeId}
-                        finish={finish}
-                        cardData={cardData}
-                        showLogo={showLogo}
-                        logoUrl={logoUrl}
-                        logoPosition={logoPosition}
-                        logoScale={logoScale}
-                        logoOpacity={logoOpacity}
-                        isPhoneMockup={false}
-                        showGridLines={showGridLines}
-                        showGridIndicator={showGridIndicator}
-                        gridViewsCount="1916"
-                      />
-                    </div>
-                  </div>
-                ) : (
-                  <div className="w-full max-w-[340px]">
-                    <CanvasPreview
-                      ref={canvasRef}
-                      imageUrl={imageUrl}
-                      imageZoom={imageZoom}
-                      imagePanX={imagePanX}
-                      imagePanY={imagePanY}
-                      imageBlur={imageBlur}
-                      imageFilter={imageFilter}
-                      overlayColor={overlayColor}
-                      overlayOpacity={overlayOpacity}
-                      hasVignette={hasVignette}
-                      vignetteIntensity={vignetteIntensity}
-                      themeId={themeId}
-                      finish={finish}
-                      cardData={cardData}
-                      showLogo={showLogo}
-                      logoUrl={logoUrl}
-                      logoPosition={logoPosition}
-                      logoScale={logoScale}
-                      logoOpacity={logoOpacity}
-                      isPhoneMockup={isPhoneMockup}
-                      showGridLines={showGridLines}
-                      showGridIndicator={showGridIndicator}
-                      gridViewsCount="1916"
-                    />
-                  </div>
-                )}
+              {/* MOBILE COMPACT PREVIEW (130px x 231px) - Click to expand */}
+              <div
+                onClick={() => setIsFullscreenPreviewOpen(true)}
+                className="lg:hidden w-[130px] h-[231px] relative overflow-hidden rounded-[20px] bg-slate-900 shadow-xl ring-1 ring-slate-800/80 cursor-pointer active:scale-98 transition-transform"
+                title="اضغط لتكبير المعاينة على كامل الشاشة"
+              >
+                <div
+                  className="absolute top-0 left-0 origin-top-left pointer-events-none"
+                  style={{ transform: 'scale(0.3823)' }}
+                >
+                  <CanvasPreview
+                    ref={canvasRef}
+                    {...previewProps}
+                    isPhoneMockup={false}
+                  />
+                </div>
               </div>
 
               {/* DESKTOP FULL-SIZE CANVAS */}
               <div className="hidden lg:block w-full max-w-[380px]">
                 <CanvasPreview
                   ref={canvasRef}
-                  imageUrl={imageUrl}
-                  imageZoom={imageZoom}
-                  imagePanX={imagePanX}
-                  imagePanY={imagePanY}
-                  imageBlur={imageBlur}
-                  imageFilter={imageFilter}
-                  overlayColor={overlayColor}
-                  overlayOpacity={overlayOpacity}
-                  hasVignette={hasVignette}
-                  vignetteIntensity={vignetteIntensity}
-                  themeId={themeId}
-                  finish={finish}
-                  cardData={cardData}
-                  showLogo={showLogo}
-                  logoUrl={logoUrl}
-                  logoPosition={logoPosition}
-                  logoScale={logoScale}
-                  logoOpacity={logoOpacity}
+                  {...previewProps}
                   isPhoneMockup={isPhoneMockup}
-                  showGridLines={showGridLines}
-                  showGridIndicator={showGridIndicator}
-                  gridViewsCount="1916"
                 />
               </div>
             </div>
@@ -317,7 +267,7 @@ export default function App() {
             })}
           </div>
 
-          {/* Control Deck Body (Clean, Zero bottom whitespace) */}
+          {/* Control Deck Body (Clean, Ends strictly at last box) */}
           <div className="p-3 sm:p-4 rounded-3xl bg-slate-900/75 border border-slate-800/80 backdrop-blur-xl shadow-xl">
             {activeTab === 'fields' && (
               <FieldsEditor
@@ -389,6 +339,14 @@ export default function App() {
           </div>
         </div>
       </main>
+
+      {/* Fullscreen Lightbox Modal for Mobile and Desktop Inspection */}
+      <FullscreenPreviewModal
+        isOpen={isFullscreenPreviewOpen}
+        onClose={() => setIsFullscreenPreviewOpen(false)}
+        canvasRef={fullscreenCanvasRef}
+        previewProps={previewProps}
+      />
 
       <SocialCopywriterModal
         isOpen={isCopywriterOpen}
