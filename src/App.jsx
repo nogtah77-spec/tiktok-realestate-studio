@@ -6,6 +6,7 @@ import TypographyPanel from './components/TypographyPanel';
 import LayoutAndCardsPanel from './components/LayoutAndCardsPanel';
 import FieldsEditor from './components/FieldsEditor';
 import LogoPanel from './components/LogoPanel';
+import PalettesStudioPanel from './components/PalettesStudioPanel';
 import ExportControls, { SideActionWings } from './components/ExportControls';
 import SocialCopywriterModal from './components/SocialCopywriterModal';
 import FullscreenPreviewModal from './components/FullscreenPreviewModal';
@@ -13,7 +14,8 @@ import SupabaseModal from './components/SupabaseModal';
 import { DEFAULT_GLASS_CARD_DATA, SAMPLE_IMAGES, LUXURY_THEMES } from './utils/constants';
 import { getAllPresets, saveUserPreset, deleteUserPreset, BUILTIN_PRESETS } from './utils/presetStorage';
 import { loadSavedCustomFonts } from './utils/fontLoader';
-import { Image as ImageIcon, Type, LayoutGrid, FileText, Shield, Maximize2 } from 'lucide-react';
+import { MASTER_PALETTES, getSavedPlatformThemeId, savePlatformThemeId, applyThemeToCSS } from './utils/themeEngine';
+import { Image as ImageIcon, Type, LayoutGrid, FileText, Shield, Maximize2, Palette } from 'lucide-react';
 
 export default function App() {
   const canvasRef = useRef(null);
@@ -26,11 +28,14 @@ export default function App() {
   const [customFonts, setCustomFonts] = useState([]);
   const [isFullscreenPreviewOpen, setIsFullscreenPreviewOpen] = useState(false);
 
-  // 2. Modals
+  // 2. 8 Pro Palettes Theme Engine
+  const [activePlatformThemeId, setActivePlatformThemeId] = useState(getSavedPlatformThemeId);
+
+  // 3. Modals
   const [isCopywriterOpen, setIsCopywriterOpen] = useState(false);
   const [isSupabaseOpen, setIsSupabaseOpen] = useState(false);
 
-  // 3. Image State
+  // 4. Image State
   const [imageUrl, setImageUrl] = useState(SAMPLE_IMAGES[0].url);
   const [imageZoom, setImageZoom] = useState(100);
   const [imagePanX, setImagePanX] = useState(0);
@@ -42,31 +47,55 @@ export default function App() {
   const [hasVignette, setHasVignette] = useState(true);
   const [vignetteIntensity, setVignetteIntensity] = useState(50);
 
-  // 4. Luxury Glass Card & Theme State
+  // 5. Luxury Glass Card & Theme State
   const [themeId, setThemeId] = useState('sale-gold');
   const [finish, setFinish] = useState('glossy');
   const [cardData, setCardData] = useState(DEFAULT_GLASS_CARD_DATA);
 
-  // 5. Logo State
+  // 6. Logo State
   const [showLogo, setShowLogo] = useState(true);
   const [logoUrl, setLogoUrl] = useState('');
   const [logoPosition, setLogoPosition] = useState('top-right');
   const [logoScale, setLogoScale] = useState(100);
   const [logoOpacity, setLogoOpacity] = useState(100);
 
-  // 6. Preview Toggles
+  // 7. Preview Toggles
   const [isPhoneMockup, setIsPhoneMockup] = useState(true);
   const [showGridLines, setShowGridLines] = useState(false);
   const [showGridIndicator, setShowGridIndicator] = useState(true);
 
-  // Load custom fonts from IndexedDB on startup
+  // Initialize theme and fonts on startup
   useEffect(() => {
+    const savedTheme = MASTER_PALETTES.find(p => p.id === activePlatformThemeId) || MASTER_PALETTES[1];
+    applyThemeToCSS(savedTheme);
+
     loadSavedCustomFonts().then((loaded) => {
       if (loaded && loaded.length > 0) {
         setCustomFonts(loaded);
       }
     });
   }, []);
+
+  const handleSelectPlatformTheme = (newThemeId) => {
+    setActivePlatformThemeId(newThemeId);
+    savePlatformThemeId(newThemeId);
+    const foundTheme = MASTER_PALETTES.find(p => p.id === newThemeId);
+    if (foundTheme) {
+      applyThemeToCSS(foundTheme);
+    }
+  };
+
+  const handleApplyPaletteToCard = (palette) => {
+    if (!palette) return;
+    setCardData(prev => ({
+      ...prev,
+      borderColorMode: 'custom',
+      customBorderColor: palette.previewCard.borderColor,
+      glowColorMode: 'custom',
+      customGlowColor: palette.previewCard.borderGlow,
+      borderGlowIntensity: 80
+    }));
+  };
 
   // Handle Preset selection
   const handleSelectPreset = (preset) => {
@@ -114,6 +143,7 @@ export default function App() {
   const tabs = [
     { id: 'fields', name: 'النصوص والأرقام', icon: FileText },
     { id: 'layout', name: 'الثيم والحدود', icon: LayoutGrid },
+    { id: 'palettes', name: 'استوديو الثيمات (8)', icon: Palette },
     { id: 'image', name: 'الصورة والبلور', icon: ImageIcon },
     { id: 'typography', name: 'الخطوط', icon: Type },
     { id: 'logo', name: 'الشعار', icon: Shield }
@@ -173,6 +203,8 @@ export default function App() {
           onResetToDefault={handleResetToDefault}
           onOpenSupabaseModal={() => setIsSupabaseOpen(true)}
           onOpenCopywriterModal={() => setIsCopywriterOpen(true)}
+          activePlatformThemeId={activePlatformThemeId}
+          onSelectPlatformTheme={handleSelectPlatformTheme}
         />
       </div>
 
@@ -194,7 +226,7 @@ export default function App() {
             </button>
           </div>
 
-          {/* Stage Bay: Flanked by Right and Left Wings with refined 2mm spacing (gap-3.5 sm:gap-4) */}
+          {/* Stage Bay: Flanked by Right and Left Wings with refined 2mm spacing */}
           <div className="w-full flex items-center justify-center gap-3.5 sm:gap-4">
             {/* Right Wing: الجريد والشعار */}
             {sideWings.rightWing}
@@ -289,6 +321,14 @@ export default function App() {
                 setFinish={setFinish}
                 cardData={cardData}
                 setCardData={setCardData}
+              />
+            )}
+
+            {activeTab === 'palettes' && (
+              <PalettesStudioPanel
+                activePlatformThemeId={activePlatformThemeId}
+                onSelectPlatformTheme={handleSelectPlatformTheme}
+                onApplyToCard={handleApplyPaletteToCard}
               />
             )}
 
