@@ -41,14 +41,14 @@ export default function SocialCopywriterModal({
     <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 text-xs select-none animate-in fade-in duration-150">
       <div className="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-2xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
         {/* Modal Header */}
-        <div className="px-5 py-3.5 bg-slate-950 border-b border-slate-800 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
+        <div className="px-5 py-4 bg-slate-950 border-b border-slate-800 flex items-center justify-between">
+          <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-xl bg-white/10 text-white flex items-center justify-center shadow-inner">
               <Sparkles className="w-4 h-4" />
             </div>
-            <div>
-              <h3 className="font-extrabold text-slate-100 text-sm">مولد النصوص التسويقية والكابشن PRO</h3>
-              <p className="text-[10px] text-slate-400">نصوص دعائية مهيأة لتيك توك وإنستغرام والواتساب</p>
+            <div className="space-y-0.5">
+              <h3 className="font-extrabold text-slate-100 text-sm tracking-tight">صانع النصوص الإعلانية والكابشن PRO</h3>
+              <p className="text-[11px] text-slate-400 font-medium pt-0.5">نصوص دعائية مهيأة للسوشيال ميديا</p>
             </div>
           </div>
 
@@ -169,12 +169,12 @@ export default function SocialCopywriterModal({
             {copiedTab === activeTab ? (
               <>
                 <Check className="w-4 h-4 text-emerald-600 stroke-[3]" />
-                <span className="text-emerald-700">تم النسخ بنجاح!</span>
+                <span className="text-emerald-700">تم النسخ للحافظة بنجاح!</span>
               </>
             ) : (
               <>
                 <Copy className="w-4 h-4" />
-                <span>نسخ النص للحافظة</span>
+                <span>نسخ النص للحافظة (Copy)</span>
               </>
             )}
           </button>
