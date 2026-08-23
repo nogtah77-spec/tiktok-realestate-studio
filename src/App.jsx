@@ -22,7 +22,7 @@ export default function App() {
   const [presets, setPresets] = useState(getAllPresets);
   const [activePresetId, setActivePresetId] = useState('preset-sale-gold');
   const [customFonts, setCustomFonts] = useState([]);
-  const [viewMode, setViewMode] = useState('split'); // 'split' (fixed top preview) or 'full'
+  const [viewMode, setViewMode] = useState('split'); // 'split' or 'full'
 
   // 2. Modals
   const [isCopywriterOpen, setIsCopywriterOpen] = useState(false);
@@ -125,7 +125,7 @@ export default function App() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col antialiased selection:bg-amber-500/30 selection:text-amber-200 overflow-x-hidden">
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col antialiased selection:bg-amber-500/30 selection:text-amber-200">
       {/* 1. Header (Slim 56px) */}
       <Header
         presets={presets}
@@ -139,39 +139,39 @@ export default function App() {
       />
 
       {/* 2. Main Studio Container */}
-      <main className="flex-1 max-w-[1600px] w-full mx-auto p-2 sm:p-4 lg:p-6 grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-start">
+      <main className="flex-1 max-w-[1550px] w-full mx-auto p-2 sm:p-4 grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-4 items-start pb-4">
         
-        {/* RIGHT COLUMN (DESKTOP) / TOP FIXED PREVIEW DECK (MOBILE) */}
-        <div className={`lg:col-span-5 xl:col-span-5 flex flex-col items-center gap-3 z-30 ${
+        {/* RIGHT COLUMN (DESKTOP) / TOP STICKY BAR (MOBILE) */}
+        <div className={`lg:col-span-5 xl:col-span-5 flex flex-col items-center gap-2.5 z-30 ${
           viewMode === 'split'
-            ? 'sticky top-14 bg-slate-950/98 lg:bg-transparent backdrop-blur-xl lg:backdrop-blur-none py-2 lg:py-0 border-b border-slate-800 lg:border-none shadow-2xl lg:shadow-none lg:sticky lg:top-20'
+            ? 'sticky top-14 bg-slate-950/98 lg:bg-transparent backdrop-blur-xl lg:backdrop-blur-none py-1.5 lg:py-0 border-b border-slate-800 lg:border-none shadow-xl lg:shadow-none lg:sticky lg:top-16'
             : 'relative'
         }`}>
           {/* Mobile View Toggle Bar */}
-          <div className="lg:hidden w-full flex items-center justify-between px-2 text-xs">
-            <span className="font-bold text-slate-300">المعاينة الحية:</span>
+          <div className="lg:hidden w-full flex items-center justify-between px-1 text-xs">
+            <span className="font-bold text-slate-300 text-[11px]">المعاينة الحية:</span>
             <button
               onClick={() => setViewMode(viewMode === 'split' ? 'full' : 'split')}
-              className="flex items-center gap-1 text-[11px] font-bold text-amber-300 bg-slate-900 border border-slate-800 px-2.5 py-1 rounded-lg transition-colors"
+              className="flex items-center gap-1 text-[10px] font-bold text-amber-300 bg-slate-900 border border-slate-800 px-2 py-0.5 rounded-lg transition-colors cursor-pointer"
             >
               {viewMode === 'split' ? (
                 <>
-                  <Maximize2 className="w-3 h-3" />
+                  <Maximize2 className="w-2.5 h-2.5" />
                   <span>معاينة مكبرة</span>
                 </>
               ) : (
                 <>
-                  <Split className="w-3 h-3" />
-                  <span>وضع الشاشة المنقسمة</span>
+                  <Split className="w-2.5 h-2.5" />
+                  <span>وضع منقسم</span>
                 </>
               )}
             </button>
           </div>
 
-          {/* Scaled Preview Frame (Fixed height on mobile in split mode) */}
+          {/* Scaled Preview Frame (Fixed height on mobile in split mode, 85-90% visible) */}
           <div className={`transition-all duration-150 flex items-center justify-center ${
             viewMode === 'split'
-              ? 'h-[230px] sm:h-[280px] lg:h-auto overflow-hidden scale-[0.44] sm:scale-[0.52] lg:scale-100 origin-center -my-24 sm:-my-16 lg:my-0'
+              ? 'h-[270px] sm:h-[310px] lg:h-auto overflow-hidden scale-[0.52] sm:scale-[0.58] lg:scale-100 origin-center -my-20 sm:-my-14 lg:my-0'
               : 'w-full'
           }`}>
             <CanvasPreview
@@ -216,37 +216,41 @@ export default function App() {
           </div>
         </div>
 
-        {/* LEFT COLUMN (DESKTOP) / BOTTOM SCROLLABLE CONTROL DECK (MOBILE) */}
-        <div className="lg:col-span-7 xl:col-span-7 space-y-3">
-          {/* Tabs Navigation */}
-          <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-slate-900/90 border border-slate-800 overflow-x-auto select-none">
-            {tabs.map((tab) => {
+        {/* LEFT COLUMN (DESKTOP) / BOTTOM CONTROL DECK (MOBILE) */}
+        <div className="lg:col-span-7 xl:col-span-7 space-y-2.5">
+          {/* Segmented Tabs Navigation with Luxury Dividers */}
+          <div className="flex items-center p-1 rounded-2xl bg-slate-900/90 border border-slate-800 overflow-x-auto select-none shadow-md">
+            {tabs.map((tab, index) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
               return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
-                    isActive
-                      ? 'bg-amber-500 text-slate-950 font-black shadow-md'
-                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-                  }`}
-                >
-                  <Icon className="w-3.5 h-3.5" />
-                  <span>{tab.name}</span>
-                </button>
+                <React.Fragment key={tab.id}>
+                  {index > 0 && <div className="w-[1px] h-4 bg-slate-800 mx-0.5 shrink-0" />}
+                  <button
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`flex-1 flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-xl text-[11px] font-bold whitespace-nowrap transition-all cursor-pointer ${
+                      isActive
+                        ? 'bg-amber-500 text-slate-950 font-black shadow-md'
+                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                    }`}
+                  >
+                    <Icon className="w-3.5 h-3.5" />
+                    <span>{tab.name}</span>
+                  </button>
+                </React.Fragment>
               );
             })}
           </div>
 
-          {/* Control Deck Body */}
-          <div className="p-3.5 sm:p-4 rounded-3xl bg-slate-900/75 border border-slate-800/80 backdrop-blur-xl shadow-xl">
+          {/* Control Deck Body (Clean fit, zero phantom space) */}
+          <div className="p-3 sm:p-4 rounded-3xl bg-slate-900/75 border border-slate-800/80 backdrop-blur-xl shadow-xl">
             {activeTab === 'fields' && (
               <FieldsEditor
                 cardData={cardData}
                 onCardDataChange={setCardData}
                 customFonts={customFonts}
+                imageUrl={imageUrl}
+                onImageChange={setImageUrl}
               />
             )}
 
