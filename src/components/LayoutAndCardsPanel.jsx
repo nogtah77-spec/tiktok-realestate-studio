@@ -195,10 +195,10 @@ export default function LayoutAndCardsPanel({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-1">
           <div>
             <div className="flex justify-between items-center text-slate-300 mb-1 text-[11px]">
-              <span className="font-medium">الموقع الرأسي (أعلى / أسفل)</span>
+              <span className="font-medium">الموقع الرأسي (Y)</span>
               <span className="px-2 py-0.5 rounded-md font-mono text-[10px] font-bold bg-slate-950 border border-slate-800 text-white">
                 {cardData.verticalPosition ?? 50}%
               </span>
@@ -215,17 +215,34 @@ export default function LayoutAndCardsPanel({
 
           <div>
             <div className="flex justify-between items-center text-slate-300 mb-1 text-[11px]">
-              <span className="font-medium">شفافية الزجاج الداكن</span>
+              <span className="font-medium">عتمة الزجاج (0%=شفاف)</span>
               <span className="px-2 py-0.5 rounded-md font-mono text-[10px] font-bold bg-slate-950 border border-slate-800 text-white">
                 {cardData.boxOpacity ?? 60}%
               </span>
             </div>
             <input
               type="range"
-              min="10"
-              max="95"
+              min="0"
+              max="100"
               value={cardData.boxOpacity ?? 60}
               onChange={(e) => updateCardData('boxOpacity', Number(e.target.value))}
+              className="luxury-slider mt-1"
+            />
+          </div>
+
+          <div>
+            <div className="flex justify-between items-center text-slate-300 mb-1 text-[11px]">
+              <span className="font-medium">ضبابية الزجاج (0=نقي)</span>
+              <span className="px-2 py-0.5 rounded-md font-mono text-[10px] font-bold bg-slate-950 border border-slate-800 text-white">
+                {cardData.boxBlur ?? 20}px
+              </span>
+            </div>
+            <input
+              type="range"
+              min="0"
+              max="30"
+              value={cardData.boxBlur ?? 20}
+              onChange={(e) => updateCardData('boxBlur', Number(e.target.value))}
               className="luxury-slider mt-1"
             />
           </div>
