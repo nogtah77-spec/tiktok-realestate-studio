@@ -26,7 +26,7 @@ export default function Header({
     }
   };
 
-  const theme = activeThemeObj || NEON_PALETTES[0];
+  const theme = activeThemeObj || MASTER_PALETTES[1];
   const isCurrentThemeNeon = theme?.group === 'neon';
 
   return (

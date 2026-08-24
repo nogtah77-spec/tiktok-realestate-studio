@@ -791,7 +791,7 @@ export const MASTER_PALETTES = [
   }
 ];
 
-export const ALL_PALETTES = [...NEON_PALETTES, ...MUTED_LUXURY_PALETTES, ...MASTER_PALETTES];
+export const ALL_PALETTES = [...MUTED_LUXURY_PALETTES, ...MASTER_PALETTES, ...NEON_PALETTES];
 
 export const DEFAULT_PLATFORM_THEME_ID = 'matte-charcoal-platinum';
 

@@ -18,7 +18,7 @@ const CanvasPreview = forwardRef(({
   // Theme & Finish
   themeId = 'sale-gold',
   finish = 'glossy',
-  activePlatformThemeId = 'matte-charcoal-platinum',
+  activePlatformThemeId = 'italian-mocha',
 
   // Card Content & Controls
   cardData = {},
@@ -101,14 +101,15 @@ const CanvasPreview = forwardRef(({
     customGlowColor = '#d4af37',
     borderStyle = 'solid',
 
-    // ⚡ Cyber Neon Properties
+    // ⚡ Cyber Neon Properties (Default to false unless explicitly enabled)
     neonCyberMode = false,
     showCyberGrid = false,
     neonGradientBorder = false,
     neonTextGlow = false
   } = cardData;
 
-  const isNeonModeActive = neonCyberMode || activePlatformTheme?.isNeon || activeTheme?.isNeon;
+  // Is Neon Mode explicitly active on the card? (Only if cardData toggle is on, or real estate theme is neon)
+  const isNeonModeActive = Boolean(neonCyberMode) || (activeTheme.id === 'neon-cyber-dual' && borderColorMode === 'theme');
 
   // Compute final border color & glow based on explicit mode
   let effectiveBorderColor = activeTheme.borderColor;
@@ -135,7 +136,7 @@ const CanvasPreview = forwardRef(({
     }
   };
 
-  // 100% Physical Neon Box-Shadow Computation
+  // 100% Authentic Box-Shadow Computation
   const computeBoxShadow = () => {
     if (isNeonModeActive) {
       const glowSpread = (borderGlowIntensity / 100) * 20;
@@ -287,8 +288,8 @@ const CanvasPreview = forwardRef(({
             />
           )}
 
-          {/* ⚡ 4. 3D Perspective Cyber Grid (Optional) */}
-          {(showCyberGrid || isNeonModeActive) && (
+          {/* ⚡ 4. 3D Perspective Cyber Grid (Only when explicitly enabled by user) */}
+          {showCyberGrid && (
             <div className="absolute inset-x-0 bottom-0 h-44 pointer-events-none z-10 neon-grid-3d opacity-60" />
           )}
 
@@ -384,7 +385,7 @@ const CanvasPreview = forwardRef(({
                     color: titleShimmer ? 'transparent' : (titleColor || '#ffffff'),
                     textShadow: (neonTextGlow || isNeonModeActive)
                       ? `0 0 2px #ffffff, 0 0 8px ${effectiveBorderColor}, 0 0 20px ${effectiveGlowColor}`
-                      : 'none',
+                      : undefined,
                     filter: titleShimmer ? 'none' : 'drop-shadow(0 4px 10px rgba(0, 0, 0, 0.85))'
                   }}
                 >
@@ -404,7 +405,7 @@ const CanvasPreview = forwardRef(({
                       fontFamily: subtitleFont ? `'${subtitleFont}', sans-serif` : 'inherit',
                       fontSize: `${subtitleSize}px`,
                       color: subtitleColor || activeTheme.accent,
-                      textShadow: (neonTextGlow || isNeonModeActive) ? `0 0 6px ${effectiveGlowColor}` : 'none',
+                      textShadow: (neonTextGlow || isNeonModeActive) ? `0 0 6px ${effectiveGlowColor}` : undefined,
                       filter: 'drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7))'
                     }}
                   >
@@ -421,7 +422,7 @@ const CanvasPreview = forwardRef(({
                         fontFamily: heroFont ? `'${heroFont}', sans-serif` : 'inherit',
                         fontSize: `${heroUnitSize}px`,
                         color: heroUnitColor || activeTheme.heroUnitColor,
-                        textShadow: (neonTextGlow || isNeonModeActive) ? `0 0 8px ${effectiveGlowColor}` : 'none',
+                        textShadow: (neonTextGlow || isNeonModeActive) ? `0 0 8px ${effectiveGlowColor}` : undefined,
                         filter: 'drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7))'
                       }}
                     >
@@ -437,7 +438,7 @@ const CanvasPreview = forwardRef(({
                       color: heroShimmer ? 'transparent' : (heroNumberColor || '#ffffff'),
                       textShadow: (neonTextGlow || isNeonModeActive)
                         ? `0 0 2px #ffffff, 0 0 10px ${effectiveBorderColor}, 0 0 26px ${effectiveGlowColor}`
-                        : 'none',
+                        : undefined,
                       filter: heroShimmer ? 'none' : 'drop-shadow(0 6px 16px rgba(0, 0, 0, 0.9))'
                     }}
                   >
@@ -459,7 +460,7 @@ const CanvasPreview = forwardRef(({
                         ? `linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(0, 0, 0, 0.8))`
                         : (borderColorMode === 'platform' ? activePlatformTheme.previewCard.pillBg : activeTheme.pillBg),
                       border: `1px solid ${effectiveBorderColor}`,
-                      boxShadow: isNeonModeActive ? `0 0 12px ${effectiveGlowColor}` : 'none'
+                      boxShadow: isNeonModeActive ? `0 0 12px ${effectiveGlowColor}` : undefined
                     }}
                   >
                     {bottomText}
