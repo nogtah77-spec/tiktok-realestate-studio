@@ -29,10 +29,15 @@ export default function LogoPanel({
   return (
     <div className="space-y-4 text-xs">
       {/* 1. Toggle */}
-      <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 flex items-center justify-between">
-        <div className="font-extrabold text-slate-100 flex items-center gap-2 text-xs">
-          <Shield className="w-4 h-4 text-slate-300" />
-          <span>شعار البراند</span>
+      <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 flex items-center justify-between shadow-sm">
+        <div className="flex items-center gap-2.5">
+          <div className="w-7 h-7 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-400 flex items-center justify-center font-black shadow-inner">
+            <Shield className="w-3.5 h-3.5" />
+          </div>
+          <div>
+            <h4 className="font-black text-slate-100 text-xs">شعار وهوية البراند</h4>
+            <p className="text-[10px] text-slate-400">إظهار أو إخفاء الشعار على الغلاف</p>
+          </div>
         </div>
 
         <button
@@ -60,13 +65,21 @@ export default function LogoPanel({
       {showLogo && (
         <>
           {/* 2. Upload */}
-          <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3">
-            <div className="flex items-center justify-between pb-1 border-b border-slate-800">
-              <span className="font-extrabold text-slate-200 text-xs">صورة الشعار:</span>
+          <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5 shadow-sm">
+            <div className="flex items-center justify-between pb-2 border-b border-slate-800/80">
+              <div className="flex items-center gap-2.5">
+                <div className="w-7 h-7 rounded-xl bg-blue-500/15 border border-blue-500/30 text-blue-400 flex items-center justify-center font-black shadow-inner">
+                  <Upload className="w-3.5 h-3.5" />
+                </div>
+                <div>
+                  <h4 className="font-black text-slate-100 text-xs">رفع واستبدال الشعار</h4>
+                  <p className="text-[10px] text-slate-400">يدعم الشعار المفرغ الشفاف بدقة عالية</p>
+                </div>
+              </div>
               {logoUrl && (
                 <button
                   onClick={() => onLogoChange('')}
-                  className="text-[11px] text-rose-400 hover:underline flex items-center gap-1 cursor-pointer font-medium"
+                  className="text-[10px] text-rose-300 hover:text-white bg-rose-500/10 px-2 py-0.5 rounded-full border border-rose-500/20 flex items-center gap-1 cursor-pointer font-bold transition-colors"
                 >
                   <Trash2 className="w-3 h-3" />
                   <span>استعادة شعار العمودي</span>
@@ -91,7 +104,22 @@ export default function LogoPanel({
           </div>
 
           {/* 3. Controls */}
-          <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5">
+          <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5 shadow-sm">
+            <div className="flex items-center justify-between pb-2 border-b border-slate-800/80">
+              <div className="flex items-center gap-2.5">
+                <div className="w-7 h-7 rounded-xl bg-purple-500/15 border border-purple-500/30 text-purple-400 flex items-center justify-center font-black shadow-inner">
+                  <Sliders className="w-3.5 h-3.5" />
+                </div>
+                <div>
+                  <h4 className="font-black text-slate-100 text-xs">موقع وحجم وشفافية الشعار</h4>
+                  <p className="text-[10px] text-slate-400">ضبط إحداثيات ومقياس الشعار على الكانفاس</p>
+                </div>
+              </div>
+              <span className="text-[9px] font-extrabold text-purple-400 bg-purple-400/10 px-2 py-0.5 rounded-full border border-purple-400/20">
+                POSITION
+              </span>
+            </div>
+
             <div>
               <span className="text-[11px] text-slate-400 block mb-1.5 font-medium">موقع الشعار على الغلاف:</span>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">

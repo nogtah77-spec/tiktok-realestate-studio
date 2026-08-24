@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Type, Palette, Sparkles, Zap, Upload, Image as ImageIcon, ChevronDown } from 'lucide-react';
+import { Type, Palette, Sparkles, Zap, Upload, Image as ImageIcon, ChevronDown, Heading, Hash, MapPin } from 'lucide-react';
 import { BUILTIN_FONTS, QUICK_TEXT_PRESETS } from '../utils/constants';
 
 export default function FieldsEditor({
@@ -41,8 +41,8 @@ export default function FieldsEditor({
 
   return (
     <div className="space-y-4 text-xs">
-      {/* 0. Quick Image Uploader */}
-      <div className="p-3 rounded-2xl bg-slate-900/90 border border-white/10 flex items-center justify-between gap-3 shadow-md">
+      {/* Quick Image Uploader */}
+      <div className="p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 flex items-center justify-between gap-3 shadow-md">
         <div className="flex items-center gap-2.5">
           <input
             type="file"
@@ -51,12 +51,12 @@ export default function FieldsEditor({
             accept="image/*"
             className="hidden"
           />
-          <div className="w-8 h-8 rounded-xl bg-white/10 text-white flex items-center justify-center shrink-0 shadow-inner">
+          <div className="w-8 h-8 rounded-xl bg-blue-500/15 border border-blue-500/30 text-blue-400 flex items-center justify-center shrink-0 shadow-inner">
             <ImageIcon className="w-4 h-4" />
           </div>
           <div>
             <div className="font-extrabold text-slate-100 text-xs">صورة العقار الأساسية</div>
-            <div className="text-[10px] text-slate-400">انقر لتغيير أو رفع صورة جديدة</div>
+            <div className="text-[10px] text-slate-400">انقر لتغيير أو رفع صورة جديدة بجودة عالية</div>
           </div>
         </div>
 
@@ -70,11 +70,19 @@ export default function FieldsEditor({
       </div>
 
       {/* Quick Templates Bar */}
-      <div className="p-3.5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-2">
-        <div className="flex items-center gap-1.5 text-slate-200 font-bold text-xs">
-          <Zap className="w-3.5 h-3.5 text-amber-400" />
-          <span>نماذج سريعة جاهزة:</span>
+      <div className="p-3.5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-2.5 shadow-sm">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 rounded-lg bg-amber-500/15 border border-amber-500/30 text-amber-400 flex items-center justify-center font-bold">
+              <Zap className="w-3.5 h-3.5" />
+            </div>
+            <span className="font-black text-slate-100 text-xs">نماذج وعروض سريعة جاهزة</span>
+          </div>
+          <span className="text-[9px] font-extrabold text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded-full border border-amber-400/20">
+            PRESETS
+          </span>
         </div>
+
         <div className="flex items-center gap-2 flex-wrap">
           {QUICK_TEXT_PRESETS.map((qp, idx) => (
             <button
@@ -88,13 +96,21 @@ export default function FieldsEditor({
         </div>
       </div>
 
-      {/* 1. Header Title */}
-      <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5">
-        <div className="flex items-center justify-between pb-2 border-b border-slate-800">
-          <label className="font-extrabold text-slate-100 flex items-center gap-2 text-xs">
-            <span className="w-5 h-5 rounded-full bg-white/10 text-white font-black flex items-center justify-center text-[10px] shadow-sm">1</span>
-            <span>العنوان الرئيسي</span>
-          </label>
+      {/* Main Title Section */}
+      <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5 shadow-sm">
+        <div className="flex items-center justify-between pb-2 border-b border-slate-800/80">
+          <div className="flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-400 flex items-center justify-center font-black shadow-inner">
+              <Type className="w-3.5 h-3.5" />
+            </div>
+            <div>
+              <h4 className="font-black text-slate-100 text-xs">العنوان الرئيسي</h4>
+              <p className="text-[10px] text-slate-400">النص البارز في أعلى الغلاف</p>
+            </div>
+          </div>
+          <span className="text-[9px] font-extrabold text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded-full border border-amber-400/20">
+            TITLE
+          </span>
         </div>
 
         <div>
@@ -172,13 +188,21 @@ export default function FieldsEditor({
         </div>
       </div>
 
-      {/* 2. Hero Number & Unit */}
-      <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5">
-        <div className="flex items-center justify-between pb-2 border-b border-slate-800">
-          <label className="font-extrabold text-slate-100 flex items-center gap-2 text-xs">
-            <span className="w-5 h-5 rounded-full bg-white/10 text-white font-black flex items-center justify-center text-[10px] shadow-sm">2</span>
-            <span>الرقم البطل والوحدة</span>
-          </label>
+      {/* Hero Number & Unit Section */}
+      <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5 shadow-sm">
+        <div className="flex items-center justify-between pb-2 border-b border-slate-800/80">
+          <div className="flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 flex items-center justify-center font-black shadow-inner">
+              <Hash className="w-3.5 h-3.5" />
+            </div>
+            <div>
+              <h4 className="font-black text-slate-100 text-xs">الرقم البطل والوحدة</h4>
+              <p className="text-[10px] text-slate-400">المساحة أو السعر أو عدد الغرف</p>
+            </div>
+          </div>
+          <span className="text-[9px] font-extrabold text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded-full border border-emerald-400/20">
+            METRICS
+          </span>
         </div>
 
         {/* Subtitle Checkbox */}
@@ -294,13 +318,21 @@ export default function FieldsEditor({
         </div>
       </div>
 
-      {/* 3. Bottom Pill */}
-      <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5">
-        <div className="flex items-center justify-between pb-2 border-b border-slate-800">
-          <label className="font-extrabold text-slate-100 flex items-center gap-2 text-xs">
-            <span className="w-5 h-5 rounded-full bg-white/10 text-white font-black flex items-center justify-center text-[10px] shadow-sm">3</span>
-            <span>القسم السفلي (الموقع / الكبسولة)</span>
-          </label>
+      {/* Bottom Pill Section */}
+      <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5 shadow-sm">
+        <div className="flex items-center justify-between pb-2 border-b border-slate-800/80">
+          <div className="flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-xl bg-purple-500/15 border border-purple-500/30 text-purple-400 flex items-center justify-center font-black shadow-inner">
+              <MapPin className="w-3.5 h-3.5" />
+            </div>
+            <div>
+              <h4 className="font-black text-slate-100 text-xs">القسم السفلي (الموقع والكبسولة)</h4>
+              <p className="text-[10px] text-slate-400">اسم الحي أو الميزة التنافسية للعقار</p>
+            </div>
+          </div>
+          <span className="text-[9px] font-extrabold text-purple-400 bg-purple-400/10 px-2 py-0.5 rounded-full border border-purple-400/20">
+            LOCATION
+          </span>
         </div>
 
         <div>

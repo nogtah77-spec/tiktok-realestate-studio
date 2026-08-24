@@ -106,19 +106,17 @@ export default function PalettesStudioPanel({
             >
               {/* Header: Number, Icon, Title, and Color Dots Preview */}
               <div className="flex items-center justify-between gap-1.5">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2.5">
                   <span
-                    className="w-6 h-6 rounded-md border flex items-center justify-center font-mono font-black text-[10px]"
+                    className="w-7 h-7 rounded-xl border flex items-center justify-center text-sm shadow-inner"
                     style={{
-                      backgroundColor: isNeon ? 'rgba(0, 229, 255, 0.15)' : '#0f172a',
-                      borderColor: isNeon ? palette.accent : '#334155',
-                      color: isNeon ? palette.accent : '#ffffff',
-                      boxShadow: isNeon ? `0 0 8px ${palette.accentGlow}` : 'none'
+                      backgroundColor: isNeon ? 'rgba(0, 229, 255, 0.15)' : 'rgba(255, 255, 255, 0.05)',
+                      borderColor: isNeon ? palette.accent : 'rgba(255, 255, 255, 0.15)',
+                      boxShadow: isNeon ? `0 0 10px ${palette.accentGlow}` : 'none'
                     }}
                   >
-                    {palette.num}
+                    {palette.icon}
                   </span>
-                  <span className="text-sm">{palette.icon}</span>
                   <div className="flex flex-col">
                     <span className="font-bold text-slate-100 text-xs">{palette.name}</span>
                     {palette.group === 'neon' && (
@@ -127,20 +125,23 @@ export default function PalettesStudioPanel({
                     {palette.group === 'muted' && (
                       <span className="text-[9px] text-emerald-400 font-medium font-mono">هادئ ومريح 70%</span>
                     )}
+                    {palette.group === 'vibrant' && (
+                      <span className="text-[9px] text-amber-400 font-medium font-mono">حيوي وتباين عالي</span>
+                    )}
                   </div>
                 </div>
 
                 {/* 3 Accent Color Dots */}
-                <div className="flex items-center gap-1 shrink-0">
+                <div className="flex items-center gap-1.5 shrink-0 bg-slate-900/90 px-2 py-1 rounded-lg border border-slate-800">
                   <span
-                    className="w-2.5 h-2.5 rounded-full border border-white/20"
+                    className="w-3 h-3 rounded-full border border-white/20"
                     style={{
                       backgroundColor: palette.accent,
                       boxShadow: isNeon ? `0 0 6px ${palette.accentGlow}` : 'none'
                     }}
                   />
-                  <span className="w-2.5 h-2.5 rounded-full border border-white/20" style={{ backgroundColor: palette.bgSurface }} />
-                  <span className="w-2.5 h-2.5 rounded-full border border-white/20" style={{ backgroundColor: palette.textPrimary }} />
+                  <span className="w-3 h-3 rounded-full border border-white/20" style={{ backgroundColor: palette.bgSurface }} />
+                  <span className="w-3 h-3 rounded-full border border-white/20" style={{ backgroundColor: palette.textPrimary }} />
                 </div>
               </div>
 

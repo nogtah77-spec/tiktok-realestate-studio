@@ -35,12 +35,20 @@ export default function LayoutAndCardsPanel({
   return (
     <div className="space-y-4 text-xs">
       {/* 1. Real Estate Luxury Themes */}
-      <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3">
-        <div className="flex items-center justify-between">
-          <label className="font-extrabold text-slate-100 flex items-center gap-2 text-xs">
-            <Palette className="w-4 h-4 text-slate-300" />
-            <span>الثيم اللوني وتصنيف العرض العقاري</span>
-          </label>
+      <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5 shadow-sm">
+        <div className="flex items-center justify-between pb-2 border-b border-slate-800/80">
+          <div className="flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-400 flex items-center justify-center font-black shadow-inner">
+              <Palette className="w-3.5 h-3.5" />
+            </div>
+            <div>
+              <h4 className="font-black text-slate-100 text-xs">الثيم اللوني وتصنيف العرض</h4>
+              <p className="text-[10px] text-slate-400">تطبيق الهوية البصرية العقارية الكاملة</p>
+            </div>
+          </div>
+          <span className="text-[9px] font-extrabold text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded-full border border-amber-400/20">
+            THEMES
+          </span>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
@@ -71,14 +79,19 @@ export default function LayoutAndCardsPanel({
       </div>
 
       {/* ⚡ 2. Cyber Neon FX Controls */}
-      <div className="p-4 rounded-2xl bg-slate-900/80 border border-cyan-500/30 space-y-3 shadow-[0_0_20px_rgba(0,229,255,0.08)]">
-        <div className="flex items-center justify-between pb-1 border-b border-slate-800">
-          <label className="font-extrabold text-white flex items-center gap-2 text-xs">
-            <Zap className="w-4 h-4 text-cyan-400 animate-pulse" />
-            <span>تأثيرات السايبر نيون المتطورة (Cyber Neon FX)</span>
-          </label>
+      <div className="p-4 rounded-2xl bg-slate-900/80 border border-cyan-500/30 space-y-3.5 shadow-[0_0_20px_rgba(0,229,255,0.08)]">
+        <div className="flex items-center justify-between pb-2 border-b border-cyan-500/20">
+          <div className="flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-xl bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 flex items-center justify-center font-black shadow-[0_0_8px_rgba(0,229,255,0.4)]">
+              <Zap className="w-3.5 h-3.5 animate-pulse" />
+            </div>
+            <div>
+              <h4 className="font-black text-white text-xs">تأثيرات السايبر نيون المتطورة</h4>
+              <p className="text-[10px] text-cyan-400/80">توهج ليزري وشبكة نيون أرضية ثلاثية الأبعاد</p>
+            </div>
+          </div>
           <span className="text-[9px] font-bold bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded-full border border-cyan-500/40">
-            PRO 100%
+            NEON PRO
           </span>
         </div>
 
@@ -122,11 +135,22 @@ export default function LayoutAndCardsPanel({
       </div>
 
       {/* 3. Glass Finish Mode (Matte vs Glossy) */}
-      <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-2.5">
-        <label className="font-extrabold text-slate-100 flex items-center gap-2 text-xs">
-          <Sparkles className="w-4 h-4 text-slate-300" />
-          <span>تشطيب زجاج القالب (Matte vs Glossy)</span>
-        </label>
+      <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5 shadow-sm">
+        <div className="flex items-center justify-between pb-2 border-b border-slate-800/80">
+          <div className="flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-xl bg-purple-500/15 border border-purple-500/30 text-purple-400 flex items-center justify-center font-black shadow-inner">
+              <Sparkles className="w-3.5 h-3.5" />
+            </div>
+            <div>
+              <h4 className="font-black text-slate-100 text-xs">تشطيب ونقاء زجاج القالب</h4>
+              <p className="text-[10px] text-slate-400">انعكاسات زجاجية بلمعة أو ملمس مخملي مطفي</p>
+            </div>
+          </div>
+          <span className="text-[9px] font-extrabold text-purple-400 bg-purple-400/10 px-2 py-0.5 rounded-full border border-purple-400/20">
+            FINISH
+          </span>
+        </div>
+
         <div className="grid grid-cols-2 gap-2.5">
           <button
             onClick={() => setFinish('matte')}
@@ -153,13 +177,20 @@ export default function LayoutAndCardsPanel({
       </div>
 
       {/* 4. Box Dimensions & Proportions (Width & Height) */}
-      <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5">
-        <div className="flex items-center justify-between pb-1 border-b border-slate-800">
-          <label className="font-extrabold text-slate-100 flex items-center gap-2 text-xs">
-            <Maximize2 className="w-4 h-4 text-slate-300" />
-            <span>أبعاد وتناسب البوكس الزجاجي</span>
-          </label>
-          <span className="text-[10px] text-slate-400 font-mono">Pixel Perfect</span>
+      <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5 shadow-sm">
+        <div className="flex items-center justify-between pb-2 border-b border-slate-800/80">
+          <div className="flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-xl bg-blue-500/15 border border-blue-500/30 text-blue-400 flex items-center justify-center font-black shadow-inner">
+              <Maximize2 className="w-3.5 h-3.5" />
+            </div>
+            <div>
+              <h4 className="font-black text-slate-100 text-xs">أبعاد وتناسب البوكس والزجاج</h4>
+              <p className="text-[10px] text-slate-400">العرض، الهامش، الموقع الرأسي، والشفافية الكريستالية</p>
+            </div>
+          </div>
+          <span className="text-[9px] font-extrabold text-blue-400 bg-blue-400/10 px-2 py-0.5 rounded-full border border-blue-400/20">
+            LAYOUT
+          </span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -253,12 +284,17 @@ export default function LayoutAndCardsPanel({
       </div>
 
       {/* 5. Border & Glow Controls with Dynamic Source Selection */}
-      <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5">
-        <div className="flex items-center justify-between pb-1 border-b border-slate-800">
-          <label className="font-extrabold text-slate-100 flex items-center gap-2 text-xs">
-            <Frame className="w-4 h-4 text-slate-300" />
-            <span>حدود البوكس والتوهج</span>
-          </label>
+      <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5 shadow-sm">
+        <div className="flex items-center justify-between pb-2 border-b border-slate-800/80">
+          <div className="flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 flex items-center justify-center font-black shadow-inner">
+              <Frame className="w-3.5 h-3.5" />
+            </div>
+            <div>
+              <h4 className="font-black text-slate-100 text-xs">حدود البوكس والتوهج</h4>
+              <p className="text-[10px] text-slate-400">سماكة الإطار، انحناء الزوايا، وتأثير الهالة المشعة</p>
+            </div>
+          </div>
 
           {/* 3-Way Segmented Control: Theme vs Platform vs Custom */}
           <div className="flex items-center gap-1 p-0.5 rounded-lg bg-slate-950 border border-slate-800">
@@ -391,12 +427,19 @@ export default function LayoutAndCardsPanel({
 
       {/* 6. Master Architectural & Luxury Dividers Studio */}
       <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5 shadow-md">
-        <div className="flex items-center justify-between pb-1 border-b border-slate-800">
-          <label className="font-extrabold text-slate-100 flex items-center gap-2 text-xs">
-            <Sliders className="w-4 h-4 text-slate-300" />
-            <span>الفواصل المعمارية والتحريرية (12 نمطاً)</span>
-          </label>
-          <span className="text-[10px] text-slate-400 font-mono">Architectural Vectors</span>
+        <div className="flex items-center justify-between pb-2 border-b border-slate-800/80">
+          <div className="flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-400 flex items-center justify-center font-black shadow-inner">
+              <Sliders className="w-3.5 h-3.5" />
+            </div>
+            <div>
+              <h4 className="font-black text-slate-100 text-xs">استوديو الفواصل المعمارية والسينمائية</h4>
+              <p className="text-[10px] text-slate-400">16 نمطاً هندسياً وتحريرياً مع تحكم كامل بالسماكة والسطوع</p>
+            </div>
+          </div>
+          <span className="text-[9px] font-extrabold text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded-full border border-amber-400/20">
+            DIVIDERS
+          </span>
         </div>
 
         {/* Compact Segmented Pills for Categories */}
@@ -544,6 +587,36 @@ export default function LayoutAndCardsPanel({
                     </div>
                   )}
 
+                  {d.id === 'cinematic-block' && (
+                    <div className="w-full flex items-center gap-1">
+                      <div className="w-1.5 h-2 bg-amber-400" />
+                      <div className="flex-1 h-1.5 bg-amber-400" />
+                      <div className="w-1.5 h-2 bg-amber-400" />
+                    </div>
+                  )}
+
+                  {d.id === 'cyber-pulse' && (
+                    <div className="w-full flex items-center justify-center gap-1">
+                      <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent to-cyan-400" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-white border border-cyan-400 shadow-[0_0_8px_rgba(0,229,255,0.8)]" />
+                      <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent to-cyan-400" />
+                    </div>
+                  )}
+
+                  {d.id === 'corner-brackets' && (
+                    <div className="w-full flex items-center justify-center gap-1 font-mono text-[8px] font-bold text-amber-400">
+                      <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent to-amber-400" />
+                      <span className="text-[10px] font-bold leading-none">⌜</span>
+                      <span className="text-[7px] text-white font-bold">{cardData.dividerTagText || 'REC 4K'}</span>
+                      <span className="text-[10px] font-bold leading-none">⌟</span>
+                      <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent to-amber-400" />
+                    </div>
+                  )}
+
+                  {d.id === 'minimal-solid' && (
+                    <div className="w-full h-1 bg-amber-400 rounded-full" />
+                  )}
+
                   {d.id === 'none' && (
                     <span className="text-[10px] text-slate-500 font-medium">بدون أي خط فاصل</span>
                   )}
@@ -558,7 +631,7 @@ export default function LayoutAndCardsPanel({
         {/* Smart Inline Text Input (Only visible when selected divider supports customizable text) */}
         {(() => {
           const currentStyle = cardData.dividerStyle || 'wireframe-pill';
-          const isTextSupported = currentStyle === 'wireframe-pill' || currentStyle === 'bracketed-monogram' || currentStyle === 'tag';
+          const isTextSupported = currentStyle === 'wireframe-pill' || currentStyle === 'bracketed-monogram' || currentStyle === 'corner-brackets' || currentStyle === 'tag';
           if (!isTextSupported) return null;
 
           return (
@@ -578,22 +651,87 @@ export default function LayoutAndCardsPanel({
           );
         })()}
 
-        {/* Opacity Slider for Dividers */}
-        <div className="pt-1">
-          <div className="flex justify-between items-center text-slate-300 mb-1 text-[11px]">
-            <span className="font-medium">شفافية وقوة الفاصل</span>
-            <span className="px-2 py-0.5 rounded-md font-mono text-[10px] font-bold bg-slate-950 border border-slate-800 text-white">
-              {cardData.dividerOpacity ?? 75}%
-            </span>
+        {/* Advanced Multi-Parameter Sliders for Pro Divider Customization */}
+        <div className="space-y-3 pt-1 border-t border-slate-800/80">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {/* 1. Thickness / Lineweight */}
+            <div>
+              <div className="flex justify-between items-center text-slate-300 mb-1 text-[11px]">
+                <span className="font-medium">سماكة وحدّة الخط</span>
+                <span className="px-2 py-0.5 rounded-md font-mono text-[10px] font-bold bg-slate-950 border border-slate-800 text-white">
+                  {cardData.dividerThickness ?? 1.5}px
+                </span>
+              </div>
+              <input
+                type="range"
+                min="0.5"
+                max="5"
+                step="0.5"
+                value={cardData.dividerThickness ?? 1.5}
+                onChange={(e) => updateCardData('dividerThickness', Number(e.target.value))}
+                className="luxury-slider mt-1"
+              />
+            </div>
+
+            {/* 2. Opacity / Boost up to 200% */}
+            <div>
+              <div className="flex justify-between items-center text-slate-300 mb-1 text-[11px]">
+                <span className="font-medium">شفافية وسطوع الفاصل</span>
+                <span className="px-2 py-0.5 rounded-md font-mono text-[10px] font-bold bg-slate-950 border border-slate-800 text-white">
+                  {cardData.dividerOpacity ?? 100}%
+                </span>
+              </div>
+              <input
+                type="range"
+                min="10"
+                max="200"
+                step="5"
+                value={cardData.dividerOpacity ?? 100}
+                onChange={(e) => updateCardData('dividerOpacity', Number(e.target.value))}
+                className="luxury-slider mt-1"
+              />
+            </div>
           </div>
-          <input
-            type="range"
-            min="10"
-            max="100"
-            value={cardData.dividerOpacity ?? 75}
-            onChange={(e) => updateCardData('dividerOpacity', Number(e.target.value))}
-            className="luxury-slider mt-1"
-          />
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {/* 3. Glow Intensity up to 200% */}
+            <div>
+              <div className="flex justify-between items-center text-slate-300 mb-1 text-[11px]">
+                <span className="font-medium">توهج وإشعاع الفاصل</span>
+                <span className="px-2 py-0.5 rounded-md font-mono text-[10px] font-bold bg-slate-950 border border-slate-800 text-white">
+                  {cardData.dividerGlow ?? 80}%
+                </span>
+              </div>
+              <input
+                type="range"
+                min="0"
+                max="200"
+                step="5"
+                value={cardData.dividerGlow ?? 80}
+                onChange={(e) => updateCardData('dividerGlow', Number(e.target.value))}
+                className="luxury-slider mt-1"
+              />
+            </div>
+
+            {/* 4. Divider Width */}
+            <div>
+              <div className="flex justify-between items-center text-slate-300 mb-1 text-[11px]">
+                <span className="font-medium">امتداد وعرض الفاصل</span>
+                <span className="px-2 py-0.5 rounded-md font-mono text-[10px] font-bold bg-slate-950 border border-slate-800 text-white">
+                  {cardData.dividerWidth ?? 88}%
+                </span>
+              </div>
+              <input
+                type="range"
+                min="30"
+                max="100"
+                step="2"
+                value={cardData.dividerWidth ?? 88}
+                onChange={(e) => updateCardData('dividerWidth', Number(e.target.value))}
+                className="luxury-slider mt-1"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>

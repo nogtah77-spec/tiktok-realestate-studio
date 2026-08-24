@@ -76,14 +76,19 @@ export default function TypographyPanel({
   return (
     <div className="space-y-4 text-xs">
       {/* 1. Upload Custom Font Header */}
-      <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3">
-        <div className="flex items-center justify-between pb-1 border-b border-slate-800">
-          <label className="text-xs font-extrabold text-slate-100 flex items-center gap-2">
-            <Type className="w-4 h-4 text-slate-300" />
-            <span>رفع خط مخصص (عربي أو إنجليزي)</span>
-          </label>
-          <span className="text-[10px] text-slate-400 font-mono tracking-wider bg-slate-950 px-2 py-0.5 rounded-md border border-slate-800">
-            TTF, OTF, WOFF, WOFF2
+      <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5 shadow-sm">
+        <div className="flex items-center justify-between pb-2 border-b border-slate-800/80">
+          <div className="flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-xl bg-blue-500/15 border border-blue-500/30 text-blue-400 flex items-center justify-center font-black shadow-inner">
+              <Type className="w-3.5 h-3.5" />
+            </div>
+            <div>
+              <h4 className="font-black text-slate-100 text-xs">رفع وتثبيت خط مخصص</h4>
+              <p className="text-[10px] text-slate-400">يدعم الخطوط العربية والإنجليزية الاحترافية</p>
+            </div>
+          </div>
+          <span className="text-[9px] font-extrabold text-blue-400 bg-blue-400/10 px-2 py-0.5 rounded-full border border-blue-400/20">
+            FONTS
           </span>
         </div>
 
@@ -106,17 +111,28 @@ export default function TypographyPanel({
             className="hidden"
           />
           <Upload className="w-4 h-4 text-slate-300" />
-          <span>{isUploading ? 'جاري تسجيل الخط في المتصفح...' : 'اختر ملف الخط من جهازك للرفع'}</span>
+          <span>{isUploading ? 'جاري تسجيل الخط في المتصفح...' : 'اختر ملف الخط من جهازك للرفع (TTF, OTF, WOFF)'}</span>
         </div>
       </div>
 
       {/* 2. User Custom Uploaded Fonts */}
       {customFonts.length > 0 && (
-        <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-2.5">
-          <span className="text-[11px] font-bold text-slate-200 flex items-center gap-1.5">
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-            <span>خطوطك الخاصة المرفوعة ({customFonts.length}):</span>
-          </span>
+        <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5 shadow-sm">
+          <div className="flex items-center justify-between pb-2 border-b border-slate-800/80">
+            <div className="flex items-center gap-2.5">
+              <div className="w-7 h-7 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 flex items-center justify-center font-black shadow-inner">
+                <CheckCircle2 className="w-3.5 h-3.5" />
+              </div>
+              <div>
+                <h4 className="font-black text-slate-100 text-xs">الخطوط المخصصة المثبتة</h4>
+                <p className="text-[10px] text-slate-400">إجمالي {customFonts.length} خطوط نشطة</p>
+              </div>
+            </div>
+            <span className="text-[9px] font-extrabold text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded-full border border-emerald-400/20">
+              ACTIVE
+            </span>
+          </div>
+
           <div className="space-y-2">
             {customFonts.map((font) => (
               <div
@@ -146,13 +162,20 @@ export default function TypographyPanel({
       )}
 
       {/* 3. Pre-installed Luxury Fonts List with Authentic Rendered Typography */}
-      <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3">
-        <div className="flex items-center justify-between">
-          <span className="text-[11px] font-bold text-slate-300 flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-slate-400" />
-            <span>الخطوط الفاخرة المثبتة مسبقاً ({BUILTIN_FONTS.length}):</span>
+      <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5 shadow-sm">
+        <div className="flex items-center justify-between pb-2 border-b border-slate-800/80">
+          <div className="flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-400 flex items-center justify-center font-black shadow-inner">
+              <Sparkles className="w-3.5 h-3.5" />
+            </div>
+            <div>
+              <h4 className="font-black text-slate-100 text-xs">مكتبة الخطوط العربية المدمجة</h4>
+              <p className="text-[10px] text-slate-400">إجمالي {BUILTIN_FONTS.length} خطوط مختارة بعناية للأغلفة</p>
+            </div>
+          </div>
+          <span className="text-[9px] font-extrabold text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded-full border border-amber-400/20">
+            LIBRARY
           </span>
-          <span className="text-[10px] text-slate-500 font-mono">Google Web Fonts</span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">

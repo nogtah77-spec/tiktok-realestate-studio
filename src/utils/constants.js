@@ -135,10 +135,11 @@ export const FINISH_MODES = [
 ];
 
 export const DIVIDER_CATEGORIES = [
-  { id: 'all', name: 'الكل (12)', icon: '🌟' },
+  { id: 'all', name: 'الكل (16)', icon: '🌟' },
   { id: 'architectural', name: 'الهندسية (4)', icon: '🏛️' },
   { id: 'editorial', name: 'الفخامة والتحرير (4)', icon: '✨' },
-  { id: 'badges', name: 'التوثيق والبادجات (4)', icon: '🏷️' }
+  { id: 'badges', name: 'التوثيق والبادجات (4)', icon: '🏷️' },
+  { id: 'cinematic', name: 'السينمائية وصناع المحتوى (4)', icon: '🎬' }
 ];
 
 export const DIVIDER_STYLES = [
@@ -234,6 +235,37 @@ export const DIVIDER_STYLES = [
     hasCustomText: false
   },
 
+  // 🎬 Group 4: Cinematic, Creators & Cyber Pulse (4)
+  {
+    id: 'cinematic-block',
+    name: 'الشريط السينمائي العريض',
+    category: 'cinematic',
+    subtitle: 'شريط برودكاست حاد ومصمت للوضوح العالي',
+    hasCustomText: false
+  },
+  {
+    id: 'cyber-pulse',
+    name: 'نبض الليزر السايبر المتوهج',
+    category: 'cinematic',
+    subtitle: 'شعاع ليزري مشع بنقطة ارتكاز مضيئة',
+    hasCustomText: false
+  },
+  {
+    id: 'corner-brackets',
+    name: 'زوايا عدسة المونتاج والكاميرا',
+    category: 'cinematic',
+    subtitle: 'تحديد كادر سينمائي احترافي',
+    hasCustomText: true,
+    defaultText: 'REC 4K'
+  },
+  {
+    id: 'minimal-solid',
+    name: 'الخط المصمت المباشر 100%',
+    category: 'cinematic',
+    subtitle: 'خط صلب حاد وواضح بدون أي تدرج',
+    hasCustomText: false
+  },
+
   // Legacy fallback aliases mapping
   { id: 'tag', aliasOf: 'wireframe-pill', name: 'شارة كبسولية (VIP)', category: 'badges', hasCustomText: true },
   { id: 'diamond', aliasOf: 'triple-diamond', name: 'ماسة مضيئة', category: 'editorial', hasCustomText: false },
@@ -296,9 +328,12 @@ export const DEFAULT_GLASS_CARD_DATA = {
   bottomPillStyle: 'pill',
 
   showDividers: true,
-  dividerStyle: 'tag',
+  dividerStyle: 'wireframe-pill',
   dividerTagText: 'VIP',
-  dividerOpacity: 75,
+  dividerOpacity: 100,
+  dividerThickness: 1.5,
+  dividerGlow: 80,
+  dividerWidth: 88,
   dividerCustomColor: '',
 
   boxWidth: 84,
