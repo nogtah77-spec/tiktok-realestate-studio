@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Sparkles, Save, RotateCcw, Share2, Database, Palette } from 'lucide-react';
-import { MASTER_PALETTES } from '../utils/themeEngine';
+import { MUTED_LUXURY_PALETTES, MASTER_PALETTES } from '../utils/themeEngine';
 
 export default function Header({
   presets = [],
@@ -26,7 +26,7 @@ export default function Header({
     }
   };
 
-  const theme = activeThemeObj || MASTER_PALETTES[1];
+  const theme = activeThemeObj || MUTED_LUXURY_PALETTES[0];
 
   return (
     <header
@@ -79,11 +79,20 @@ export default function Header({
             onChange={(e) => onSelectPlatformTheme(e.target.value)}
             className="bg-transparent text-[11px] font-bold text-slate-200 outline-none cursor-pointer pr-1"
           >
-            {MASTER_PALETTES.map((p) => (
-              <option key={p.id} value={p.id} style={{ backgroundColor: p.bgSurface, color: '#ffffff' }}>
-                {p.num} {p.icon} {p.name.split(' ')[0]} {p.name.split(' ')[1]}
-              </option>
-            ))}
+            <optgroup label="💎 باقة الفخامة الهادئة (70% Muted)" style={{ backgroundColor: '#111827', color: '#93c5fd' }}>
+              {MUTED_LUXURY_PALETTES.map((p) => (
+                <option key={p.id} value={p.id} style={{ backgroundColor: p.bgSurface, color: '#ffffff' }}>
+                  {p.num} {p.icon} {p.name}
+                </option>
+              ))}
+            </optgroup>
+            <optgroup label="🎨 الباقة الحيوية (Vibrant)" style={{ backgroundColor: '#111827', color: '#f472b6' }}>
+              {MASTER_PALETTES.map((p) => (
+                <option key={p.id} value={p.id} style={{ backgroundColor: p.bgSurface, color: '#ffffff' }}>
+                  {p.num} {p.icon} {p.name}
+                </option>
+              ))}
+            </optgroup>
           </select>
         </div>
 
@@ -100,30 +109,31 @@ export default function Header({
             borderColor: theme.borderSubtle
           }}
         >
-          {presets.map((p) => (
-            <option key={p.id} value={p.id} style={{ backgroundColor: theme.bgSurface, color: '#ffffff' }}>
-              {p.name}
+          {presets.map((preset) => (
+            <option key={preset.id} value={preset.id} className="bg-slate-900 text-white">
+              {preset.name}
             </option>
           ))}
         </select>
 
+        {/* Save Custom Preset Button */}
         {isSaving ? (
           <form onSubmit={handleSaveSubmit} className="flex items-center gap-1">
             <input
               type="text"
               value={presetName}
               onChange={(e) => setPresetName(e.target.value)}
-              placeholder="اسم النموذج..."
-              className="px-2 py-0.5 rounded border text-xs text-white outline-none w-28"
+              placeholder="اسم القالب..."
+              className="px-2 py-0.5 rounded-lg border text-[11px] text-white outline-none w-28 font-bold"
               style={{
                 backgroundColor: theme.bgDark,
-                borderColor: theme.accent
+                borderColor: theme.border
               }}
               autoFocus
             />
             <button
               type="submit"
-              className="px-2 py-0.5 rounded font-bold text-xs"
+              className="px-2 py-0.5 rounded-lg font-bold text-[10px] shadow cursor-pointer transition-all"
               style={{
                 backgroundColor: theme.accent,
                 color: theme.bgDark
@@ -131,62 +141,71 @@ export default function Header({
             >
               حفظ
             </button>
-            <button type="button" onClick={() => setIsSaving(false)} className="text-slate-400 text-xs px-1">
-              ✕
+            <button
+              type="button"
+              onClick={() => setIsSaving(false)}
+              className="px-1.5 py-0.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white text-[10px] cursor-pointer"
+            >
+              إلغاء
             </button>
           </form>
         ) : (
           <button
             onClick={() => setIsSaving(true)}
-            className="flex items-center gap-1 px-2 py-1 rounded-lg border text-[11px] font-medium text-slate-300 transition-colors"
+            className="flex items-center gap-1 px-2.5 py-1 rounded-lg border text-[11px] font-semibold text-slate-300 hover:text-white transition-all cursor-pointer"
             style={{
               backgroundColor: theme.bgDark,
               borderColor: theme.borderSubtle
             }}
           >
             <Save className="w-3 h-3" style={{ color: theme.accent }} />
-            <span>حفظ</span>
+            <span>حفظ كقالب</span>
           </button>
         )}
       </div>
 
-      {/* Action Buttons (Compact & Guaranteed Single Line) */}
-      <div className="flex items-center gap-1.5 shrink-0">
+      {/* Right Controls: AI Copywriter + Cloud Sync + Reset */}
+      <div className="flex items-center gap-1.5 sm:gap-2">
+        {/* Copywriter Modal Trigger */}
         <button
           onClick={onOpenCopywriterModal}
-          className="flex items-center gap-1 px-2 py-1 rounded-lg border font-bold text-[11px] whitespace-nowrap shrink-0 transition-all active:scale-95 cursor-pointer"
-          style={{
-            backgroundColor: theme.badgeBg,
-            color: theme.accentText,
-            borderColor: theme.border
-          }}
-        >
-          <Share2 className="w-3 h-3 shrink-0" />
-          <span className="whitespace-nowrap">نصوص</span>
-        </button>
-
-        <button
-          onClick={onResetToDefault}
-          className="p-1 rounded-lg border text-slate-400 hover:text-white transition-colors"
+          className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 rounded-lg font-bold text-[11px] shadow-sm transition-all active:scale-95 cursor-pointer border"
           style={{
             backgroundColor: theme.bgDark,
-            borderColor: theme.borderSubtle
+            borderColor: theme.border,
+            color: theme.accentText
           }}
-          title="إعادة ضبط"
+          title="مولد النصوص التسويقية والكابشن لتيك توك وإنستغرام"
         >
-          <RotateCcw className="w-3 h-3" />
+          <Sparkles className="w-3.5 h-3.5" style={{ color: theme.accent }} />
+          <span>صانع النصوص</span>
         </button>
 
+        {/* Supabase Cloud Sync Modal Trigger */}
         <button
           onClick={onOpenSupabaseModal}
-          className="p-1 rounded-lg border text-slate-400 hover:text-white transition-colors"
+          className="flex items-center gap-1 px-2.5 py-1 rounded-lg border text-[11px] font-semibold text-slate-300 hover:text-white transition-all active:scale-95 cursor-pointer"
           style={{
             backgroundColor: theme.bgDark,
             borderColor: theme.borderSubtle
           }}
-          title="سحابة Supabase"
+          title="إعدادات المزامنة السحابية"
         >
-          <Database className="w-3 h-3" />
+          <Database className="w-3.5 h-3.5" />
+          <span className="hidden sm:inline">سحابة</span>
+        </button>
+
+        {/* Reset to Default */}
+        <button
+          onClick={onResetToDefault}
+          className="p-1.5 rounded-lg border text-slate-400 hover:text-white transition-colors cursor-pointer"
+          style={{
+            backgroundColor: theme.bgDark,
+            borderColor: theme.borderSubtle
+          }}
+          title="إعادة ضبط للأبعاد الافتراضية"
+        >
+          <RotateCcw className="w-3.5 h-3.5" />
         </button>
       </div>
     </header>

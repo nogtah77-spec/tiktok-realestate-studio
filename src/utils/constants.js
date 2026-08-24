@@ -121,15 +121,20 @@ export const DIVIDER_STYLES = [
 ];
 
 export const BUILTIN_FONTS = [
-  { id: 'Lalezar', name: 'لاله زار (عريض)', fontClass: "'Lalezar', cursive", type: 'builtin' },
-  { id: 'Aref Ruqaa', name: 'عارف رقعة (ديواني)', fontClass: "'Aref Ruqaa', serif", type: 'builtin' },
-  { id: 'Noto Kufi Arabic', name: 'نوتو كوفي (معماري)', fontClass: "'Noto Kufi Arabic', sans-serif", type: 'builtin' },
-  { id: 'El Messiri', name: 'المسيري (فني)', fontClass: "'El Messiri', sans-serif", type: 'builtin' },
-  { id: 'Amiri', name: 'أميري (رسمي)', fontClass: "'Amiri', serif", type: 'builtin' },
-  { id: 'Changa', name: 'تشانجا (مضلع)', fontClass: "'Changa', sans-serif", type: 'builtin' },
-  { id: 'Alexandria', name: 'الإسكندرية (مودرن)', fontClass: "'Alexandria', sans-serif", type: 'builtin' },
-  { id: 'Cairo', name: 'كايرو (متزن)', fontClass: "'Cairo', sans-serif", type: 'builtin' },
-  { id: 'Plus Jakarta Sans', name: 'Jakarta (إنجليزي)', fontClass: "'Plus Jakarta Sans', sans-serif", type: 'builtin' }
+  { id: 'Lalezar', name: 'لاله زار (عريض وضخم)', fontClass: "'Lalezar', cursive", type: 'builtin' },
+  { id: 'Alexandria', name: 'الإسكندرية (هندسي فاخر)', fontClass: "'Alexandria', sans-serif", type: 'builtin' },
+  { id: 'Noto Kufi Arabic', name: 'نوتو كوفي (معماري متزن)', fontClass: "'Noto Kufi Arabic', sans-serif", type: 'builtin' },
+  { id: 'Tajawal', name: 'تجوال (عصري نظيف)', fontClass: "'Tajawal', sans-serif", type: 'builtin' },
+  { id: 'Almarai', name: 'المراعي (ناعم واحترافي)', fontClass: "'Almarai', sans-serif", type: 'builtin' },
+  { id: 'Cairo', name: 'كايرو (متزن ورسمي)', fontClass: "'Cairo', sans-serif", type: 'builtin' },
+  { id: 'El Messiri', name: 'المسيري (فني مائل)', fontClass: "'El Messiri', sans-serif", type: 'builtin' },
+  { id: 'Aref Ruqaa', name: 'عارف رقعة (ديواني تراثي)', fontClass: "'Aref Ruqaa', serif", type: 'builtin' },
+  { id: 'Amiri', name: 'أميري (أصيل ومشكّل)', fontClass: "'Amiri', serif", type: 'builtin' },
+  { id: 'Changa', name: 'تشانجا (مضلع إلكتروني)', fontClass: "'Changa', sans-serif", type: 'builtin' },
+  { id: 'Marhey', name: 'مرحي (مرح وملفت)', fontClass: "'Marhey', cursive", type: 'builtin' },
+  { id: 'Reem Kufi', name: 'ريم كوفي (كوفي ناعم)', fontClass: "'Reem Kufi', sans-serif", type: 'builtin' },
+  { id: 'Readex Pro', name: 'ريدكس برو (عالي الوضوح)', fontClass: "'Readex Pro', sans-serif", type: 'builtin' },
+  { id: 'Plus Jakarta Sans', name: 'Jakarta (إنجليزي فاخر)', fontClass: "'Plus Jakarta Sans', sans-serif", type: 'builtin' }
 ];
 
 export const QUICK_TEXT_PRESETS = [

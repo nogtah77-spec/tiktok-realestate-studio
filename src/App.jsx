@@ -14,7 +14,7 @@ import SupabaseModal from './components/SupabaseModal';
 import { DEFAULT_GLASS_CARD_DATA, SAMPLE_IMAGES, LUXURY_THEMES } from './utils/constants';
 import { getAllPresets, saveUserPreset, deleteUserPreset, BUILTIN_PRESETS, saveWorkspaceSession, loadWorkspaceSession, clearWorkspaceSession } from './utils/presetStorage';
 import { loadSavedCustomFonts } from './utils/fontLoader';
-import { MASTER_PALETTES, getSavedPlatformThemeId, savePlatformThemeId, applyThemeToCSS } from './utils/themeEngine';
+import { ALL_PALETTES, getSavedPlatformThemeId, savePlatformThemeId, applyThemeToCSS } from './utils/themeEngine';
 import { Image as ImageIcon, Type, LayoutGrid, FileText, Shield, Maximize2, Palette } from 'lucide-react';
 
 export default function App() {
@@ -31,10 +31,10 @@ export default function App() {
   const [customFonts, setCustomFonts] = useState([]);
   const [isFullscreenPreviewOpen, setIsFullscreenPreviewOpen] = useState(false);
 
-  // 2. 8 Pro Palettes Theme Engine
+  // 2. 16 Pro Palettes Theme Engine (Muted 70% & Vibrant)
   const [activePlatformThemeId, setActivePlatformThemeId] = useState(() => initialSession?.activePlatformThemeId || getSavedPlatformThemeId());
   const [activeCardPaletteId, setActiveCardPaletteId] = useState(initialSession?.activeCardPaletteId || null);
-  const activeThemeObj = MASTER_PALETTES.find(p => p.id === activePlatformThemeId) || MASTER_PALETTES[1];
+  const activeThemeObj = ALL_PALETTES.find(p => p.id === activePlatformThemeId) || ALL_PALETTES[0];
 
   // 3. Modals
   const [isCopywriterOpen, setIsCopywriterOpen] = useState(false);
@@ -135,7 +135,7 @@ export default function App() {
   const handleSelectPlatformTheme = (newThemeId) => {
     setActivePlatformThemeId(newThemeId);
     savePlatformThemeId(newThemeId);
-    const foundTheme = MASTER_PALETTES.find(p => p.id === newThemeId);
+    const foundTheme = ALL_PALETTES.find(p => p.id === newThemeId);
     if (foundTheme) {
       applyThemeToCSS(foundTheme);
     }
@@ -466,6 +466,7 @@ export default function App() {
               <TypographyPanel
                 customFonts={customFonts}
                 onCustomFontsChange={setCustomFonts}
+                activeThemeObj={activeThemeObj}
               />
             )}
 

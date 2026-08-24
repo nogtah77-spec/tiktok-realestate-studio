@@ -1,6 +1,6 @@
-import React from 'react';
-import { Palette, Check, Smartphone, Monitor } from 'lucide-react';
-import { MASTER_PALETTES } from '../utils/themeEngine';
+import React, { useState } from 'react';
+import { Palette, Check, Smartphone, Monitor, Sparkles, Feather } from 'lucide-react';
+import { MUTED_LUXURY_PALETTES, MASTER_PALETTES } from '../utils/themeEngine';
 
 export default function PalettesStudioPanel({
   activePlatformThemeId,
@@ -8,21 +8,73 @@ export default function PalettesStudioPanel({
   onApplyToCard,
   activeCardPaletteId
 }) {
+  const [activeGroup, setActiveGroup] = useState('muted'); // 'muted', 'vibrant', 'all'
+
+  const displayedPalettes = activeGroup === 'muted'
+    ? MUTED_LUXURY_PALETTES
+    : activeGroup === 'vibrant'
+      ? MASTER_PALETTES
+      : [...MUTED_LUXURY_PALETTES, ...MASTER_PALETTES];
+
   return (
-    <div className="space-y-3.5 text-xs select-none">
-      {/* Header (Clean & Minimal) */}
-      <div className="p-3.5 rounded-2xl bg-slate-900/70 border border-slate-800 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-lg bg-white/10 text-white flex items-center justify-center font-bold">
-            <Palette className="w-3.5 h-3.5" />
+    <div className="space-y-4 text-xs select-none">
+      {/* Header & Group Selector Tabs */}
+      <div className="p-3.5 sm:p-4 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3 shadow-md">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-xl bg-white/10 text-white flex items-center justify-center font-bold shadow-inner">
+              <Palette className="w-4 h-4" />
+            </div>
+            <div>
+              <h3 className="font-black text-slate-100 text-xs sm:text-sm tracking-tight">استوديو اللوحات اللونية الفاخرة (16 ثيم)</h3>
+              <p className="text-[10px] text-slate-400">اختر بين باقة الفخامة الهادئة أو الباقة الحيوية</p>
+            </div>
           </div>
-          <h3 className="font-extrabold text-slate-100 text-xs">استوديو اللوحات اللونية الاحترافية</h3>
+        </div>
+
+        {/* Group Selector Segmented Toggle */}
+        <div className="grid grid-cols-3 gap-1.5 p-1 rounded-xl bg-slate-950 border border-slate-800">
+          <button
+            onClick={() => setActiveGroup('muted')}
+            className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
+              activeGroup === 'muted'
+                ? 'bg-white text-slate-950 font-black shadow-md'
+                : 'text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <Feather className="w-3.5 h-3.5" />
+            <span>الهادئة 70% (8)</span>
+          </button>
+
+          <button
+            onClick={() => setActiveGroup('vibrant')}
+            className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
+              activeGroup === 'vibrant'
+                ? 'bg-white text-slate-950 font-black shadow-md'
+                : 'text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>الحيوية (8)</span>
+          </button>
+
+          <button
+            onClick={() => setActiveGroup('all')}
+            className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
+              activeGroup === 'all'
+                ? 'bg-white text-slate-950 font-black shadow-md'
+                : 'text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <Palette className="w-3.5 h-3.5" />
+            <span>عرض الكل (16)</span>
+          </button>
         </div>
       </div>
 
-      {/* 8 Compact Theme Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-        {MASTER_PALETTES.map((palette) => {
+      {/* Grid of Theme Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {displayedPalettes.map((palette) => {
           const isPlatformActive = activePlatformThemeId === palette.id;
           const isCardActive = activeCardPaletteId === palette.id;
 
@@ -37,12 +89,17 @@ export default function PalettesStudioPanel({
             >
               {/* Header: Number, Icon, Title, and Color Dots Preview */}
               <div className="flex items-center justify-between gap-1.5">
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-2">
                   <span className="w-5 h-5 rounded-md bg-slate-900 border border-slate-800 flex items-center justify-center font-mono font-black text-white text-[10px]">
                     {palette.num}
                   </span>
                   <span className="text-sm">{palette.icon}</span>
-                  <span className="font-bold text-slate-100 text-xs">{palette.name}</span>
+                  <div className="flex flex-col">
+                    <span className="font-bold text-slate-100 text-xs">{palette.name}</span>
+                    {palette.group === 'muted' && (
+                      <span className="text-[9px] text-emerald-400 font-medium font-mono">هادئ ومريح 70%</span>
+                    )}
+                  </div>
                 </div>
 
                 {/* 3 Accent Color Dots */}
@@ -54,7 +111,7 @@ export default function PalettesStudioPanel({
               </div>
 
               {/* Two Compact Action Buttons */}
-              <div className="grid grid-cols-2 gap-2 pt-1 border-t border-slate-800">
+              <div className="grid grid-cols-2 gap-2 pt-1.5 border-t border-slate-800">
                 {/* 1. Apply to Platform */}
                 <button
                   onClick={() => onSelectPlatformTheme(palette.id)}

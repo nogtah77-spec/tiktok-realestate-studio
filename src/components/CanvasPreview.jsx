@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 import { LUXURY_THEMES } from '../utils/constants';
-import { MASTER_PALETTES } from '../utils/themeEngine';
+import { ALL_PALETTES } from '../utils/themeEngine';
 
 const CanvasPreview = forwardRef(({
   // Image props
@@ -18,7 +18,7 @@ const CanvasPreview = forwardRef(({
   // Theme & Finish
   themeId = 'sale-gold',
   finish = 'glossy',
-  activePlatformThemeId = 'italian-mocha',
+  activePlatformThemeId = 'matte-charcoal-platinum',
 
   // Card Content & Controls
   cardData = {},
@@ -37,7 +37,7 @@ const CanvasPreview = forwardRef(({
   gridViewsCount = '1916'
 }, ref) => {
   const activeTheme = LUXURY_THEMES.find(t => t.id === themeId) || LUXURY_THEMES[0];
-  const activePlatformTheme = MASTER_PALETTES.find(p => p.id === activePlatformThemeId) || MASTER_PALETTES[1];
+  const activePlatformTheme = ALL_PALETTES.find(p => p.id === activePlatformThemeId) || ALL_PALETTES[0];
 
   // Image Filter CSS
   let filterCss = 'none';
