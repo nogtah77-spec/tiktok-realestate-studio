@@ -37,6 +37,7 @@ const CanvasPreview = forwardRef(({
   gridViewsCount = '1916',
   activeThemeObj
 }, ref) => {
+  const activeTheme = LUXURY_THEMES.find(t => t.id === themeId) || LUXURY_THEMES[0];
   const activePlatformTheme = activeThemeObj || ALL_PALETTES.find(p => p.id === activePlatformThemeId) || ALL_PALETTES[0];
   const theme = activePlatformTheme;
 

@@ -9,8 +9,6 @@ export default function SocialCopywriterModal({
   themeId = 'sale-gold',
   activeThemeObj
 }) {
-  if (!isOpen) return null;
-
   const [activeTab, setActiveTab] = useState('tiktok'); // 'tiktok', 'instagram', 'whatsapp', 'hashtags'
   const [selectedTone, setSelectedTone] = useState('luxury');
   const [phone, setPhone] = useState('01000000000');
@@ -49,8 +47,12 @@ export default function SocialCopywriterModal({
 
   // Sync edited text on tab or setting changes unless user typed custom text
   useEffect(() => {
-    setCustomText(copies[activeTab] || '');
-  }, [activeTab, selectedTone, agentName, phone, selectedFeatures, closingText, customNotes]);
+    if (isOpen) {
+      setCustomText(copies[activeTab] || '');
+    }
+  }, [isOpen, activeTab, selectedTone, agentName, phone, selectedFeatures, closingText, customNotes]);
+
+  if (!isOpen) return null;
 
   const toggleFeature = (featureLabel) => {
     if (selectedFeatures.includes(featureLabel)) {

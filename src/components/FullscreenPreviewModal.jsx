@@ -10,11 +10,11 @@ export default function FullscreenPreviewModal({
   previewProps = {},
   activeThemeObj
 }) {
-  if (!isOpen) return null;
-
   const [isExporting, setIsExporting] = React.useState(false);
   const [isCopying, setIsCopying] = React.useState(false);
   const [copiedSuccess, setCopiedSuccess] = React.useState(false);
+
+  if (!isOpen) return null;
 
   const theme = activeThemeObj || {
     bgDark: '#0f172a',
