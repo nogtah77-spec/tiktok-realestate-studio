@@ -35,7 +35,7 @@ export default function LayoutAndCardsPanel({
   return (
     <div className="space-y-4 text-xs">
       {/* 1. Real Estate Luxury Themes */}
-      <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5 shadow-sm">
+      <div className="p-3.5 sm:p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3 shadow-sm">
         <div className="flex items-center justify-between pb-2 border-b border-slate-800/80">
           <div className="flex items-center gap-2.5">
             <div className="w-7 h-7 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-400 flex items-center justify-center font-black shadow-inner">
@@ -51,27 +51,28 @@ export default function LayoutAndCardsPanel({
           </span>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+        {/* Compact Real Estate Category Buttons */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
           {LUXURY_THEMES.map((theme) => {
             const isSelected = themeId === theme.id;
             return (
               <button
                 key={theme.id}
                 onClick={() => handleSelectRealEstateTheme(theme.id)}
-                className={`p-3 rounded-xl border text-right transition-all cursor-pointer ${
+                className={`py-2 px-2.5 rounded-xl border text-right transition-all cursor-pointer ${
                   isSelected
                     ? 'border-white bg-slate-800 text-white ring-1 ring-white/30 shadow-md'
-                    : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200 hover:border-slate-700'
+                    : 'border-slate-800 bg-slate-950/80 text-slate-400 hover:text-slate-200 hover:border-slate-700'
                 }`}
               >
-                <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-[11px] font-black text-white truncate">{theme.categoryLabel}</span>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-[10.5px] font-black text-white truncate">{theme.categoryLabel}</span>
                   <span
-                    className="w-3.5 h-3.5 rounded-full border border-white/30 shrink-0 shadow-sm"
-                    style={{ backgroundColor: theme.borderColor }}
+                    className="w-2.5 h-2.5 rounded-full border border-white/30 shrink-0 shadow-sm"
+                    style={{ backgroundColor: theme.borderColor, boxShadow: `0 0 6px ${theme.borderColor}60` }}
                   />
                 </div>
-                <div className="text-[11px] text-slate-300 truncate font-medium">{theme.name}</div>
+                <div className="text-[9.5px] text-slate-300/85 truncate font-medium">{theme.name}</div>
               </button>
             );
           })}
@@ -79,7 +80,7 @@ export default function LayoutAndCardsPanel({
       </div>
 
       {/* ⚡ 2. Cyber Neon FX Controls */}
-      <div className="p-4 rounded-2xl bg-slate-900/80 border border-cyan-500/30 space-y-3.5 shadow-[0_0_20px_rgba(0,229,255,0.08)]">
+      <div className="p-3.5 sm:p-4 rounded-2xl bg-slate-900/80 border border-cyan-500/30 space-y-3 shadow-[0_0_20px_rgba(0,229,255,0.08)]">
         <div className="flex items-center justify-between pb-2 border-b border-cyan-500/20">
           <div className="flex items-center gap-2.5">
             <div className="w-7 h-7 rounded-xl bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 flex items-center justify-center font-black shadow-[0_0_8px_rgba(0,229,255,0.4)]">
@@ -99,43 +100,43 @@ export default function LayoutAndCardsPanel({
           {/* Toggle 1: True Neon Glow */}
           <button
             onClick={() => updateCardData('neonCyberMode', !cardData.neonCyberMode)}
-            className={`p-2.5 rounded-xl border text-center transition-all cursor-pointer ${
+            className={`py-2 px-2 rounded-xl border text-center transition-all cursor-pointer ${
               cardData.neonCyberMode
                 ? 'border-cyan-400 bg-cyan-500/20 text-cyan-200 font-bold shadow-[0_0_12px_rgba(0,229,255,0.3)] ring-1 ring-cyan-400/40'
                 : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'
             }`}
           >
-            <div className="text-[11px]">⚡ توهج نيون ليزري 100%</div>
+            <div className="text-[10.5px]">⚡ توهج نيون ليزري 100%</div>
           </button>
 
           {/* Toggle 2: 3D Perspective Cyber Grid */}
           <button
             onClick={() => updateCardData('showCyberGrid', !cardData.showCyberGrid)}
-            className={`p-2.5 rounded-xl border text-center transition-all cursor-pointer ${
+            className={`py-2 px-2 rounded-xl border text-center transition-all cursor-pointer ${
               cardData.showCyberGrid
                 ? 'border-fuchsia-400 bg-fuchsia-500/20 text-fuchsia-200 font-bold shadow-[0_0_12px_rgba(255,0,230,0.3)] ring-1 ring-fuchsia-400/40'
                 : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'
             }`}
           >
-            <div className="text-[11px]">🌐 شبكة نيون 3D أرضية</div>
+            <div className="text-[10.5px]">🌐 شبكة نيون 3D أرضية</div>
           </button>
 
           {/* Toggle 3: Neon Tube Text Glow */}
           <button
             onClick={() => updateCardData('neonTextGlow', !cardData.neonTextGlow)}
-            className={`p-2.5 rounded-xl border text-center transition-all cursor-pointer ${
+            className={`py-2 px-2 rounded-xl border text-center transition-all cursor-pointer ${
               cardData.neonTextGlow
                 ? 'border-amber-400 bg-amber-500/20 text-amber-200 font-bold shadow-[0_0_12px_rgba(255,184,0,0.3)] ring-1 ring-amber-400/40'
                 : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'
             }`}
           >
-            <div className="text-[11px]">💡 لمعة نيون للنصوص</div>
+            <div className="text-[10.5px]">💡 لمعة نيون للنصوص</div>
           </button>
         </div>
       </div>
 
       {/* 3. Glass Finish Mode (Matte vs Glossy) */}
-      <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5 shadow-sm">
+      <div className="p-3.5 sm:p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3 shadow-sm">
         <div className="flex items-center justify-between pb-2 border-b border-slate-800/80">
           <div className="flex items-center gap-2.5">
             <div className="w-7 h-7 rounded-xl bg-purple-500/15 border border-purple-500/30 text-purple-400 flex items-center justify-center font-black shadow-inner">
@@ -151,27 +152,27 @@ export default function LayoutAndCardsPanel({
           </span>
         </div>
 
-        <div className="grid grid-cols-2 gap-2.5">
+        <div className="grid grid-cols-2 gap-2">
           <button
             onClick={() => setFinish('matte')}
-            className={`p-3 rounded-xl border text-center transition-all cursor-pointer ${
+            className={`py-2 px-2.5 rounded-xl border text-center transition-all cursor-pointer ${
               finish === 'matte'
                 ? 'border-white bg-white/15 text-white font-black ring-1 ring-white/30 shadow'
                 : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'
             }`}
           >
-            <div className="text-xs font-bold">✨ زجاج مطفي (Matte)</div>
+            <div className="text-[11px] font-bold">✨ زجاج مطفي (Matte)</div>
           </button>
 
           <button
             onClick={() => setFinish('glossy')}
-            className={`p-3 rounded-xl border text-center transition-all cursor-pointer ${
+            className={`py-2 px-2.5 rounded-xl border text-center transition-all cursor-pointer ${
               finish === 'glossy'
                 ? 'border-white bg-white/15 text-white font-black ring-1 ring-white/30 shadow'
                 : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'
             }`}
           >
-            <div className="text-xs font-bold">💎 زجاج بلمعة (Glossy)</div>
+            <div className="text-[11px] font-bold">💎 زجاج بلمعة (Glossy)</div>
           </button>
         </div>
       </div>
@@ -303,13 +304,13 @@ export default function LayoutAndCardsPanel({
                 updateCardData('borderColorMode', 'theme');
                 updateCardData('glowColorMode', 'theme');
               }}
-              className={`flex items-center justify-center gap-1 py-1.5 px-2 rounded-lg text-[10px] font-bold border transition-all cursor-pointer ${
+              className={`flex items-center justify-center gap-1 py-1 px-2 rounded-lg text-[9.5px] font-bold border transition-all cursor-pointer ${
                 borderMode === 'theme'
                   ? 'border-white bg-slate-800 text-white shadow-sm ring-1 ring-white/30'
                   : 'border-slate-800 bg-slate-900 text-slate-400 hover:text-slate-200'
               }`}
             >
-              <Tag className="w-3 h-3" />
+              <Tag className="w-2.5 h-2.5" />
               <span>تصنيف العرض</span>
             </button>
 
@@ -318,13 +319,13 @@ export default function LayoutAndCardsPanel({
                 updateCardData('borderColorMode', 'platform');
                 updateCardData('glowColorMode', 'platform');
               }}
-              className={`flex items-center justify-center gap-1 py-1.5 px-2 rounded-lg text-[10px] font-bold border transition-all cursor-pointer ${
+              className={`flex items-center justify-center gap-1 py-1 px-2 rounded-lg text-[9.5px] font-bold border transition-all cursor-pointer ${
                 borderMode === 'platform'
                   ? 'border-white bg-slate-800 text-white shadow-sm ring-1 ring-white/30'
                   : 'border-slate-800 bg-slate-900 text-slate-400 hover:text-slate-200'
               }`}
             >
-              <Monitor className="w-3 h-3" />
+              <Monitor className="w-2.5 h-2.5" />
               <span>ثيم المنصة</span>
             </button>
 
@@ -333,13 +334,13 @@ export default function LayoutAndCardsPanel({
                 updateCardData('borderColorMode', 'custom');
                 updateCardData('glowColorMode', 'custom');
               }}
-              className={`flex items-center justify-center gap-1 py-1.5 px-2 rounded-lg text-[10px] font-bold border transition-all cursor-pointer ${
+              className={`flex items-center justify-center gap-1 py-1 px-2 rounded-lg text-[9.5px] font-bold border transition-all cursor-pointer ${
                 borderMode === 'custom'
                   ? 'border-white bg-slate-800 text-white shadow-sm ring-1 ring-white/30'
                   : 'border-slate-800 bg-slate-900 text-slate-400 hover:text-slate-200'
               }`}
             >
-              <Palette className="w-3 h-3" />
+              <Palette className="w-2.5 h-2.5" />
               <span>مخصص</span>
             </button>
           </div>
@@ -426,7 +427,7 @@ export default function LayoutAndCardsPanel({
       </div>
 
       {/* 6. Master Architectural & Luxury Dividers Studio */}
-      <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5 shadow-md">
+      <div className="p-3.5 sm:p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3 shadow-md">
         <div className="flex items-center justify-between pb-2 border-b border-slate-800/80">
           <div className="flex items-center gap-2.5">
             <div className="w-7 h-7 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-400 flex items-center justify-center font-black shadow-inner">
@@ -443,12 +444,12 @@ export default function LayoutAndCardsPanel({
         </div>
 
         {/* Compact Segmented Pills for Categories */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 p-1 rounded-xl bg-slate-950 border border-slate-800">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-1 p-0.5 rounded-xl bg-slate-950 border border-slate-800">
           {DIVIDER_CATEGORIES.map((cat) => (
             <button
               key={cat.id}
               onClick={() => setDividerCategory(cat.id)}
-              className={`flex items-center justify-center gap-1 py-1.5 px-2 rounded-lg text-[10px] font-extrabold transition-all cursor-pointer ${
+              className={`flex items-center justify-center gap-1 py-1 px-1.5 rounded-lg text-[9.5px] font-extrabold transition-all cursor-pointer ${
                 dividerCategory === cat.id
                   ? 'bg-white text-slate-950 shadow-sm'
                   : 'text-slate-400 hover:text-slate-200'
@@ -461,7 +462,7 @@ export default function LayoutAndCardsPanel({
         </div>
 
         {/* Visual Interactive Mini-Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-[280px] overflow-y-auto pr-1">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-[280px] overflow-y-auto pr-1">
           {visibleDividers.map((d) => {
             const isSelected = (cardData.dividerStyle || 'wireframe-pill') === d.id ||
               ((cardData.dividerStyle === 'tag' && d.id === 'wireframe-pill') ||
@@ -472,7 +473,7 @@ export default function LayoutAndCardsPanel({
               <button
                 key={d.id}
                 onClick={() => updateCardData('dividerStyle', d.id)}
-                className={`p-3 rounded-xl border text-right transition-all flex flex-col justify-between gap-2 cursor-pointer ${
+                className={`p-2.5 rounded-xl border text-right transition-all flex flex-col justify-between gap-1.5 cursor-pointer ${
                   isSelected
                     ? 'border-white bg-slate-800 text-white ring-1 ring-white/30 shadow-md'
                     : 'border-slate-800/80 bg-slate-950/70 text-slate-400 hover:text-slate-200 hover:border-slate-700'

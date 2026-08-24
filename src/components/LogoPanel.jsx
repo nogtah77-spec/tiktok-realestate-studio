@@ -121,8 +121,8 @@ export default function LogoPanel({
             </div>
 
             <div>
-              <span className="text-[11px] text-slate-400 block mb-1.5 font-medium">موقع الشعار على الغلاف:</span>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <span className="text-[10.5px] text-slate-400 block mb-1 font-medium">موقع الشعار على الغلاف:</span>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
                 {[
                   { id: 'top-right', label: 'أعلى اليمين' },
                   { id: 'top-left', label: 'أعلى اليسار' },
@@ -132,7 +132,7 @@ export default function LogoPanel({
                   <button
                     key={pos.id}
                     onClick={() => setLogoPosition(pos.id)}
-                    className={`py-2 px-1.5 rounded-xl text-[11px] font-medium border text-center transition-all cursor-pointer ${
+                    className={`py-1.5 px-1 rounded-lg text-[10px] font-medium border text-center transition-all cursor-pointer ${
                       logoPosition === pos.id
                         ? 'border-white bg-slate-800 text-white font-bold shadow'
                         : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'

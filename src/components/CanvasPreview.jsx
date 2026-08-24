@@ -57,6 +57,7 @@ const CanvasPreview = forwardRef(({
     titleFont = 'Lalezar',
     titleSize = 38,
     titleColor = '#ffffff',
+    titleOpacity = 100,
     titleShimmer = false,
 
     showSubtitle = false,
@@ -64,6 +65,7 @@ const CanvasPreview = forwardRef(({
     subtitleFont = 'Alexandria',
     subtitleSize = 18,
     subtitleColor = '',
+    subtitleOpacity = 90,
 
     heroNumber = '185',
     heroUnit = 'م²',
@@ -72,12 +74,15 @@ const CanvasPreview = forwardRef(({
     heroUnitSize = 28,
     heroNumberColor = '#ffffff',
     heroUnitColor = '',
+    heroNumberOpacity = 100,
+    heroUnitOpacity = 90,
     heroShimmer = false,
 
     bottomText = 'حي النرجس',
     bottomFont = 'Alexandria',
     bottomSize = 18,
     bottomTextColor = '#ffffff',
+    bottomTextOpacity = 100,
     bottomPillStyle = 'pill',
 
     showDividers = true,
@@ -603,13 +608,14 @@ const CanvasPreview = forwardRef(({
               {/* SECTION 1: TOP TITLE */}
               <div className="w-full px-1">
                 <h2
-                  className={`font-extrabold tracking-tight m-0 p-0 leading-tight ${
+                  className={`font-extrabold tracking-tight m-0 p-0 leading-tight transition-opacity ${
                     titleShimmer ? effectiveShimmerClass : ''
                   }`}
                   style={{
                     fontFamily: titleFont ? `'${titleFont}', sans-serif` : 'inherit',
                     fontSize: `${titleSize}px`,
                     color: titleShimmer ? 'transparent' : (titleColor || '#ffffff'),
+                    opacity: (titleOpacity ?? 100) / 100,
                     textShadow: (neonTextGlow || isNeonModeActive)
                       ? `0 0 2px #ffffff, 0 0 8px ${effectiveBorderColor}, 0 0 20px ${effectiveGlowColor}`
                       : undefined,
@@ -627,11 +633,12 @@ const CanvasPreview = forwardRef(({
               <div className="flex flex-col items-center justify-center my-0.5 w-full">
                 {showSubtitle && subtitle && (
                   <span
-                    className="font-bold mb-0.5 tracking-wide"
+                    className="font-bold mb-0.5 tracking-wide transition-opacity"
                     style={{
                       fontFamily: subtitleFont ? `'${subtitleFont}', sans-serif` : 'inherit',
                       fontSize: `${subtitleSize}px`,
                       color: effectiveSubtitleColor,
+                      opacity: (subtitleOpacity ?? 90) / 100,
                       textShadow: (neonTextGlow || isNeonModeActive) ? `0 0 6px ${effectiveGlowColor}` : undefined,
                       filter: 'drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7))'
                     }}
@@ -644,11 +651,12 @@ const CanvasPreview = forwardRef(({
                 <div className="flex items-baseline justify-center gap-1.5 rtl:flex-row ltr:flex-row">
                   {heroUnit && (
                     <span
-                      className="font-bold tracking-tight select-none"
+                      className="font-bold tracking-tight select-none transition-opacity"
                       style={{
                         fontFamily: heroFont ? `'${heroFont}', sans-serif` : 'inherit',
                         fontSize: `${heroUnitSize}px`,
                         color: effectiveHeroUnitColor,
+                        opacity: (heroUnitOpacity ?? 90) / 100,
                         textShadow: (neonTextGlow || isNeonModeActive) ? `0 0 8px ${effectiveGlowColor}` : undefined,
                         filter: 'drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7))'
                       }}
@@ -658,11 +666,12 @@ const CanvasPreview = forwardRef(({
                   )}
 
                   <span
-                    className={`font-black tracking-tight leading-none ${heroShimmer ? effectiveShimmerClass : ''}`}
+                    className={`font-black tracking-tight leading-none transition-opacity ${heroShimmer ? effectiveShimmerClass : ''}`}
                     style={{
                       fontFamily: heroFont ? `'${heroFont}', sans-serif` : 'inherit',
                       fontSize: `${heroNumberSize}px`,
                       color: heroShimmer ? 'transparent' : (heroNumberColor || '#ffffff'),
+                      opacity: (heroNumberOpacity ?? 100) / 100,
                       textShadow: (neonTextGlow || isNeonModeActive)
                         ? `0 0 2px #ffffff, 0 0 10px ${effectiveBorderColor}, 0 0 26px ${effectiveGlowColor}`
                         : undefined,
@@ -684,6 +693,7 @@ const CanvasPreview = forwardRef(({
                         fontFamily: bottomFont ? `'${bottomFont}', sans-serif` : 'inherit',
                         fontSize: `${bottomSize}px`,
                         color: bottomTextColor || '#ffffff',
+                        opacity: (bottomTextOpacity ?? 100) / 100,
                         textShadow: (neonTextGlow || isNeonModeActive) ? `0 0 8px ${effectiveGlowColor}` : '0 2px 8px rgba(0,0,0,0.8)'
                       }}
                     >
@@ -696,6 +706,7 @@ const CanvasPreview = forwardRef(({
                         fontFamily: bottomFont ? `'${bottomFont}', sans-serif` : 'inherit',
                         fontSize: `${bottomSize}px`,
                         color: bottomTextColor || '#ffffff',
+                        opacity: (bottomTextOpacity ?? 100) / 100,
                         borderRadius: `${Math.max(6, Math.round(borderRadius * 0.45))}px`,
                         background: isNeonModeActive
                           ? 'rgba(0, 229, 255, 0.15)'

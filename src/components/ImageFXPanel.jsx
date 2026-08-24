@@ -232,15 +232,15 @@ export default function ImageFXPanel({
         </div>
 
         {/* Color Tint Palette */}
-        <div className="pt-3 border-t border-slate-800 space-y-3">
-          <div className="flex items-center justify-between text-[11px]">
+        <div className="pt-2.5 border-t border-slate-800 space-y-2.5">
+          <div className="flex items-center justify-between text-[10.5px]">
             <span className="font-bold text-slate-200">طبقة التعتيم واللون (Overlay):</span>
-            <span className="px-2 py-0.5 rounded-md font-mono text-[10px] font-bold bg-slate-950 border border-slate-800 text-white">
+            <span className="px-1.5 py-0.5 rounded font-mono text-[9px] font-bold bg-slate-950 border border-slate-800 text-white">
               {overlayOpacity}%
             </span>
           </div>
 
-          <div className="flex items-center gap-2 flex-wrap">
+          <div className="flex items-center gap-1.5 flex-wrap">
             {OVERLAY_COLOR_PRESETS.map((preset) => (
               <button
                 key={preset.id}
@@ -248,26 +248,26 @@ export default function ImageFXPanel({
                   setOverlayColor(preset.color);
                   setOverlayOpacity(preset.defaultOpacity);
                 }}
-                className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-[11px] font-medium border transition-all cursor-pointer ${
+                className={`flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-medium border transition-all cursor-pointer ${
                   overlayColor === preset.color
                     ? 'border-white bg-slate-800 text-white shadow'
                     : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'
                 }`}
               >
                 <span
-                  className="w-3 h-3 rounded-full border border-white/20"
+                  className="w-2.5 h-2.5 rounded-full border border-white/20"
                   style={{ backgroundColor: preset.color }}
                 />
                 <span>{preset.name}</span>
               </button>
             ))}
 
-            <label className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-slate-800 bg-slate-950 text-slate-400 cursor-pointer text-[11px] hover:text-slate-200">
+            <label className="flex items-center gap-1 px-2 py-1 rounded-lg border border-slate-800 bg-slate-950 text-slate-400 cursor-pointer text-[10px] hover:text-slate-200">
               <input
                 type="color"
                 value={overlayColor}
                 onChange={(e) => setOverlayColor(e.target.value)}
-                className="w-3.5 h-3.5 rounded cursor-pointer bg-transparent border-0"
+                className="w-3 h-3 rounded cursor-pointer bg-transparent border-0"
               />
               <span>مخصص</span>
             </label>
@@ -279,19 +279,19 @@ export default function ImageFXPanel({
             max="85"
             value={overlayOpacity}
             onChange={(e) => setOverlayOpacity(Number(e.target.value))}
-            className="luxury-slider mt-1"
+            className="luxury-slider mt-0.5"
           />
         </div>
 
         {/* Cinematic Filters */}
-        <div className="pt-3 border-t border-slate-800 space-y-2">
-          <span className="font-bold text-slate-200 text-[11px]">الفلاتر اللونية والسينمائية:</span>
-          <div className="grid grid-cols-3 gap-2">
+        <div className="pt-2.5 border-t border-slate-800 space-y-2">
+          <span className="font-bold text-slate-200 text-[10.5px]">الفلاتر اللونية والسينمائية:</span>
+          <div className="grid grid-cols-3 gap-1.5">
             {IMAGE_FILTER_PRESETS.map((filter) => (
               <button
                 key={filter.id}
                 onClick={() => setImageFilter(filter.id)}
-                className={`py-2 px-2 rounded-xl text-[11px] font-medium border text-center transition-all cursor-pointer ${
+                className={`py-1.5 px-1 rounded-lg text-[10px] font-medium border text-center transition-all cursor-pointer ${
                   imageFilter === filter.id
                     ? 'border-white bg-slate-800 text-white font-bold shadow'
                     : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'

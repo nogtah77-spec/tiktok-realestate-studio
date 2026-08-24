@@ -304,6 +304,7 @@ export const DEFAULT_GLASS_CARD_DATA = {
   titleFont: 'Lalezar',
   titleSize: 38,
   titleColor: '#ffffff',
+  titleOpacity: 100,
   titleShimmer: false,
 
   showSubtitle: false,
@@ -311,6 +312,7 @@ export const DEFAULT_GLASS_CARD_DATA = {
   subtitleFont: 'Alexandria',
   subtitleSize: 18,
   subtitleColor: '',
+  subtitleOpacity: 90,
 
   heroNumber: '185',
   heroUnit: 'م²',
@@ -319,12 +321,15 @@ export const DEFAULT_GLASS_CARD_DATA = {
   heroUnitSize: 28,
   heroNumberColor: '#ffffff',
   heroUnitColor: '',
+  heroNumberOpacity: 100,
+  heroUnitOpacity: 90,
   heroShimmer: false,
 
   bottomText: 'حي النرجس',
   bottomFont: 'Alexandria',
   bottomSize: 18,
   bottomTextColor: '#ffffff',
+  bottomTextOpacity: 100,
   bottomPillStyle: 'pill',
 
   showDividers: true,
