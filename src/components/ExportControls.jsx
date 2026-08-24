@@ -99,30 +99,30 @@ export function SideActionWings({
   return {
     // Right Wing: الجريد والشعار
     rightWing: (
-      <div className="flex flex-col gap-2 shrink-0 justify-center">
+      <div className="flex flex-col gap-2.5 shrink-0 justify-center items-center">
         <button
           onClick={() => setShowGridLines(!showGridLines)}
-          className={`flex flex-col items-center justify-center py-2 px-1.5 rounded-xl border text-[10px] font-bold gap-0.5 transition-all cursor-pointer w-12 sm:w-14 ${
+          className={`flex flex-col items-center justify-center py-2.5 px-2 rounded-2xl border text-[10px] sm:text-[11px] font-extrabold gap-1 transition-all active:scale-95 cursor-pointer w-14 sm:w-16 shadow-sm ${
             showGridLines
-              ? 'border-cyan-400 bg-cyan-500/20 text-cyan-300 shadow-sm'
-              : 'border-slate-800 bg-slate-900/90 text-slate-400 hover:text-slate-200'
+              ? 'border-cyan-400 bg-cyan-500/25 text-cyan-200 ring-1 ring-cyan-400/40 shadow-[0_0_10px_rgba(0,229,255,0.25)]'
+              : 'border-slate-800 bg-slate-900/90 text-slate-300 hover:text-white hover:border-slate-700'
           }`}
           title="خطوط المحاذاة والسنتر"
         >
-          <Grid className="w-3.5 h-3.5 text-cyan-400" />
+          <Grid className={`w-4 h-4 ${showGridLines ? 'text-cyan-300' : 'text-slate-400'}`} />
           <span>الجريد</span>
         </button>
 
         <button
           onClick={() => setShowLogo(!showLogo)}
-          className={`flex flex-col items-center justify-center py-2 px-1.5 rounded-xl border text-[10px] font-bold gap-0.5 transition-all cursor-pointer w-12 sm:w-14 ${
+          className={`flex flex-col items-center justify-center py-2.5 px-2 rounded-2xl border text-[10px] sm:text-[11px] font-extrabold gap-1 transition-all active:scale-95 cursor-pointer w-14 sm:w-16 shadow-sm ${
             showLogo
-              ? 'border-white/40 bg-slate-800 text-white shadow-sm'
+              ? 'border-white/40 bg-slate-800 text-white shadow'
               : 'border-slate-800 bg-slate-900/90 text-slate-400 hover:text-slate-200'
           }`}
           title="إظهار / إخفاء الشعار"
         >
-          <Shield className="w-3.5 h-3.5 text-slate-300" />
+          <Shield className="w-4 h-4 text-slate-300" />
           <span>الشعار</span>
         </button>
       </div>
@@ -130,21 +130,21 @@ export function SideActionWings({
 
     // Left Wing: نسخ ومفرغ PNG
     leftWing: (
-      <div className="flex flex-col gap-2 shrink-0 justify-center">
+      <div className="flex flex-col gap-2.5 shrink-0 justify-center items-center">
         <button
           onClick={handleCopyClipboard}
           disabled={isCopying}
-          className="flex flex-col items-center justify-center py-2 px-1.5 rounded-xl border border-slate-800 bg-slate-900/90 hover:bg-slate-800 text-slate-200 text-[10px] font-bold gap-0.5 transition-all active:scale-95 cursor-pointer w-12 sm:w-14 disabled:opacity-50"
+          className="flex flex-col items-center justify-center py-2.5 px-2 rounded-2xl border border-slate-800 bg-slate-900/90 hover:bg-slate-800 text-slate-200 text-[10px] sm:text-[11px] font-extrabold gap-1 transition-all active:scale-95 cursor-pointer w-14 sm:w-16 shadow-sm disabled:opacity-50"
           title="نسخ الصورة للحافظة ولصقها فوراً"
         >
           {copiedSuccess ? (
             <>
-              <Check className="w-3.5 h-3.5 text-emerald-400 stroke-[3]" />
-              <span className="text-emerald-400 text-[8px]">تم!</span>
+              <Check className="w-4 h-4 text-emerald-400 stroke-[3]" />
+              <span className="text-emerald-400 text-[9px] font-black">تم!</span>
             </>
           ) : (
             <>
-              <Copy className="w-3.5 h-3.5 text-slate-300" />
+              <Copy className="w-4 h-4 text-slate-300" />
               <span>نسخ</span>
             </>
           )}
@@ -153,10 +153,10 @@ export function SideActionWings({
         <button
           onClick={handleDownloadTransparent}
           disabled={isTransparentExporting}
-          className="flex flex-col items-center justify-center py-2 px-1.5 rounded-xl border border-slate-800 bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-white text-[10px] font-bold gap-0.5 transition-all active:scale-95 cursor-pointer w-12 sm:w-14 disabled:opacity-50"
+          className="flex flex-col items-center justify-center py-2.5 px-2 rounded-2xl border border-slate-800 bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-white text-[10px] sm:text-[11px] font-extrabold gap-1 transition-all active:scale-95 cursor-pointer w-14 sm:w-16 shadow-sm disabled:opacity-50"
           title="تنزيل الكرت مفرغ بدون خلفية للمونتاج"
         >
-          <Layers className="w-3.5 h-3.5 text-slate-300" />
+          <Layers className="w-4 h-4 text-slate-300" />
           <span>مفرغ</span>
         </button>
       </div>

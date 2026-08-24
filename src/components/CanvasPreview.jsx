@@ -108,22 +108,52 @@ const CanvasPreview = forwardRef(({
     neonTextGlow = false
   } = cardData;
 
-  // Is Neon Mode explicitly active on the card? (Only if cardData toggle is on, or real estate theme is neon)
-  const isNeonModeActive = Boolean(neonCyberMode) || (activeTheme.id === 'neon-cyber-dual' && borderColorMode === 'theme');
+  // ⚡ Resolve active palette if applied to card
+  const activeCardPalette = (cardData.activePaletteCardId && ALL_PALETTES.find(p => p.id === cardData.activePaletteCardId)) || null;
 
-  // Compute final border color & glow based on explicit mode
+  // Is Neon Mode explicitly active on the card? (Only if cardData toggle is on, or real estate theme is neon, or active card palette is neon)
+  const isNeonModeActive = Boolean(neonCyberMode) || 
+    (activeTheme.id === 'neon-cyber-dual' && borderColorMode === 'theme') ||
+    (activeCardPalette?.group === 'neon' && borderColorMode === 'platform');
+
+  // Compute final border color, glow, glass tint, and typography accents based on active theme/palette
   let effectiveBorderColor = activeTheme.borderColor;
   let effectiveGlowColor = activeTheme.borderGlow || activeTheme.borderColor;
+  let effectiveGlassBg = activeTheme.glassBg;
+  let effectiveAccent = activeTheme.accent;
+  let effectiveHeroUnitColor = heroUnitColor || activeTheme.heroUnitColor;
+  let effectiveShimmerClass = activeTheme.shimmerClass;
 
   if (borderColorMode === 'platform') {
-    effectiveBorderColor = activePlatformTheme.previewCard.borderColor;
-    effectiveGlowColor = activePlatformTheme.previewCard.borderGlow;
+    const pal = activeCardPalette || activePlatformTheme;
+    if (pal && pal.previewCard) {
+      effectiveBorderColor = pal.previewCard.borderColor;
+      effectiveGlowColor = pal.previewCard.borderGlow;
+      effectiveGlassBg = pal.previewCard.glassBg;
+      effectiveAccent = pal.previewCard.accent;
+      effectiveHeroUnitColor = heroUnitColor || pal.previewCard.heroUnitColor;
+      effectiveShimmerClass = pal.previewCard.shimmerClass;
+    }
   } else if (borderColorMode === 'custom' && customBorderColor) {
     effectiveBorderColor = customBorderColor;
     effectiveGlowColor = customGlowColor || customBorderColor;
   }
 
-  const effectiveDividerColor = dividerCustomColor || (borderColorMode === 'platform' ? activePlatformTheme.previewCard.borderColor : activeTheme.dividerColor);
+  const effectiveDividerColor = dividerCustomColor || (borderColorMode === 'platform' ? (activeCardPalette?.previewCard?.borderColor || activePlatformTheme.previewCard.borderColor) : activeTheme.dividerColor);
+  const effectiveSubtitleColor = subtitleColor || effectiveAccent;
+
+  // Dynamic Glass Tint Calculator with Opacity
+  const computeGlassBackground = () => {
+    if (isNeonModeActive) {
+      return `rgba(5, 7, 20, ${boxOpacity / 100})`;
+    }
+    const rawGlassBg = effectiveGlassBg || 'rgba(20, 16, 10, 0.62)';
+    const match = rawGlassBg.match(/rgba\((\d+),\s*(\d+),\s*(\d+)/);
+    if (match) {
+      return `rgba(${match[1]}, ${match[2]}, ${match[3]}, ${boxOpacity / 100})`;
+    }
+    return rawGlassBg;
+  };
 
   // Logo position
   const getLogoPositionClass = () => {
@@ -369,9 +399,7 @@ const CanvasPreview = forwardRef(({
                 width: `${boxWidth}%`,
                 padding: `${boxPaddingY || 20}px 16px`,
                 borderRadius: `${borderRadius}px`,
-                backgroundColor: isNeonModeActive
-                  ? `rgba(5, 7, 20, ${boxOpacity / 100})`
-                  : activeTheme.glassBg.replace('0.55', (boxOpacity / 100).toString()).replace('0.65', (boxOpacity / 100).toString()).replace('0.62', (boxOpacity / 100).toString()).replace('0.6', (boxOpacity / 100).toString()),
+                backgroundColor: computeGlassBackground(),
                 backdropFilter: boxBlur > 0 ? `blur(${boxBlur}px)` : 'none',
                 WebkitBackdropFilter: boxBlur > 0 ? `blur(${boxBlur}px)` : 'none',
                 border: borderWidth > 0 ? `${borderWidth}px ${borderStyle === 'double' ? 'double' : 'solid'} ${effectiveBorderColor}` : 'none',
@@ -393,7 +421,7 @@ const CanvasPreview = forwardRef(({
               <div className="w-full px-1">
                 <h2
                   className={`font-extrabold tracking-tight m-0 p-0 leading-tight ${
-                    titleShimmer ? activeTheme.shimmerClass : ''
+                    titleShimmer ? effectiveShimmerClass : ''
                   }`}
                   style={{
                     fontFamily: titleFont ? `'${titleFont}', sans-serif` : 'inherit',
@@ -420,7 +448,7 @@ const CanvasPreview = forwardRef(({
                     style={{
                       fontFamily: subtitleFont ? `'${subtitleFont}', sans-serif` : 'inherit',
                       fontSize: `${subtitleSize}px`,
-                      color: subtitleColor || activeTheme.accent,
+                      color: effectiveSubtitleColor,
                       textShadow: (neonTextGlow || isNeonModeActive) ? `0 0 6px ${effectiveGlowColor}` : undefined,
                       filter: 'drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7))'
                     }}
@@ -437,7 +465,7 @@ const CanvasPreview = forwardRef(({
                       style={{
                         fontFamily: heroFont ? `'${heroFont}', sans-serif` : 'inherit',
                         fontSize: `${heroUnitSize}px`,
-                        color: heroUnitColor || activeTheme.heroUnitColor,
+                        color: effectiveHeroUnitColor,
                         textShadow: (neonTextGlow || isNeonModeActive) ? `0 0 8px ${effectiveGlowColor}` : undefined,
                         filter: 'drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7))'
                       }}
@@ -447,7 +475,7 @@ const CanvasPreview = forwardRef(({
                   )}
 
                   <span
-                    className={`font-black tracking-tight leading-none ${heroShimmer ? activeTheme.shimmerClass : ''}`}
+                    className={`font-black tracking-tight leading-none ${heroShimmer ? effectiveShimmerClass : ''}`}
                     style={{
                       fontFamily: heroFont ? `'${heroFont}', sans-serif` : 'inherit',
                       fontSize: `${heroNumberSize}px`,

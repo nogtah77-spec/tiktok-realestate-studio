@@ -147,13 +147,17 @@ export default function App() {
     const isNeon = palette.group === 'neon';
     setCardData(prev => ({
       ...prev,
-      borderColorMode: 'custom',
+      borderColorMode: 'platform',
+      activePaletteCardId: palette.id,
       customBorderColor: palette.previewCard.borderColor,
       glowColorMode: 'custom',
       customGlowColor: palette.previewCard.borderGlow,
-      borderGlowIntensity: isNeon ? 90 : 85,
-      neonCyberMode: isNeon ? true : prev.neonCyberMode,
-      neonTextGlow: isNeon ? true : prev.neonTextGlow
+      borderGlowIntensity: isNeon ? 90 : 80,
+      neonCyberMode: isNeon,
+      neonTextGlow: isNeon,
+      subtitleColor: palette.previewCard.accent,
+      heroUnitColor: palette.previewCard.heroUnitColor,
+      dividerCustomColor: palette.previewCard.borderColor
     }));
   };
 
@@ -313,13 +317,15 @@ export default function App() {
             </button>
           </div>
 
-          {/* Stage Bay: Flanked by Right and Left Wings with refined 2mm spacing */}
-          <div className="w-full flex items-center justify-center gap-3.5 sm:gap-4">
-            {/* Right Wing: الجريد والشعار */}
-            {sideWings.rightWing}
+          {/* Stage Bay: Flanked by Perfectly Centered Right and Left Wings */}
+          <div className="w-full flex items-center justify-between px-1 sm:px-3 lg:px-4">
+            {/* Right Wing: Centered in the space between canvas and right border */}
+            <div className="flex-1 flex items-center justify-center">
+              {sideWings.rightWing}
+            </div>
 
             {/* Center Canvas Preview: Exact pixel footprint on mobile with zero dead space */}
-            <div className="flex items-center justify-center">
+            <div className="flex-none flex items-center justify-center">
               {/* MOBILE COMPACT PREVIEW (130px x 231px) - Click to expand */}
               <div
                 onClick={() => setIsFullscreenPreviewOpen(true)}
@@ -352,8 +358,10 @@ export default function App() {
               </div>
             </div>
 
-            {/* Left Wing: نسخ ومفرغ PNG */}
-            {sideWings.leftWing}
+            {/* Left Wing: Centered in the space between canvas and left border */}
+            <div className="flex-1 flex items-center justify-center">
+              {sideWings.leftWing}
+            </div>
           </div>
 
           {/* Compact Bottom Action Bar: High-Res Download & Views */}
