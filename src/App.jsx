@@ -31,9 +31,11 @@ export default function App() {
   const [customFonts, setCustomFonts] = useState([]);
   const [isFullscreenPreviewOpen, setIsFullscreenPreviewOpen] = useState(false);
 
-  // 2. 16 Pro Palettes Theme Engine (Muted 70% & Vibrant)
+  // 2. 16 Pro Palettes Theme Engine & 20 Neon Button Styles
   const [activePlatformThemeId, setActivePlatformThemeId] = useState(() => initialSession?.activePlatformThemeId || getSavedPlatformThemeId());
   const [activeCardPaletteId, setActiveCardPaletteId] = useState(initialSession?.activeCardPaletteId || null);
+  const [activeNeonButtonStyleId, setActiveNeonButtonStyleId] = useState(() => initialSession?.activeNeonButtonStyleId || 'frame-01');
+  const [neonButtonOpacity, setNeonButtonOpacity] = useState(() => initialSession?.neonButtonOpacity ?? 100);
   const activeThemeObj = ALL_PALETTES.find(p => p.id === activePlatformThemeId) || ALL_PALETTES[0];
 
   // 3. Modals
@@ -89,6 +91,8 @@ export default function App() {
         activePresetId,
         activePlatformThemeId,
         activeCardPaletteId,
+        activeNeonButtonStyleId,
+        neonButtonOpacity,
         imageUrl,
         imageZoom,
         imagePanX,
@@ -115,6 +119,8 @@ export default function App() {
     activePresetId,
     activePlatformThemeId,
     activeCardPaletteId,
+    activeNeonButtonStyleId,
+    neonButtonOpacity,
     imageUrl,
     imageZoom,
     imagePanX,
@@ -280,6 +286,8 @@ export default function App() {
           activePlatformThemeId={activePlatformThemeId}
           onSelectPlatformTheme={handleSelectPlatformTheme}
           activeThemeObj={activeThemeObj}
+          activeNeonButtonStyleId={activeNeonButtonStyleId}
+          neonButtonOpacity={neonButtonOpacity}
         />
       </div>
 
@@ -520,6 +528,10 @@ export default function App() {
                 onApplyToCard={handleApplyPaletteToCard}
                 activeCardPaletteId={activeCardPaletteId}
                 activeThemeObj={activeThemeObj}
+                activeNeonButtonStyleId={activeNeonButtonStyleId}
+                onSelectNeonButtonStyle={setActiveNeonButtonStyleId}
+                neonButtonOpacity={neonButtonOpacity}
+                onNeonButtonOpacityChange={setNeonButtonOpacity}
               />
             )}
           </div>
