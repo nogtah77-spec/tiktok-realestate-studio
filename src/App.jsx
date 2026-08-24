@@ -329,7 +329,7 @@ export default function App() {
               {/* MOBILE COMPACT PREVIEW (130px x 231px) - Click to expand */}
               <div
                 onClick={() => setIsFullscreenPreviewOpen(true)}
-                className="lg:hidden w-[130px] h-[231px] relative overflow-hidden rounded-[20px] shadow-xl ring-1 cursor-pointer active:scale-98 transition-transform"
+                className="lg:hidden w-[130px] h-[231px] relative overflow-hidden rounded-[20px] shadow-xl ring-1 cursor-pointer active:scale-98 transition-transform shrink-0"
                 style={{
                   backgroundColor: activeThemeObj.bgDark,
                   borderColor: activeThemeObj.border
@@ -338,7 +338,11 @@ export default function App() {
               >
                 <div
                   className="absolute top-0 left-0 origin-top-left pointer-events-none"
-                  style={{ transform: 'scale(0.3823)' }}
+                  style={{
+                    width: '340px',
+                    height: '604px',
+                    transform: 'scale(0.38235294)'
+                  }}
                 >
                   <CanvasPreview
                     ref={canvasRef}
@@ -349,7 +353,7 @@ export default function App() {
               </div>
 
               {/* DESKTOP FULL-SIZE CANVAS */}
-              <div className="hidden lg:block w-full max-w-[380px]">
+              <div className="hidden lg:block w-full max-w-[360px]">
                 <CanvasPreview
                   ref={canvasRef}
                   {...previewProps}
