@@ -34,7 +34,8 @@ const CanvasPreview = forwardRef(({
   isPhoneMockup = true,
   showGridLines = false,
   showGridIndicator = true,
-  gridViewsCount = '1916'
+  gridViewsCount = '1916',
+  activeThemeObj
 }, ref) => {
   const activePlatformTheme = activeThemeObj || ALL_PALETTES.find(p => p.id === activePlatformThemeId) || ALL_PALETTES[0];
   const theme = activePlatformTheme;

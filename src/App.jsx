@@ -7,7 +7,7 @@ import LayoutAndCardsPanel from './components/LayoutAndCardsPanel';
 import FieldsEditor from './components/FieldsEditor';
 import LogoPanel from './components/LogoPanel';
 import PalettesStudioPanel from './components/PalettesStudioPanel';
-import ExportControls, { SideActionWings } from './components/ExportControls';
+import ExportControls, { RightActionWing, LeftActionWing } from './components/ExportControls';
 import SocialCopywriterModal from './components/SocialCopywriterModal';
 import FullscreenPreviewModal from './components/FullscreenPreviewModal';
 import SupabaseModal from './components/SupabaseModal';
@@ -254,18 +254,9 @@ export default function App() {
     showGridLines,
     showGridIndicator,
     gridViewsCount: '1916',
-    activePlatformThemeId
-  };
-
-  // Get Side Action Wings for the Stage Bay with dynamic theme
-  const sideWings = SideActionWings({
-    canvasRef,
-    showGridLines,
-    setShowGridLines,
-    showLogo,
-    setShowLogo,
+    activePlatformThemeId,
     activeThemeObj
-  });
+  };
 
   return (
     <div
@@ -325,7 +316,13 @@ export default function App() {
           <div className="w-full flex items-center justify-center gap-3 sm:gap-4 lg:gap-5 xl:gap-6 px-1 sm:px-2 lg:px-3">
             {/* Right Wing: Centered with comfortable margin */}
             <div className="flex-none flex items-center justify-center">
-              {sideWings.rightWing}
+              <RightActionWing
+                showGridLines={showGridLines}
+                setShowGridLines={setShowGridLines}
+                showLogo={showLogo}
+                setShowLogo={setShowLogo}
+                activeThemeObj={activeThemeObj}
+              />
             </div>
 
             {/* Center Canvas Preview: Exact pixel footprint on mobile with zero dead space */}
@@ -370,7 +367,10 @@ export default function App() {
 
             {/* Left Wing: Centered with comfortable margin */}
             <div className="flex-none flex items-center justify-center">
-              {sideWings.leftWing}
+              <LeftActionWing
+                canvasRef={canvasRef}
+                activeThemeObj={activeThemeObj}
+              />
             </div>
           </div>
 
