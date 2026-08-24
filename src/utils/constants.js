@@ -134,11 +134,111 @@ export const FINISH_MODES = [
   { id: 'matte', name: 'أبيض ناصع ومات (Clean Matte)' }
 ];
 
+export const DIVIDER_CATEGORIES = [
+  { id: 'all', name: 'الكل (12)', icon: '🌟' },
+  { id: 'architectural', name: 'الهندسية (4)', icon: '🏛️' },
+  { id: 'editorial', name: 'الفخامة والتحرير (4)', icon: '✨' },
+  { id: 'badges', name: 'التوثيق والبادجات (4)', icon: '🏷️' }
+];
+
 export const DIVIDER_STYLES = [
-  { id: 'tag', name: 'شارة كبسولية (VIP / فاخر)' },
-  { id: 'diamond', name: 'ماسة مضيئة (◆)' },
-  { id: 'line', name: 'خط أفقي فاخر' },
-  { id: 'none', name: 'بدون فواصل' }
+  // 🏛️ Group 1: Architectural & Technical Rules (4)
+  {
+    id: 'dim-ticks',
+    name: 'المسطرة وشُرَط القياس',
+    category: 'architectural',
+    subtitle: 'علامات مليمترية ومقاييس هندسية',
+    hasCustomText: false
+  },
+  {
+    id: 'crosshair',
+    name: 'محور الإحداثيات والكروسهير',
+    category: 'architectural',
+    subtitle: 'تقاطع محاور مساحية دقيقة',
+    hasCustomText: false
+  },
+  {
+    id: 'double-beam',
+    name: 'الكمرة الهندسية المزدوجة',
+    category: 'architectural',
+    subtitle: 'خطان متوازيان بنسب كمرات معمارية',
+    hasCustomText: false
+  },
+  {
+    id: 'surveyor-prism',
+    name: 'المثلث المساحي ونقطة الاتزان',
+    category: 'architectural',
+    subtitle: 'مثلث ميكرو هندسي وشعاع متلاشي',
+    hasCustomText: false
+  },
+
+  // ✨ Group 2: Swiss & High-Luxury Editorial (4)
+  {
+    id: 'triple-diamond',
+    name: 'الألماس الثلاثي المتدرج',
+    category: 'editorial',
+    subtitle: 'ألماسة مركزية محاطة بألماستين ميكرو',
+    hasCustomText: false
+  },
+  {
+    id: 'radiant-hairline',
+    name: 'الخيط الليزري المتلاشي',
+    category: 'editorial',
+    subtitle: 'خط شعيري فائق النعومة متدرج التلاشي',
+    hasCustomText: false
+  },
+  {
+    id: 'dot-matrix',
+    name: 'المصفوفة النقطية السويسرية',
+    category: 'editorial',
+    subtitle: 'سلسلة مربعات مايكرو هندسية متناسقة',
+    hasCustomText: false
+  },
+  {
+    id: 'modern-arch',
+    name: 'القوس المعماري الحديث',
+    category: 'editorial',
+    subtitle: 'انحناء بانورامي يرمز للواجهات المودرن',
+    hasCustomText: false
+  },
+
+  // 🏷️ Group 3: Monogram & Verification Badges (4)
+  {
+    id: 'wireframe-pill',
+    name: 'الكبسولة الهندسية المفرغة',
+    category: 'badges',
+    subtitle: 'كبسولة زجاجية أنيقة بكلمة مخصصة',
+    hasCustomText: true,
+    defaultText: 'VIP'
+  },
+  {
+    id: 'bracketed-monogram',
+    name: 'الأقواس التوثيقية والرمز',
+    category: 'badges',
+    subtitle: 'أقواس هندسية تحضن رمز التوثيق',
+    hasCustomText: true,
+    defaultText: 'VIP'
+  },
+  {
+    id: 'beveled-cut',
+    name: 'الخط المشطوف المعماري',
+    category: 'badges',
+    subtitle: 'زاوية قطع معمارية 45° مثل قص الرخام',
+    hasCustomText: false
+  },
+  {
+    id: 'golden-ratio-bars',
+    name: 'شريط الأضلاع بالنسبة الذهبية',
+    category: 'badges',
+    subtitle: 'ثلاثة أضلاع متناغمة بنسب رياضية',
+    hasCustomText: false
+  },
+
+  // Legacy fallback aliases mapping
+  { id: 'tag', aliasOf: 'wireframe-pill', name: 'شارة كبسولية (VIP)', category: 'badges', hasCustomText: true },
+  { id: 'diamond', aliasOf: 'triple-diamond', name: 'ماسة مضيئة', category: 'editorial', hasCustomText: false },
+  { id: 'line', aliasOf: 'radiant-hairline', name: 'خط أفقي فاخر', category: 'editorial', hasCustomText: false },
+  { id: 'none', name: 'بدون فاصل', category: 'all', subtitle: 'إلغاء الفواصل تماماً', hasCustomText: false }
 ];
 
 export const BUILTIN_FONTS = [

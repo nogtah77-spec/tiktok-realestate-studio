@@ -196,25 +196,125 @@ const CanvasPreview = forwardRef(({
     return `0 14px 35px rgba(0, 0, 0, 0.5), 0 0 ${glowBlur}px ${glowSpread}px ${effectiveGlowColor}`;
   };
 
-  // Divider rendering
+  // 12 Master Architectural & Luxury Dividers Renderer
   const renderDivider = () => {
     if (!showDividers || dividerStyle === 'none') return null;
 
-    if (dividerStyle === 'tag') {
+    // 🏛️ 1. المسطرة الهندسية وشُرَط القياس
+    if (dividerStyle === 'dim-ticks') {
+      return (
+        <div className="w-full flex items-center justify-center my-2 px-3" style={{ opacity: dividerOpacity / 100 }}>
+          <div className="w-full flex items-center justify-between relative h-2">
+            <div className="absolute inset-x-0 top-1/2 h-[1px] -translate-y-1/2" style={{ background: `linear-gradient(to right, transparent, ${effectiveDividerColor}, transparent)` }} />
+            <div className="w-[1px] h-1.5 z-10" style={{ backgroundColor: `${effectiveDividerColor}80` }} />
+            <div className="w-[1px] h-2 z-10" style={{ backgroundColor: effectiveDividerColor }} />
+            <div className="w-1.5 h-1.5 rounded-full z-10" style={{ backgroundColor: effectiveDividerColor, boxShadow: isNeonModeActive ? `0 0 6px ${effectiveGlowColor}` : 'none' }} />
+            <div className="w-[1px] h-2 z-10" style={{ backgroundColor: effectiveDividerColor }} />
+            <div className="w-[1px] h-1.5 z-10" style={{ backgroundColor: `${effectiveDividerColor}80` }} />
+          </div>
+        </div>
+      );
+    }
+
+    // 🏛️ 2. محور الإحداثيات والكروسهير
+    if (dividerStyle === 'crosshair') {
+      return (
+        <div className="w-full flex items-center justify-center gap-2.5 my-2 px-2" style={{ opacity: dividerOpacity / 100 }}>
+          <div className="flex-1 h-[1px]" style={{ background: `linear-gradient(to right, transparent, ${effectiveDividerColor})` }} />
+          <div className="relative w-3.5 h-3.5 flex items-center justify-center">
+            <div className="w-2.5 h-2.5 rounded-full border" style={{ borderColor: effectiveDividerColor }} />
+            <div className="absolute w-3.5 h-[1px]" style={{ backgroundColor: effectiveDividerColor }} />
+            <div className="absolute h-3.5 w-[1px]" style={{ backgroundColor: effectiveDividerColor }} />
+          </div>
+          <div className="flex-1 h-[1px]" style={{ background: `linear-gradient(to left, transparent, ${effectiveDividerColor})` }} />
+        </div>
+      );
+    }
+
+    // 🏛️ 3. الكمرة الهندسية المزدوجة
+    if (dividerStyle === 'double-beam') {
+      return (
+        <div className="w-full flex flex-col items-center justify-center gap-0.5 my-2 px-4" style={{ opacity: dividerOpacity / 100 }}>
+          <div className="w-full h-[1px]" style={{ background: `linear-gradient(to right, transparent, ${effectiveDividerColor}, transparent)` }} />
+          <div className="w-1/2 h-[1px]" style={{ background: `linear-gradient(to right, transparent, ${effectiveDividerColor}90, transparent)` }} />
+        </div>
+      );
+    }
+
+    // 🏛️ 4. المثلث المساحي ونقطة الاتزان
+    if (dividerStyle === 'surveyor-prism') {
+      return (
+        <div className="w-full flex items-center justify-center gap-2 my-2" style={{ opacity: dividerOpacity / 100 }}>
+          <div className="flex-1 h-[1px]" style={{ background: `linear-gradient(to right, transparent, ${effectiveDividerColor})` }} />
+          <div className="w-0 h-0 border-x-[4px] border-x-transparent border-t-[6px]" style={{ borderTopColor: effectiveDividerColor, filter: isNeonModeActive ? `drop-shadow(0 0 4px ${effectiveGlowColor})` : 'none' }} />
+          <div className="flex-1 h-[1px]" style={{ background: `linear-gradient(to left, transparent, ${effectiveDividerColor})` }} />
+        </div>
+      );
+    }
+
+    // ✨ 5. الألماس الثلاثي المتدرج
+    if (dividerStyle === 'triple-diamond' || dividerStyle === 'diamond') {
+      return (
+        <div className="w-full flex items-center justify-center gap-2 my-2" style={{ opacity: dividerOpacity / 100 }}>
+          <div className="flex-1 h-[1px]" style={{ background: `linear-gradient(to right, transparent, ${effectiveDividerColor})` }} />
+          <div className="flex items-center gap-1.5">
+            <span className="text-[7px]" style={{ color: `${effectiveDividerColor}90` }}>◇</span>
+            <span className="text-[10px]" style={{ color: effectiveDividerColor, textShadow: isNeonModeActive ? `0 0 8px ${effectiveGlowColor}` : 'none' }}>◆</span>
+            <span className="text-[7px]" style={{ color: `${effectiveDividerColor}90` }}>◇</span>
+          </div>
+          <div className="flex-1 h-[1px]" style={{ background: `linear-gradient(to left, transparent, ${effectiveDividerColor})` }} />
+        </div>
+      );
+    }
+
+    // ✨ 6. الخيط الليزري المتلاشي
+    if (dividerStyle === 'radiant-hairline' || dividerStyle === 'line') {
+      return (
+        <div className="w-full flex items-center justify-center my-2 px-4" style={{ opacity: dividerOpacity / 100 }}>
+          <div className="w-full h-[1px]" style={{ background: `linear-gradient(to right, transparent 0%, ${effectiveDividerColor} 50%, transparent 100%)`, boxShadow: isNeonModeActive ? `0 0 6px ${effectiveGlowColor}` : 'none' }} />
+        </div>
+      );
+    }
+
+    // ✨ 7. المصفوفة النقطية السويسرية
+    if (dividerStyle === 'dot-matrix') {
+      return (
+        <div className="w-full flex items-center justify-center gap-2 my-2 px-2" style={{ opacity: dividerOpacity / 100 }}>
+          <div className="flex-1 h-[1px]" style={{ background: `linear-gradient(to right, transparent, ${effectiveDividerColor}60)` }} />
+          <div className="flex items-center gap-1.5">
+            <div className="w-1 h-1 rounded-sm rotate-45" style={{ backgroundColor: `${effectiveDividerColor}70` }} />
+            <div className="w-1.5 h-1.5 rounded-sm rotate-45" style={{ backgroundColor: effectiveDividerColor, boxShadow: isNeonModeActive ? `0 0 6px ${effectiveGlowColor}` : 'none' }} />
+            <div className="w-1 h-1 rounded-sm rotate-45" style={{ backgroundColor: `${effectiveDividerColor}70` }} />
+          </div>
+          <div className="flex-1 h-[1px]" style={{ background: `linear-gradient(to left, transparent, ${effectiveDividerColor}60)` }} />
+        </div>
+      );
+    }
+
+    // ✨ 8. القوس المعماري الحديث
+    if (dividerStyle === 'modern-arch') {
+      return (
+        <div className="w-full flex items-center justify-center gap-2 my-1.5 px-3" style={{ opacity: dividerOpacity / 100 }}>
+          <div className="flex-1 h-[1px]" style={{ background: `linear-gradient(to right, transparent, ${effectiveDividerColor})` }} />
+          <div className="w-6 h-3 border-t-2 rounded-t-full" style={{ borderColor: effectiveDividerColor, filter: isNeonModeActive ? `drop-shadow(0 0 4px ${effectiveGlowColor})` : 'none' }} />
+          <div className="flex-1 h-[1px]" style={{ background: `linear-gradient(to left, transparent, ${effectiveDividerColor})` }} />
+        </div>
+      );
+    }
+
+    // 🏷️ 9. الكبسولة الهندسية المفرغة
+    if (dividerStyle === 'wireframe-pill' || dividerStyle === 'tag') {
       return (
         <div className="w-full flex items-center justify-center gap-2 my-1.5" style={{ opacity: dividerOpacity / 100 }}>
-          <div
-            className="flex-1 h-[1px]"
-            style={{
-              background: `linear-gradient(to right, transparent, ${effectiveDividerColor}, transparent)`
-            }}
-          />
+          <div className="flex-1 h-[1px]" style={{ background: `linear-gradient(to right, transparent, ${effectiveDividerColor})` }} />
           <span
-            className="px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-wider uppercase shadow-sm flex items-center gap-1"
+            className="px-2.5 py-0.5 rounded-full text-[9.5px] font-black tracking-widest uppercase shadow-sm flex items-center gap-1"
             style={{
               background: isNeonModeActive
-                ? `linear-gradient(135deg, rgba(255,255,255,0.15), rgba(0,0,0,0.85))`
-                : (borderColorMode === 'platform' ? activePlatformTheme.previewCard.pillBg : activeTheme.pillBg),
+                ? 'rgba(0,0,0,0.8)'
+                : isGlossy
+                  ? `${effectiveBorderColor}18`
+                  : 'rgba(255,255,255,0.08)',
               border: `1px solid ${effectiveDividerColor}`,
               color: '#ffffff',
               boxShadow: isNeonModeActive ? `0 0 10px ${effectiveGlowColor}` : 'none'
@@ -222,53 +322,44 @@ const CanvasPreview = forwardRef(({
           >
             <span>{dividerTagText || 'VIP'}</span>
           </span>
-          <div
-            className="flex-1 h-[1px]"
-            style={{
-              background: `linear-gradient(to left, transparent, ${effectiveDividerColor}, transparent)`
-            }}
-          />
+          <div className="flex-1 h-[1px]" style={{ background: `linear-gradient(to left, transparent, ${effectiveDividerColor})` }} />
         </div>
       );
     }
 
-    if (dividerStyle === 'diamond') {
+    // 🏷️ 10. الأقواس التوثيقية والرمز
+    if (dividerStyle === 'bracketed-monogram') {
       return (
-        <div className="w-full flex items-center justify-center gap-2 my-1.5" style={{ opacity: dividerOpacity / 100 }}>
-          <div
-            className="flex-1 h-[1px]"
-            style={{
-              background: `linear-gradient(to right, transparent, ${effectiveDividerColor}, transparent)`
-            }}
-          />
-          <span
-            className="text-xs font-serif select-none"
-            style={{
-              color: effectiveBorderColor,
-              textShadow: isNeonModeActive ? `0 0 8px ${effectiveGlowColor}` : 'none'
-            }}
-          >
-            ◆
-          </span>
-          <div
-            className="flex-1 h-[1px]"
-            style={{
-              background: `linear-gradient(to left, transparent, ${effectiveDividerColor}, transparent)`
-            }}
-          />
+        <div className="w-full flex items-center justify-center gap-2 my-1.5 px-2" style={{ opacity: dividerOpacity / 100 }}>
+          <div className="flex-1 h-[1px]" style={{ background: `linear-gradient(to right, transparent, ${effectiveDividerColor})` }} />
+          <div className="flex items-center gap-1 font-mono text-[9px] font-bold tracking-wider" style={{ color: effectiveDividerColor }}>
+            <span>[</span>
+            <span className="text-white px-1 font-sans text-[9px] font-extrabold uppercase">{dividerTagText || 'VIP'}</span>
+            <span>]</span>
+          </div>
+          <div className="flex-1 h-[1px]" style={{ background: `linear-gradient(to left, transparent, ${effectiveDividerColor})` }} />
         </div>
       );
     }
 
-    if (dividerStyle === 'line') {
+    // 🏷️ 11. الخط المشطوف المعماري
+    if (dividerStyle === 'beveled-cut') {
       return (
-        <div className="w-full flex items-center justify-center my-2 px-4" style={{ opacity: dividerOpacity / 100 }}>
-          <div
-            className="w-full h-[1px]"
-            style={{
-              background: `linear-gradient(to right, transparent, ${effectiveDividerColor}, transparent)`
-            }}
-          />
+        <div className="w-full flex items-center justify-center gap-1.5 my-2 px-4" style={{ opacity: dividerOpacity / 100 }}>
+          <div className="flex-1 h-[1px]" style={{ background: `linear-gradient(to right, transparent, ${effectiveDividerColor})` }} />
+          <div className="w-2.5 h-[1px] rotate-45 origin-center" style={{ backgroundColor: effectiveDividerColor }} />
+          <div className="flex-1 h-[1px]" style={{ background: `linear-gradient(to left, transparent, ${effectiveDividerColor})` }} />
+        </div>
+      );
+    }
+
+    // 🏷️ 12. شريط الأضلاع بالنسبة الذهبية
+    if (dividerStyle === 'golden-ratio-bars') {
+      return (
+        <div className="w-full flex items-center justify-center gap-1.5 my-2 px-6" style={{ opacity: dividerOpacity / 100 }}>
+          <div className="w-4 h-[1px]" style={{ backgroundColor: `${effectiveDividerColor}60` }} />
+          <div className="w-8 h-[1.5px]" style={{ backgroundColor: effectiveDividerColor, boxShadow: isNeonModeActive ? `0 0 6px ${effectiveGlowColor}` : 'none' }} />
+          <div className="w-4 h-[1px]" style={{ backgroundColor: `${effectiveDividerColor}60` }} />
         </div>
       );
     }
