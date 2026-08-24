@@ -19,9 +19,12 @@ export async function exportCoverImage({
     return true;
   };
 
+  // Add clean export class to strip backdrop-filter and ensure rectangular 9:16 export
+  node.classList.add('is-exporting');
+
   const options = {
-    pixelRatio: 2.84, // 380x675 * 2.84 = 1080x1920 crisp resolution
-    quality: 0.98,
+    pixelRatio: 3, // 360x640 * 3 = exact 1080x1920 UHD resolution
+    quality: 1,
     cacheBust: true,
     filter
   };
@@ -53,6 +56,8 @@ export async function exportCoverImage({
   } catch (err) {
     console.error('Export failed:', err);
     throw err;
+  } finally {
+    node.classList.remove('is-exporting');
   }
 }
 
@@ -72,6 +77,8 @@ export async function exportTransparentGlassCard({
     }
     return true;
   };
+
+  cardNode.classList.add('is-exporting');
 
   try {
     const dataUrl = await toPng(cardNode, {
@@ -101,6 +108,8 @@ export async function exportTransparentGlassCard({
   } catch (err) {
     console.error('Transparent export failed:', err);
     throw err;
+  } finally {
+    cardNode.classList.remove('is-exporting');
   }
 }
 
@@ -118,10 +127,12 @@ export async function copyCoverImageToClipboard({ node }) {
     return true;
   };
 
+  node.classList.add('is-exporting');
+
   try {
     const blob = await toBlob(node, {
-      pixelRatio: 2.84,
-      quality: 0.98,
+      pixelRatio: 3,
+      quality: 1,
       cacheBust: true,
       filter
     });
@@ -144,5 +155,7 @@ export async function copyCoverImageToClipboard({ node }) {
   } catch (err) {
     console.error('Clipboard copy failed:', err);
     throw err;
+  } finally {
+    node.classList.remove('is-exporting');
   }
 }

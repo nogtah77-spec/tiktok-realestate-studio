@@ -326,10 +326,10 @@ export default function App() {
 
             {/* Center Canvas Preview: Exact pixel footprint on mobile with zero dead space */}
             <div className="flex-none flex items-center justify-center">
-              {/* MOBILE COMPACT PREVIEW (130px x 231px) - Click to expand */}
+              {/* MOBILE COMPACT PREVIEW (135px x 240px) - Click to expand */}
               <div
                 onClick={() => setIsFullscreenPreviewOpen(true)}
-                className="lg:hidden w-[130px] h-[231px] relative overflow-hidden rounded-[20px] shadow-xl ring-1 cursor-pointer active:scale-98 transition-transform shrink-0"
+                className="lg:hidden w-[135px] h-[240px] relative overflow-hidden rounded-[20px] shadow-xl ring-1 cursor-pointer active:scale-98 transition-transform shrink-0"
                 style={{
                   backgroundColor: activeThemeObj.bgDark,
                   borderColor: activeThemeObj.border
@@ -339,9 +339,9 @@ export default function App() {
                 <div
                   className="absolute top-0 left-0 origin-top-left pointer-events-none"
                   style={{
-                    width: '340px',
-                    height: '604px',
-                    transform: 'scale(0.38235294)'
+                    width: '360px',
+                    height: '640px',
+                    transform: 'scale(0.375)'
                   }}
                 >
                   <CanvasPreview

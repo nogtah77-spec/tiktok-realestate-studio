@@ -90,15 +90,15 @@ export default function ImageFXPanel({
       </div>
 
       {/* 2. Quick Sample Real Estate Photos */}
-      <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3 shadow-sm">
-        <div className="flex items-center justify-between pb-2 border-b border-slate-800/80">
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-400 flex items-center justify-center font-black shadow-inner">
-              <ImageIcon className="w-3.5 h-3.5" />
+      <div className="p-4 sm:p-5 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5 shadow-sm">
+        <div className="flex items-center justify-between pb-2.5 border-b border-slate-800/80">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-400 flex items-center justify-center font-black shadow-inner">
+              <ImageIcon className="w-4 h-4" />
             </div>
-            <div>
-              <h4 className="font-black text-slate-100 text-xs">معرض الصور والنماذج السريعة</h4>
-              <p className="text-[10px] text-slate-400">عقارات وفلل جاهزة للتجربة الفورية</p>
+            <div className="flex flex-col justify-center">
+              <h4 className="font-black text-slate-100 text-xs leading-snug mb-0.5">معرض الصور والنماذج السريعة</h4>
+              <p className="text-[10.5px] text-slate-400 leading-normal">عقارات وفلل جاهزة للتجربة الفورية</p>
             </div>
           </div>
           <span className="text-[9px] font-extrabold text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded-full border border-amber-400/20">
@@ -106,12 +106,12 @@ export default function ImageFXPanel({
           </span>
         </div>
 
-        <div className="grid grid-cols-4 gap-2 pt-1">
+        <div className="grid grid-cols-4 gap-2.5 pt-1">
           {SAMPLE_IMAGES.map((sample) => (
             <button
               key={sample.id}
               onClick={() => onImageChange(sample.url)}
-              className={`relative aspect-square rounded-xl overflow-hidden border-2 transition-all cursor-pointer ${
+              className={`relative aspect-square rounded-xl overflow-hidden border-2 transition-all cursor-pointer shadow-sm hover:scale-[1.02] active:scale-98 ${
                 imageUrl === sample.url ? 'border-white ring-1 ring-white/30 shadow-md' : 'border-slate-800 hover:border-slate-700'
               }`}
               title={sample.name}
@@ -123,30 +123,30 @@ export default function ImageFXPanel({
       </div>
 
       {/* 3. Image Pan & Zoom */}
-      <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5 shadow-sm">
-        <div className="flex items-center justify-between pb-2 border-b border-slate-800/80">
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-xl bg-purple-500/15 border border-purple-500/30 text-purple-400 flex items-center justify-center font-black shadow-inner">
-              <Sliders className="w-3.5 h-3.5" />
+      <div className="p-4 sm:p-5 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5 shadow-sm">
+        <div className="flex items-center justify-between pb-2.5 border-b border-slate-800/80">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-xl bg-purple-500/15 border border-purple-500/30 text-purple-400 flex items-center justify-center font-black shadow-inner">
+              <Sliders className="w-4 h-4" />
             </div>
-            <div>
-              <h4 className="font-black text-slate-100 text-xs">الموضع والتكبير (Pan & Zoom)</h4>
-              <p className="text-[10px] text-slate-400">تحريك الصورة أفقياً ورأسياً وضبط التركيز</p>
+            <div className="flex flex-col justify-center">
+              <h4 className="font-black text-slate-100 text-xs leading-snug mb-0.5">الموضع والتكبير (Pan & Zoom)</h4>
+              <p className="text-[10.5px] text-slate-400 leading-normal">تحريك الصورة أفقياً ورأسياً وضبط التركيز</p>
             </div>
           </div>
           <button
             onClick={() => { setImageZoom(100); setImagePanX(0); setImagePanY(0); }}
-            className="text-[10px] text-purple-300 hover:text-white font-bold bg-purple-500/10 px-2 py-0.5 rounded-full border border-purple-500/20 transition-colors"
+            className="text-[10.5px] text-purple-300 hover:text-white font-bold bg-purple-500/10 px-2.5 py-1 rounded-xl border border-purple-500/20 transition-all cursor-pointer hover:bg-purple-500/20"
           >
             إعادة الضبط
           </button>
         </div>
 
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-3 gap-3.5 pt-1">
           <div>
-            <div className="flex justify-between items-center text-slate-300 mb-1 text-[11px]">
-              <span className="font-medium">التكبير</span>
-              <span className="px-1.5 py-0.5 rounded-md font-mono text-[10px] font-bold bg-slate-950 border border-slate-800 text-white">
+            <div className="flex justify-between items-center text-slate-300 mb-1.5 text-[11px] font-semibold">
+              <span>التكبير</span>
+              <span className="px-2 py-0.5 rounded-md font-mono text-[10px] font-bold bg-slate-950 border border-slate-800 text-white">
                 {imageZoom}%
               </span>
             </div>
@@ -161,9 +161,9 @@ export default function ImageFXPanel({
           </div>
 
           <div>
-            <div className="flex justify-between items-center text-slate-300 mb-1 text-[11px]">
-              <span className="font-medium">أفقي X</span>
-              <span className="px-1.5 py-0.5 rounded-md font-mono text-[10px] font-bold bg-slate-950 border border-slate-800 text-white">
+            <div className="flex justify-between items-center text-slate-300 mb-1.5 text-[11px] font-semibold">
+              <span>أفقي X</span>
+              <span className="px-2 py-0.5 rounded-md font-mono text-[10px] font-bold bg-slate-950 border border-slate-800 text-white">
                 {imagePanX}px
               </span>
             </div>
@@ -178,9 +178,9 @@ export default function ImageFXPanel({
           </div>
 
           <div>
-            <div className="flex justify-between items-center text-slate-300 mb-1 text-[11px]">
-              <span className="font-medium">رأسي Y</span>
-              <span className="px-1.5 py-0.5 rounded-md font-mono text-[10px] font-bold bg-slate-950 border border-slate-800 text-white">
+            <div className="flex justify-between items-center text-slate-300 mb-1.5 text-[11px] font-semibold">
+              <span>رأسي Y</span>
+              <span className="px-2 py-0.5 rounded-md font-mono text-[10px] font-bold bg-slate-950 border border-slate-800 text-white">
                 {imagePanY}px
               </span>
             </div>
@@ -197,15 +197,15 @@ export default function ImageFXPanel({
       </div>
 
       {/* 4. Blur & Color Overlay */}
-      <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5 shadow-sm">
-        <div className="flex items-center justify-between pb-2 border-b border-slate-800/80">
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-xl bg-indigo-500/15 border border-indigo-500/30 text-indigo-400 flex items-center justify-center font-black shadow-inner">
-              <Sun className="w-3.5 h-3.5" />
+      <div className="p-4 sm:p-5 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5 shadow-sm">
+        <div className="flex items-center justify-between pb-2.5 border-b border-slate-800/80">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-xl bg-indigo-500/15 border border-indigo-500/30 text-indigo-400 flex items-center justify-center font-black shadow-inner">
+              <Sun className="w-4 h-4" />
             </div>
-            <div>
-              <h4 className="font-black text-slate-100 text-xs">تمويه الخلفية وطبقة التعتيم والظلال</h4>
-              <p className="text-[10px] text-slate-400">عزل الصورة وإبراز نصوص الغلاف بتباين سينمائي</p>
+            <div className="flex flex-col justify-center">
+              <h4 className="font-black text-slate-100 text-xs leading-snug mb-0.5">تمويه الخلفية وطبقة التعتيم والظلال</h4>
+              <p className="text-[10.5px] text-slate-400 leading-normal">عزل الصورة وإبراز نصوص الغلاف بتباين سينمائي</p>
             </div>
           </div>
           <span className="text-[9px] font-extrabold text-indigo-400 bg-indigo-400/10 px-2 py-0.5 rounded-full border border-indigo-400/20">
@@ -214,8 +214,8 @@ export default function ImageFXPanel({
         </div>
 
         <div>
-          <div className="flex justify-between items-center text-[11px] text-slate-300 mb-1">
-            <span className="font-medium">بلور وتمويه الخلفية:</span>
+          <div className="flex justify-between items-center text-[11px] text-slate-300 mb-1.5 font-semibold">
+            <span>بلور وتمويه الخلفية:</span>
             <span className="px-2 py-0.5 rounded-md font-mono text-[10px] font-bold bg-slate-950 border border-slate-800 text-white">
               {imageBlur}px
             </span>
@@ -232,15 +232,15 @@ export default function ImageFXPanel({
         </div>
 
         {/* Color Tint Palette */}
-        <div className="pt-2.5 border-t border-slate-800 space-y-2.5">
-          <div className="flex items-center justify-between text-[10.5px]">
+        <div className="pt-3 border-t border-slate-800/80 space-y-3">
+          <div className="flex items-center justify-between text-[11px]">
             <span className="font-bold text-slate-200">طبقة التعتيم واللون (Overlay):</span>
-            <span className="px-1.5 py-0.5 rounded font-mono text-[9px] font-bold bg-slate-950 border border-slate-800 text-white">
+            <span className="px-2 py-0.5 rounded-md font-mono text-[10px] font-bold bg-slate-950 border border-slate-800 text-white">
               {overlayOpacity}%
             </span>
           </div>
 
-          <div className="flex items-center gap-1.5 flex-wrap">
+          <div className="flex items-center gap-2 flex-wrap">
             {OVERLAY_COLOR_PRESETS.map((preset) => (
               <button
                 key={preset.id}
@@ -248,26 +248,26 @@ export default function ImageFXPanel({
                   setOverlayColor(preset.color);
                   setOverlayOpacity(preset.defaultOpacity);
                 }}
-                className={`flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-medium border transition-all cursor-pointer ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[11px] font-semibold border transition-all cursor-pointer shadow-sm ${
                   overlayColor === preset.color
                     ? 'border-white bg-slate-800 text-white shadow'
                     : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'
                 }`}
               >
                 <span
-                  className="w-2.5 h-2.5 rounded-full border border-white/20"
+                  className="w-3 h-3 rounded-full border border-white/20"
                   style={{ backgroundColor: preset.color }}
                 />
                 <span>{preset.name}</span>
               </button>
             ))}
 
-            <label className="flex items-center gap-1 px-2 py-1 rounded-lg border border-slate-800 bg-slate-950 text-slate-400 cursor-pointer text-[10px] hover:text-slate-200">
+            <label className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-800 bg-slate-950 text-slate-400 cursor-pointer text-[11px] font-semibold hover:text-slate-200 shadow-sm">
               <input
                 type="color"
                 value={overlayColor}
                 onChange={(e) => setOverlayColor(e.target.value)}
-                className="w-3 h-3 rounded cursor-pointer bg-transparent border-0"
+                className="w-3.5 h-3.5 rounded cursor-pointer bg-transparent border-0"
               />
               <span>مخصص</span>
             </label>
@@ -279,21 +279,21 @@ export default function ImageFXPanel({
             max="85"
             value={overlayOpacity}
             onChange={(e) => setOverlayOpacity(Number(e.target.value))}
-            className="luxury-slider mt-0.5"
+            className="luxury-slider mt-1"
           />
         </div>
 
         {/* Cinematic Filters */}
-        <div className="pt-2.5 border-t border-slate-800 space-y-2">
-          <span className="font-bold text-slate-200 text-[10.5px]">الفلاتر اللونية والسينمائية:</span>
-          <div className="grid grid-cols-3 gap-1.5">
+        <div className="pt-3 border-t border-slate-800/80 space-y-2.5">
+          <span className="font-bold text-slate-200 text-[11px]">الفلاتر اللونية والسينمائية:</span>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             {IMAGE_FILTER_PRESETS.map((filter) => (
               <button
                 key={filter.id}
                 onClick={() => setImageFilter(filter.id)}
-                className={`py-1.5 px-1 rounded-lg text-[10px] font-medium border text-center transition-all cursor-pointer ${
+                className={`py-2 px-2 rounded-xl text-[10.5px] font-semibold border text-center transition-all cursor-pointer shadow-sm ${
                   imageFilter === filter.id
-                    ? 'border-white bg-slate-800 text-white font-bold shadow'
+                    ? 'border-white bg-slate-800 text-white font-black shadow ring-1 ring-white/30'
                     : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'
                 }`}
               >

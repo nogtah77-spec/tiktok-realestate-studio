@@ -189,3 +189,15 @@ input[type="range"].luxury-slider::-moz-range-thumb {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.3);
 }
+
+/* ⚡ Export Mode Clean Overrides (Eliminates SVG foreignObject backdrop-filter glitches & rounded corners) */
+.is-exporting {
+  border-radius: 0px !important;
+}
+
+.is-exporting,
+.is-exporting * {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+

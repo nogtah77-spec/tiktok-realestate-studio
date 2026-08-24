@@ -480,7 +480,7 @@ const CanvasPreview = forwardRef(({
         <div
           ref={ref}
           id="tiktok-canvas-target"
-          className={`relative w-[340px] h-[604px] overflow-hidden select-none ${
+          className={`relative w-[360px] h-[640px] overflow-hidden select-none ${
             isPhoneMockup ? 'rounded-[32px]' : 'rounded-2xl'
           } bg-slate-950`}
           style={{ aspectRatio: '9 / 16' }}
@@ -555,7 +555,7 @@ const CanvasPreview = forwardRef(({
                 />
               ) : (
                 <div
-                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-950/80 backdrop-blur-md border border-white/20 shadow-lg text-right"
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-950/85 border border-white/20 shadow-lg text-right"
                   style={{ opacity: logoOpacity / 100 }}
                 >
                   <div className="w-6 h-6 rounded-lg bg-white flex items-center justify-center font-black text-slate-950 text-[10px] shadow-sm">
