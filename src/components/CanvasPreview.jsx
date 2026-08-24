@@ -451,16 +451,30 @@ const CanvasPreview = forwardRef(({
               {bottomText && (
                 <div className="mt-2 w-full flex justify-center">
                   <div
-                    className="px-4 py-1 rounded-full text-xs font-bold tracking-wide transition-all shadow-md"
+                    className="px-4 py-1 text-xs font-bold tracking-wide transition-all"
                     style={{
                       fontFamily: bottomFont ? `'${bottomFont}', sans-serif` : 'inherit',
                       fontSize: `${bottomSize}px`,
                       color: bottomTextColor || '#ffffff',
+                      borderRadius: `${Math.max(4, Math.round(borderRadius * 0.45))}px`,
                       background: isNeonModeActive
-                        ? `linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(0, 0, 0, 0.8))`
-                        : (borderColorMode === 'platform' ? activePlatformTheme.previewCard.pillBg : activeTheme.pillBg),
-                      border: `1px solid ${effectiveBorderColor}`,
-                      boxShadow: isNeonModeActive ? `0 0 12px ${effectiveGlowColor}` : undefined
+                        ? 'rgba(0, 229, 255, 0.15)'
+                        : isGlossy
+                          ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.04) 100%)'
+                          : 'rgba(255, 255, 255, 0.09)',
+                      backgroundColor: isNeonModeActive
+                        ? undefined
+                        : isGlossy
+                          ? `${effectiveBorderColor}18`
+                          : 'rgba(255, 255, 255, 0.09)',
+                      border: `1px solid ${effectiveBorderColor}${isGlossy ? '90' : '50'}`,
+                      boxShadow: isNeonModeActive
+                        ? `0 0 12px ${effectiveGlowColor}`
+                        : isGlossy
+                          ? 'inset 0 1px 1px rgba(255, 255, 255, 0.35), 0 4px 12px rgba(0, 0, 0, 0.25)'
+                          : 'none',
+                      backdropFilter: 'blur(12px)',
+                      WebkitBackdropFilter: 'blur(12px)'
                     }}
                   >
                     {bottomText}
