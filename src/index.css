@@ -92,6 +92,56 @@
     transform: translateZ(0);
     will-change: transform, box-shadow;
   }
+
+  /* ⚡ Cyber Neon Button Deep Visual Effects */
+  @keyframes neon-deep-pulse {
+    0%, 100% {
+      opacity: 0.45;
+      transform: scale(0.98) translate(-50%, -50%);
+    }
+    50% {
+      opacity: 0.85;
+      transform: scale(1.18) translate(-48%, -52%);
+    }
+  }
+
+  @keyframes neon-lightning-arc {
+    0% {
+      transform: translateX(-120%) skewX(-20deg);
+      opacity: 0;
+    }
+    15% {
+      opacity: 0.7;
+    }
+    75% {
+      opacity: 0.7;
+    }
+    100% {
+      transform: translateX(250%) skewX(-20deg);
+      opacity: 0;
+    }
+  }
+
+  @keyframes neon-border-pulse {
+    0%, 100% {
+      box-shadow: 0 0 8px rgba(0, 229, 255, 0.45), inset 0 0 6px rgba(0, 229, 255, 0.2);
+    }
+    50% {
+      box-shadow: 0 0 18px rgba(0, 229, 255, 0.8), 0 0 30px rgba(255, 0, 128, 0.35), inset 0 0 10px rgba(0, 229, 255, 0.4);
+    }
+  }
+
+  .neon-btn-active {
+    animation: neon-border-pulse 2.6s ease-in-out infinite;
+  }
+
+  .neon-btn-plasma {
+    animation: neon-deep-pulse 3.5s ease-in-out infinite;
+  }
+
+  .neon-btn-lightning {
+    animation: neon-lightning-arc 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
 }
 
 /* Ultra-Luxury Sleek Range Sliders with Neon Glow Support */

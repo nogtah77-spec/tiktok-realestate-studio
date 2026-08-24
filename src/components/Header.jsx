@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sparkles, Save, RotateCcw, Share2, Database, Palette, Zap } from 'lucide-react';
+import { Sparkles, Save, RotateCcw, Database, Palette } from 'lucide-react';
 import { NEON_PALETTES, MUTED_LUXURY_PALETTES, MASTER_PALETTES } from '../utils/themeEngine';
 
 export default function Header({
@@ -66,7 +66,7 @@ export default function Header({
 
       {/* Center Theme Switcher & Presets Dropdown */}
       <div className="hidden md:flex items-center gap-2">
-        {/* ⚡ Quick Neon Mode Switcher Button */}
+        {/* ⚡ Quick Neon Mode Switcher Button with Deep Plasma & Pure Clean Text */}
         <button
           onClick={() => {
             if (isCurrentThemeNeon) {
@@ -75,15 +75,58 @@ export default function Header({
               onSelectPlatformTheme('neon-cyber-pink');
             }
           }}
-          className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-extrabold border transition-all cursor-pointer shadow-sm ${
+          className={`relative overflow-hidden group px-3.5 py-1 rounded-xl text-[11px] font-black border transition-all duration-300 cursor-pointer shadow-md select-none ${
             isCurrentThemeNeon
-              ? 'bg-cyan-500/20 text-cyan-200 border-cyan-400 shadow-[0_0_12px_rgba(0,229,255,0.4)]'
-              : 'bg-slate-900 text-slate-400 border-slate-800 hover:text-cyan-300 hover:border-cyan-500/40'
+              ? 'border-cyan-400 text-white neon-btn-active'
+              : 'border-cyan-500/30 text-cyan-200/90 hover:border-cyan-400 hover:text-white'
           }`}
+          style={{
+            backgroundColor: isCurrentThemeNeon ? '#050714' : '#0a0e1a'
+          }}
           title="تبديل وضع السايبر نيون"
         >
-          <Zap className={`w-3.5 h-3.5 ${isCurrentThemeNeon ? 'text-cyan-300 animate-pulse' : 'text-slate-500'}`} />
-          <span>{isCurrentThemeNeon ? 'مود النيون ⚡ (نشط)' : 'مود النيون ⚡'}</span>
+          {/* Layer 1: Deep Plasma Glow in the Background Behind Text */}
+          <div
+            className={`absolute top-1/2 left-1/2 w-28 h-12 rounded-full pointer-events-none blur-md -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 ${
+              isCurrentThemeNeon ? 'opacity-90 neon-btn-plasma' : 'opacity-35 group-hover:opacity-75'
+            }`}
+            style={{
+              background: isCurrentThemeNeon
+                ? 'radial-gradient(ellipse at center, rgba(0,229,255,0.7) 0%, rgba(255,0,128,0.45) 50%, transparent 80%)'
+                : 'radial-gradient(ellipse at center, rgba(0,229,255,0.4) 0%, transparent 75%)'
+            }}
+          />
+
+          {/* Layer 2: Subtle Animated Lightning/Electric Shimmer Sweep Behind Text */}
+          <div
+            className={`absolute inset-0 pointer-events-none overflow-hidden transition-opacity duration-300 ${
+              isCurrentThemeNeon ? 'opacity-75' : 'opacity-0 group-hover:opacity-50'
+            }`}
+          >
+            <div
+              className="w-10 h-full bg-gradient-to-r from-transparent via-cyan-300/40 to-transparent neon-btn-lightning"
+            />
+          </div>
+
+          {/* Layer 3: Glass Top Reflection */}
+          <div
+            className="absolute inset-0 pointer-events-none rounded-xl"
+            style={{
+              background: 'linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.02) 60%, transparent 100%)'
+            }}
+          />
+
+          {/* Layer 4: Pure Floating Text "مود النيون" */}
+          <span
+            className="relative z-10 tracking-wide transition-all duration-200"
+            style={{
+              textShadow: isCurrentThemeNeon
+                ? '0 0 2px #ffffff, 0 0 8px #00e5ff, 0 0 16px rgba(0,229,255,0.85)'
+                : '0 0 6px rgba(0,229,255,0.5)'
+            }}
+          >
+            مود النيون
+          </span>
         </button>
 
         {/* Quick Platform Theme Selector */}
