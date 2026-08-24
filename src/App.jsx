@@ -287,9 +287,9 @@ export default function App() {
       {/* 2. Main Studio Workspace (Mobile: Vertical Split Flex / Desktop: 12-Col Grid) */}
       <main className="flex-1 overflow-hidden flex flex-col lg:grid lg:grid-cols-12 max-w-[1550px] w-full mx-auto p-2 sm:p-3 lg:p-4 gap-3 lg:overflow-y-auto">
         
-        {/* TOP PREVIEW STAGE (MOBILE: Fixed non-scrolling top / DESKTOP: Sticky column) */}
+        {/* TOP PREVIEW STAGE (MOBILE: Fixed top / DESKTOP: Smooth Sticky Floating Pane) */}
         <div
-          className="flex-none lg:col-span-5 xl:col-span-5 flex flex-col items-center gap-1.5 py-1.5 border-b lg:border-none shadow-md lg:shadow-none w-full transition-colors duration-200"
+          className="flex-none lg:col-span-5 xl:col-span-5 flex flex-col items-center gap-1.5 py-1.5 border-b lg:border-none shadow-md lg:shadow-none w-full transition-all duration-200 lg:sticky lg:top-0 lg:self-start z-20"
           style={{
             backgroundColor: activeThemeObj.bgSurface,
             borderColor: activeThemeObj.borderSubtle

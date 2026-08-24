@@ -136,18 +136,34 @@ const CanvasPreview = forwardRef(({
     }
   };
 
-  // 100% Authentic Box-Shadow Computation
+  // 100% Highly-Responsive & Authentic Box-Shadow Computation
   const computeBoxShadow = () => {
+    const intensity = borderGlowIntensity !== undefined ? Number(borderGlowIntensity) : 75;
+
     if (isNeonModeActive) {
-      const glowSpread = (borderGlowIntensity / 100) * 20;
-      return `0 0 0 1.5px rgba(255, 255, 255, 0.7), 0 0 ${glowSpread}px ${effectiveBorderColor}, 0 0 ${glowSpread * 2.5}px ${effectiveGlowColor}, inset 0 0 ${glowSpread * 0.8}px ${effectiveGlowColor}, 0 16px 40px rgba(0, 0, 0, 0.85)`;
+      if (intensity === 0) {
+        return `0 0 0 1.5px rgba(255, 255, 255, 0.7), 0 16px 40px rgba(0, 0, 0, 0.85)`;
+      }
+      const glowBlur = (intensity / 100) * 35;
+      const glowSpread = (intensity / 100) * 8;
+      return `0 0 0 1.5px rgba(255, 255, 255, 0.8), 0 0 ${glowBlur}px ${glowSpread}px ${effectiveBorderColor}, 0 0 ${glowBlur * 2.2}px ${effectiveGlowColor}, inset 0 0 ${glowBlur * 0.6}px ${effectiveGlowColor}, 0 16px 40px rgba(0, 0, 0, 0.85)`;
     }
 
     if (isGlossy) {
-      return `0 18px 50px rgba(0, 0, 0, 0.65), 0 0 ${borderGlowIntensity * 0.4}px ${effectiveGlowColor}, inset 0 1px 2px rgba(255, 255, 255, 0.45), inset 0 -1px 2px rgba(0, 0, 0, 0.4)`;
+      if (intensity === 0) {
+        return `0 18px 50px rgba(0, 0, 0, 0.65), inset 0 1px 2px rgba(255, 255, 255, 0.45), inset 0 -1px 2px rgba(0, 0, 0, 0.4)`;
+      }
+      const glowBlur = (intensity / 100) * 45;
+      const glowSpread = (intensity / 100) * 6;
+      return `0 18px 50px rgba(0, 0, 0, 0.65), 0 0 ${glowBlur}px ${glowSpread}px ${effectiveGlowColor}, inset 0 1px 2px rgba(255, 255, 255, 0.45), inset 0 -1px 2px rgba(0, 0, 0, 0.4)`;
     }
 
-    return `0 14px 35px rgba(0, 0, 0, 0.5), 0 0 ${borderGlowIntensity * 0.2}px ${effectiveGlowColor}`;
+    if (intensity === 0) {
+      return `0 14px 35px rgba(0, 0, 0, 0.5)`;
+    }
+    const glowBlur = (intensity / 100) * 35;
+    const glowSpread = (intensity / 100) * 4;
+    return `0 14px 35px rgba(0, 0, 0, 0.5), 0 0 ${glowBlur}px ${glowSpread}px ${effectiveGlowColor}`;
   };
 
   // Divider rendering
