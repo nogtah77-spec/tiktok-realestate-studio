@@ -98,25 +98,46 @@ export const LUXURY_THEMES = [
     borderGlow: 'rgba(244, 63, 94, 0.4)',
     glassBg: 'rgba(30, 10, 16, 0.65)',
     accent: '#fb7185',
-    heroUnitColor: '#fda4af',
+    heroUnitColor: '#fecdd3',
     pillBg: 'linear-gradient(135deg, rgba(244, 63, 94, 0.25), rgba(30, 10, 16, 0.8))',
     pillBorder: 'rgba(251, 113, 133, 0.45)',
     pillTextColor: '#fff1f2',
     diamondColor: '#fb7185',
     dividerColor: 'rgba(244, 63, 94, 0.35)',
     shimmerClass: 'text-shimmer-ruby',
-    glossyGradient: 'linear-gradient(135deg, #ffffff 0%, #fb7185 35%, #ffffff 50%, #e11d48 75%, #9f1239 100%)',
+    glossyGradient: 'linear-gradient(135deg, #ffffff 0%, #fb7185 35%, #ffffff 50%, #e11d48 75%, #881337 100%)',
     matteColor: '#fff1f2'
+  },
+  {
+    id: 'neon-cyber-dual',
+    name: 'سايبر نيون ليزري (VIP)',
+    categoryLabel: '⚡ مود النيون',
+    borderColor: '#00e5ff',
+    borderGlow: 'rgba(0, 229, 255, 0.85)',
+    glassBg: 'rgba(5, 7, 20, 0.78)',
+    accent: '#ff00e6',
+    heroUnitColor: '#00e5ff',
+    pillBg: 'linear-gradient(135deg, rgba(255, 0, 230, 0.35), rgba(0, 229, 255, 0.35))',
+    pillBorder: '#00e5ff',
+    pillTextColor: '#ffffff',
+    diamondColor: '#00e5ff',
+    dividerColor: '#ff00e6',
+    shimmerClass: 'text-shimmer-teal',
+    glossyGradient: 'linear-gradient(135deg, #ffffff 0%, #00e5ff 40%, #ff00e6 100%)',
+    matteColor: '#ffffff',
+    isNeon: true
   }
 ];
 
+export const FINISH_MODES = [
+  { id: 'glossy', name: 'لمعان ذهبي ومعدني (Glossy Shimmer)' },
+  { id: 'matte', name: 'أبيض ناصع ومات (Clean Matte)' }
+];
+
 export const DIVIDER_STYLES = [
-  { id: 'tag', name: 'شارة مدمجة (VIP)' },
-  { id: 'fading', name: 'تلاشي تدريجي' },
-  { id: 'double', name: 'خط معماري مزدوج' },
-  { id: 'beam', name: 'شعاع نيون' },
-  { id: 'micro-sparkle', name: 'نجمة ماسية' },
-  { id: 'dotted', name: 'نقاط كلاسيكية' },
+  { id: 'tag', name: 'شارة كبسولية (VIP / فاخر)' },
+  { id: 'diamond', name: 'ماسة مضيئة (◆)' },
+  { id: 'line', name: 'خط أفقي فاخر' },
   { id: 'none', name: 'بدون فواصل' }
 ];
 
@@ -142,7 +163,8 @@ export const QUICK_TEXT_PRESETS = [
   { title: 'فيلا مودرن', heroNumber: '375', heroUnit: 'م²', bottomText: 'حي الياسمين', subtitle: 'المساحة الإجمالية' },
   { title: 'دور فاخر للإيجار', heroNumber: '4', heroUnit: 'غرف', bottomText: 'حي الملقا', subtitle: 'عدد الغرف' },
   { title: 'مكتب تجاري', heroNumber: '120', heroUnit: 'م²', bottomText: 'طريق الملك فهد', subtitle: 'المساحة الصافية' },
-  { title: 'مجمع عيادات', heroNumber: '6', heroUnit: 'أدوار', bottomText: 'شارع التحلية', subtitle: 'الترخيص الطبي' }
+  { title: 'مجمع عيادات', heroNumber: '6', heroUnit: 'أدوار', bottomText: 'شارع التحلية', subtitle: 'الترخيص الطبي' },
+  { title: 'بنتهاوس سايبر نيون', heroNumber: '280', heroUnit: 'م²', bottomText: 'إطلالة بانورامية', subtitle: 'المساحة الصافية' }
 ];
 
 export const DEFAULT_GLASS_CARD_DATA = {
@@ -193,7 +215,13 @@ export const DEFAULT_GLASS_CARD_DATA = {
   borderGlowIntensity: 75,
   glowColorMode: 'theme',
   customGlowColor: '#d4af37',
-  borderStyle: 'solid'
+  borderStyle: 'solid',
+
+  // ⚡ Cyber Neon Mode Properties
+  neonCyberMode: false,
+  showCyberGrid: false,
+  neonGradientBorder: false,
+  neonTextGlow: false
 };
 
 export const SAMPLE_IMAGES = [
@@ -204,6 +232,7 @@ export const SAMPLE_IMAGES = [
 ];
 
 export const OVERLAY_COLOR_PRESETS = [
+  { id: 'deep-space-black', name: 'سواد سايبر عميق', color: '#050714', defaultOpacity: 45 },
   { id: 'dark-navy', name: 'كحلي داكن', color: '#090d16', defaultOpacity: 45 },
   { id: 'rich-black', name: 'أسود فحمي', color: '#050505', defaultOpacity: 40 },
   { id: 'champagne-gold', name: 'ذهبي خافت', color: '#2c220f', defaultOpacity: 35 },
@@ -212,6 +241,8 @@ export const OVERLAY_COLOR_PRESETS = [
 
 export const IMAGE_FILTER_PRESETS = [
   { id: 'none', name: 'طبيعي' },
+  { id: 'cyber-dark', name: '⚡ سايبر ليلي متباين' },
+  { id: 'synthwave-neon', name: '🔮 نيون سينمائي' },
   { id: 'warm', name: 'دافئ وذهبي' },
   { id: 'cool', name: 'بارد وعصري' },
   { id: 'vivid', name: 'حيوي وعميق' },

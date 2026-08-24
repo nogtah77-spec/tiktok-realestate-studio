@@ -39,13 +39,15 @@ const CanvasPreview = forwardRef(({
   const activeTheme = LUXURY_THEMES.find(t => t.id === themeId) || LUXURY_THEMES[0];
   const activePlatformTheme = ALL_PALETTES.find(p => p.id === activePlatformThemeId) || ALL_PALETTES[0];
 
-  // Image Filter CSS
+  // Image Filter CSS with Cyberpunk options
   let filterCss = 'none';
   if (imageFilter === 'monochrome') filterCss = 'grayscale(100%) contrast(115%) brightness(95%)';
   else if (imageFilter === 'warm') filterCss = 'sepia(30%) saturate(130%) brightness(102%) contrast(105%)';
   else if (imageFilter === 'cool') filterCss = 'hue-rotate(185deg) saturate(90%) contrast(108%)';
   else if (imageFilter === 'vivid') filterCss = 'saturate(145%) contrast(110%) brightness(103%)';
   else if (imageFilter === 'moody') filterCss = 'contrast(125%) brightness(85%) saturate(110%)';
+  else if (imageFilter === 'cyber-dark') filterCss = 'contrast(140%) brightness(84%) saturate(145%)';
+  else if (imageFilter === 'synthwave-neon') filterCss = 'hue-rotate(280deg) saturate(180%) contrast(125%) brightness(90%)';
 
   const isGlossy = finish === 'glossy';
 
@@ -97,8 +99,16 @@ const CanvasPreview = forwardRef(({
     borderGlowIntensity = 75,
     glowColorMode = 'theme',
     customGlowColor = '#d4af37',
-    borderStyle = 'solid'
+    borderStyle = 'solid',
+
+    // ⚡ Cyber Neon Properties
+    neonCyberMode = false,
+    showCyberGrid = false,
+    neonGradientBorder = false,
+    neonTextGlow = false
   } = cardData;
+
+  const isNeonModeActive = neonCyberMode || activePlatformTheme?.isNeon || activeTheme?.isNeon;
 
   // Compute final border color & glow based on explicit mode
   let effectiveBorderColor = activeTheme.borderColor;
@@ -118,95 +128,100 @@ const CanvasPreview = forwardRef(({
   const getLogoPositionClass = () => {
     switch (logoPosition) {
       case 'top-left': return 'top-5 left-5';
-      case 'top-center': return 'top-5 left-1/2 -translate-x-1/2';
-      case 'bottom-right': return 'bottom-5 right-5';
-      case 'bottom-left': return 'bottom-5 left-5';
+      case 'top-right': return 'top-5 right-5';
+      case 'bottom-left': return 'bottom-8 left-5';
+      case 'bottom-right': return 'bottom-8 right-5';
       default: return 'top-5 right-5';
     }
   };
 
-  // Render Architectural Divider Component
+  // 100% Physical Neon Box-Shadow Computation
+  const computeBoxShadow = () => {
+    if (isNeonModeActive) {
+      const glowSpread = (borderGlowIntensity / 100) * 20;
+      return `0 0 0 1.5px rgba(255, 255, 255, 0.7), 0 0 ${glowSpread}px ${effectiveBorderColor}, 0 0 ${glowSpread * 2.5}px ${effectiveGlowColor}, inset 0 0 ${glowSpread * 0.8}px ${effectiveGlowColor}, 0 16px 40px rgba(0, 0, 0, 0.85)`;
+    }
+
+    if (isGlossy) {
+      return `0 18px 50px rgba(0, 0, 0, 0.65), 0 0 ${borderGlowIntensity * 0.4}px ${effectiveGlowColor}, inset 0 1px 2px rgba(255, 255, 255, 0.45), inset 0 -1px 2px rgba(0, 0, 0, 0.4)`;
+    }
+
+    return `0 14px 35px rgba(0, 0, 0, 0.5), 0 0 ${borderGlowIntensity * 0.2}px ${effectiveGlowColor}`;
+  };
+
+  // Divider rendering
   const renderDivider = () => {
     if (!showDividers || dividerStyle === 'none') return null;
 
     if (dividerStyle === 'tag') {
-      const tagText = cardData.dividerTagText !== undefined ? cardData.dividerTagText : 'VIP';
       return (
-        <div className="w-full flex items-center justify-center my-2 px-4 relative" style={{ opacity: dividerOpacity / 100 }}>
-          <div className="flex-1 h-[1px]" style={{ background: `linear-gradient(to right, transparent, ${effectiveDividerColor})` }} />
-          {tagText !== '' ? (
-            <span
-              className="mx-2 px-2.5 py-0.5 rounded-full text-[9px] font-bold border tracking-wider"
-              style={{
-                borderColor: effectiveDividerColor,
-                color: effectiveBorderColor,
-                backgroundColor: 'rgba(0,0,0,0.45)'
-              }}
-            >
-              • {tagText} •
-            </span>
-          ) : (
-            <span className="mx-1 text-[8px]" style={{ color: effectiveBorderColor }}>•</span>
-          )}
-          <div className="flex-1 h-[1px]" style={{ background: `linear-gradient(to left, transparent, ${effectiveDividerColor})` }} />
+        <div className="w-full flex items-center justify-center gap-2 my-1.5" style={{ opacity: dividerOpacity / 100 }}>
+          <div
+            className="flex-1 h-[1px]"
+            style={{
+              background: `linear-gradient(to right, transparent, ${effectiveDividerColor}, transparent)`
+            }}
+          />
+          <span
+            className="px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-wider uppercase shadow-sm flex items-center gap-1"
+            style={{
+              background: isNeonModeActive
+                ? `linear-gradient(135deg, rgba(255,255,255,0.15), rgba(0,0,0,0.85))`
+                : (borderColorMode === 'platform' ? activePlatformTheme.previewCard.pillBg : activeTheme.pillBg),
+              border: `1px solid ${effectiveDividerColor}`,
+              color: '#ffffff',
+              boxShadow: isNeonModeActive ? `0 0 10px ${effectiveGlowColor}` : 'none'
+            }}
+          >
+            <span>{dividerTagText || 'VIP'}</span>
+          </span>
+          <div
+            className="flex-1 h-[1px]"
+            style={{
+              background: `linear-gradient(to left, transparent, ${effectiveDividerColor}, transparent)`
+            }}
+          />
         </div>
       );
     }
 
-    if (dividerStyle === 'fading') {
+    if (dividerStyle === 'diamond') {
+      return (
+        <div className="w-full flex items-center justify-center gap-2 my-1.5" style={{ opacity: dividerOpacity / 100 }}>
+          <div
+            className="flex-1 h-[1px]"
+            style={{
+              background: `linear-gradient(to right, transparent, ${effectiveDividerColor}, transparent)`
+            }}
+          />
+          <span
+            className="text-xs font-serif select-none"
+            style={{
+              color: effectiveBorderColor,
+              textShadow: isNeonModeActive ? `0 0 8px ${effectiveGlowColor}` : 'none'
+            }}
+          >
+            ◆
+          </span>
+          <div
+            className="flex-1 h-[1px]"
+            style={{
+              background: `linear-gradient(to left, transparent, ${effectiveDividerColor}, transparent)`
+            }}
+          />
+        </div>
+      );
+    }
+
+    if (dividerStyle === 'line') {
       return (
         <div className="w-full flex items-center justify-center my-2 px-4" style={{ opacity: dividerOpacity / 100 }}>
           <div
             className="w-full h-[1px]"
             style={{
-              background: `linear-gradient(to right, transparent 0%, ${effectiveDividerColor} 50%, transparent 100%)`
+              background: `linear-gradient(to right, transparent, ${effectiveDividerColor}, transparent)`
             }}
           />
-        </div>
-      );
-    }
-
-    if (dividerStyle === 'double') {
-      return (
-        <div className="w-full flex flex-col items-center justify-center gap-1 my-2 px-6" style={{ opacity: dividerOpacity / 100 }}>
-          <div className="w-full h-[1px]" style={{ background: `linear-gradient(to right, transparent, ${effectiveDividerColor}, transparent)` }} />
-          <div className="w-3/4 h-[1px]" style={{ background: `linear-gradient(to right, transparent, ${effectiveDividerColor}, transparent)` }} />
-        </div>
-      );
-    }
-
-    if (dividerStyle === 'beam') {
-      return (
-        <div className="w-full flex items-center justify-center my-2.5 px-8" style={{ opacity: dividerOpacity / 100 }}>
-          <div
-            className="w-full h-[2px] rounded-full blur-[0.5px]"
-            style={{
-              background: `radial-gradient(ellipse at center, ${effectiveBorderColor} 0%, transparent 80%)`,
-              boxShadow: `0 0 10px ${effectiveGlowColor}`
-            }}
-          />
-        </div>
-      );
-    }
-
-    if (dividerStyle === 'micro-sparkle') {
-      return (
-        <div className="w-full flex items-center justify-center my-2 px-4 relative" style={{ opacity: dividerOpacity / 100 }}>
-          <div className="flex-1 h-[1px]" style={{ background: `linear-gradient(to right, transparent, ${effectiveDividerColor})` }} />
-          <span className="mx-2 text-[10px] leading-none" style={{ color: activeTheme.diamondColor, filter: `drop-shadow(0 0 4px ${effectiveGlowColor})` }}>
-            ✦
-          </span>
-          <div className="flex-1 h-[1px]" style={{ background: `linear-gradient(to left, transparent, ${effectiveDividerColor})` }} />
-        </div>
-      );
-    }
-
-    if (dividerStyle === 'dotted') {
-      return (
-        <div className="w-full flex items-center justify-center gap-1.5 my-2" style={{ opacity: dividerOpacity / 100 }}>
-          <span className="w-1 h-1 rounded-full" style={{ backgroundColor: effectiveDividerColor }} />
-          <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: effectiveBorderColor }} />
-          <span className="w-1 h-1 rounded-full" style={{ backgroundColor: effectiveDividerColor }} />
         </div>
       );
     }
@@ -215,7 +230,7 @@ const CanvasPreview = forwardRef(({
   };
 
   return (
-    <div className="relative flex items-center justify-center select-none bg-transparent">
+    <div className="relative flex items-center justify-center select-none bg-transparent gpu-accelerated">
       {/* Phone Frame Container */}
       <div className={`relative ${isPhoneMockup ? 'rounded-[38px] p-2 bg-slate-900/90 ring-1 ring-slate-800 shadow-[0_20px_60px_rgba(0,0,0,0.7)]' : ''}`}>
         
@@ -272,7 +287,12 @@ const CanvasPreview = forwardRef(({
             />
           )}
 
-          {/* 4. Alignment Grid Lines & Crosshairs */}
+          {/* ⚡ 4. 3D Perspective Cyber Grid (Optional) */}
+          {(showCyberGrid || isNeonModeActive) && (
+            <div className="absolute inset-x-0 bottom-0 h-44 pointer-events-none z-10 neon-grid-3d opacity-60" />
+          )}
+
+          {/* 5. Alignment Grid Lines & Crosshairs */}
           {showGridLines && (
             <div className="no-export absolute inset-0 z-30 pointer-events-none border border-cyan-400/20">
               <div className="absolute top-0 bottom-0 left-1/3 w-[1px] bg-cyan-400/30 border-r border-dashed border-cyan-400/40" />
@@ -285,7 +305,7 @@ const CanvasPreview = forwardRef(({
             </div>
           )}
 
-          {/* 5. Brand Logo Layer */}
+          {/* 6. Brand Logo Layer */}
           {showLogo && (
             <div className={`absolute z-20 pointer-events-none ${getLogoPositionClass()}`}>
               {logoUrl ? (
@@ -315,7 +335,7 @@ const CanvasPreview = forwardRef(({
             </div>
           )}
 
-          {/* 6. Master 3-Tier Luxury Glass Box */}
+          {/* 7. Master 3-Tier Luxury Glass Box */}
           <div
             id="tiktok-glass-card-root"
             className="absolute inset-x-0 z-20 flex items-center justify-center pointer-events-none px-3"
@@ -325,22 +345,24 @@ const CanvasPreview = forwardRef(({
             }}
           >
             <div
-              className="relative flex flex-col items-center justify-center text-center transition-all duration-150"
+              className={`relative flex flex-col items-center justify-center text-center transition-all duration-150 ${
+                isNeonModeActive ? 'neon-card-smoked' : ''
+              }`}
               style={{
                 width: `${boxWidth}%`,
                 padding: `${boxPaddingY || 20}px 16px`,
                 borderRadius: `${borderRadius}px`,
-                backgroundColor: activeTheme.glassBg.replace('0.55', (boxOpacity / 100).toString()).replace('0.65', (boxOpacity / 100).toString()).replace('0.62', (boxOpacity / 100).toString()).replace('0.6', (boxOpacity / 100).toString()),
+                backgroundColor: isNeonModeActive
+                  ? `rgba(5, 7, 20, ${boxOpacity / 100})`
+                  : activeTheme.glassBg.replace('0.55', (boxOpacity / 100).toString()).replace('0.65', (boxOpacity / 100).toString()).replace('0.62', (boxOpacity / 100).toString()).replace('0.6', (boxOpacity / 100).toString()),
                 backdropFilter: boxBlur > 0 ? `blur(${boxBlur}px)` : 'none',
                 WebkitBackdropFilter: boxBlur > 0 ? `blur(${boxBlur}px)` : 'none',
                 border: borderWidth > 0 ? `${borderWidth}px ${borderStyle === 'double' ? 'double' : 'solid'} ${effectiveBorderColor}` : 'none',
-                boxShadow: isGlossy
-                  ? `0 18px 50px rgba(0, 0, 0, 0.65), 0 0 ${borderGlowIntensity * 0.4}px ${effectiveGlowColor}, inset 0 1px 2px rgba(255, 255, 255, 0.45), inset 0 -1px 2px rgba(0, 0, 0, 0.4)`
-                  : `0 14px 35px rgba(0, 0, 0, 0.5), 0 0 ${borderGlowIntensity * 0.2}px ${effectiveGlowColor}`
+                boxShadow: computeBoxShadow()
               }}
             >
               {/* Glossy Sheen Overlay */}
-              {isGlossy && (
+              {isGlossy && !isNeonModeActive && (
                 <div
                   className="absolute inset-0 pointer-events-none overflow-hidden"
                   style={{
@@ -353,11 +375,16 @@ const CanvasPreview = forwardRef(({
               {/* SECTION 1: TOP TITLE */}
               <div className="w-full px-1">
                 <h2
-                  className={`font-extrabold tracking-tight m-0 p-0 leading-tight ${titleShimmer ? activeTheme.shimmerClass : ''}`}
+                  className={`font-extrabold tracking-tight m-0 p-0 leading-tight ${
+                    titleShimmer ? activeTheme.shimmerClass : ''
+                  }`}
                   style={{
                     fontFamily: titleFont ? `'${titleFont}', sans-serif` : 'inherit',
                     fontSize: `${titleSize}px`,
                     color: titleShimmer ? 'transparent' : (titleColor || '#ffffff'),
+                    textShadow: (neonTextGlow || isNeonModeActive)
+                      ? `0 0 2px #ffffff, 0 0 8px ${effectiveBorderColor}, 0 0 20px ${effectiveGlowColor}`
+                      : 'none',
                     filter: titleShimmer ? 'none' : 'drop-shadow(0 4px 10px rgba(0, 0, 0, 0.85))'
                   }}
                 >
@@ -377,6 +404,7 @@ const CanvasPreview = forwardRef(({
                       fontFamily: subtitleFont ? `'${subtitleFont}', sans-serif` : 'inherit',
                       fontSize: `${subtitleSize}px`,
                       color: subtitleColor || activeTheme.accent,
+                      textShadow: (neonTextGlow || isNeonModeActive) ? `0 0 6px ${effectiveGlowColor}` : 'none',
                       filter: 'drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7))'
                     }}
                   >
@@ -393,6 +421,7 @@ const CanvasPreview = forwardRef(({
                         fontFamily: heroFont ? `'${heroFont}', sans-serif` : 'inherit',
                         fontSize: `${heroUnitSize}px`,
                         color: heroUnitColor || activeTheme.heroUnitColor,
+                        textShadow: (neonTextGlow || isNeonModeActive) ? `0 0 8px ${effectiveGlowColor}` : 'none',
                         filter: 'drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7))'
                       }}
                     >
@@ -401,11 +430,14 @@ const CanvasPreview = forwardRef(({
                   )}
 
                   <span
-                    className={`font-black tracking-tighter select-none leading-none ${heroShimmer ? activeTheme.shimmerClass : ''}`}
+                    className={`font-black tracking-tight leading-none ${heroShimmer ? activeTheme.shimmerClass : ''}`}
                     style={{
                       fontFamily: heroFont ? `'${heroFont}', sans-serif` : 'inherit',
                       fontSize: `${heroNumberSize}px`,
                       color: heroShimmer ? 'transparent' : (heroNumberColor || '#ffffff'),
+                      textShadow: (neonTextGlow || isNeonModeActive)
+                        ? `0 0 2px #ffffff, 0 0 10px ${effectiveBorderColor}, 0 0 26px ${effectiveGlowColor}`
+                        : 'none',
                       filter: heroShimmer ? 'none' : 'drop-shadow(0 6px 16px rgba(0, 0, 0, 0.9))'
                     }}
                   >
@@ -414,62 +446,41 @@ const CanvasPreview = forwardRef(({
                 </div>
               </div>
 
-              {/* DIVIDER 2 */}
-              {renderDivider()}
-
-              {/* SECTION 3: BOTTOM CAPSULE PILL */}
+              {/* SECTION 3: BOTTOM PILL / LOCATION */}
               {bottomText && (
-                <div className="w-full flex justify-center mt-1">
-                  {bottomPillStyle === 'pill' ? (
-                    <div
-                      className="px-5 py-1.5 rounded-xl text-center w-full max-w-[92%] shadow-md border transition-all"
-                      style={{
-                        background: activeTheme.pillBg,
-                        borderColor: activeTheme.pillBorder,
-                        boxShadow: isGlossy
-                          ? '0 4px 16px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.5)'
-                          : '0 3px 10px rgba(0, 0, 0, 0.3)'
-                      }}
-                    >
-                      <span
-                        className="font-bold tracking-tight block truncate"
-                        style={{
-                          fontFamily: bottomFont ? `'${bottomFont}', sans-serif` : 'inherit',
-                          fontSize: `${bottomSize}px`,
-                          color: bottomTextColor || activeTheme.pillTextColor,
-                          textShadow: '0 2px 5px rgba(0, 0, 0, 0.6)'
-                        }}
-                      >
-                        {bottomText}
-                      </span>
-                    </div>
-                  ) : (
-                    <span
-                      className="font-bold tracking-tight text-center block truncate"
-                      style={{
-                        fontFamily: bottomFont ? `'${bottomFont}', sans-serif` : 'inherit',
-                        fontSize: `${bottomSize}px`,
-                        color: bottomTextColor || '#ffffff',
-                        filter: 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.8))'
-                      }}
-                    >
-                      {bottomText}
-                    </span>
-                  )}
+                <div className="mt-2 w-full flex justify-center">
+                  <div
+                    className="px-4 py-1 rounded-full text-xs font-bold tracking-wide transition-all shadow-md"
+                    style={{
+                      fontFamily: bottomFont ? `'${bottomFont}', sans-serif` : 'inherit',
+                      fontSize: `${bottomSize}px`,
+                      color: bottomTextColor || '#ffffff',
+                      background: isNeonModeActive
+                        ? `linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(0, 0, 0, 0.8))`
+                        : (borderColorMode === 'platform' ? activePlatformTheme.previewCard.pillBg : activeTheme.pillBg),
+                      border: `1px solid ${effectiveBorderColor}`,
+                      boxShadow: isNeonModeActive ? `0 0 12px ${effectiveGlowColor}` : 'none'
+                    }}
+                  >
+                    {bottomText}
+                  </div>
                 </div>
               )}
-
             </div>
           </div>
 
-          {/* 7. Realistic TikTok Grid View Counter Overlay */}
+          {/* 8. Bottom TikTok UI Simulation Indicator */}
           {showGridIndicator && (
-            <div className="no-export absolute bottom-3.5 right-3.5 z-30 flex items-center gap-1 text-white/90 font-bold text-[11px] bg-black/40 backdrop-blur-sm px-2 py-0.5 rounded-md drop-shadow">
-              <span>{gridViewsCount}</span>
-              <span className="text-[9px]">▷</span>
+            <div className="no-export absolute bottom-3 inset-x-0 flex items-center justify-between px-4 text-[10px] text-white/70 pointer-events-none z-30 font-mono">
+              <div className="flex items-center gap-1 bg-black/50 px-2 py-0.5 rounded-full backdrop-blur-sm border border-white/10">
+                <span>▶</span>
+                <span>{gridViewsCount || '1.9K'}</span>
+              </div>
+              <div className="bg-black/50 px-2 py-0.5 rounded-full backdrop-blur-sm border border-white/10 text-[9px]">
+                9:16 HD
+              </div>
             </div>
           )}
-
         </div>
       </div>
     </div>

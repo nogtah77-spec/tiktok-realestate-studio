@@ -144,13 +144,16 @@ export default function App() {
   const handleApplyPaletteToCard = (palette) => {
     if (!palette) return;
     setActiveCardPaletteId(palette.id);
+    const isNeon = palette.group === 'neon';
     setCardData(prev => ({
       ...prev,
       borderColorMode: 'custom',
       customBorderColor: palette.previewCard.borderColor,
       glowColorMode: 'custom',
       customGlowColor: palette.previewCard.borderGlow,
-      borderGlowIntensity: 85
+      borderGlowIntensity: isNeon ? 90 : 85,
+      neonCyberMode: isNeon ? true : prev.neonCyberMode,
+      neonTextGlow: isNeon ? true : prev.neonTextGlow
     }));
   };
 

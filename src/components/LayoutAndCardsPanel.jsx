@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, Palette, Sliders, Layers, Frame, Maximize2, Monitor, Tag } from 'lucide-react';
+import { Sparkles, Palette, Sliders, Layers, Frame, Maximize2, Monitor, Tag, Zap, Radio } from 'lucide-react';
 import { LUXURY_THEMES, DIVIDER_STYLES } from '../utils/constants';
 
 export default function LayoutAndCardsPanel({
@@ -21,7 +21,8 @@ export default function LayoutAndCardsPanel({
     setCardData(prev => ({
       ...prev,
       borderColorMode: 'theme',
-      glowColorMode: 'theme'
+      glowColorMode: 'theme',
+      neonCyberMode: newThemeId === 'neon-cyber-dual'
     }));
   };
 
@@ -66,7 +67,58 @@ export default function LayoutAndCardsPanel({
         </div>
       </div>
 
-      {/* 2. Glass Finish Mode (Matte vs Glossy) */}
+      {/* ⚡ 2. Cyber Neon FX Controls */}
+      <div className="p-4 rounded-2xl bg-slate-900/80 border border-cyan-500/30 space-y-3 shadow-[0_0_20px_rgba(0,229,255,0.08)]">
+        <div className="flex items-center justify-between pb-1 border-b border-slate-800">
+          <label className="font-extrabold text-white flex items-center gap-2 text-xs">
+            <Zap className="w-4 h-4 text-cyan-400 animate-pulse" />
+            <span>تأثيرات السايبر نيون المتطورة (Cyber Neon FX)</span>
+          </label>
+          <span className="text-[9px] font-bold bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded-full border border-cyan-500/40">
+            PRO 100%
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+          {/* Toggle 1: True Neon Glow */}
+          <button
+            onClick={() => updateCardData('neonCyberMode', !cardData.neonCyberMode)}
+            className={`p-2.5 rounded-xl border text-center transition-all cursor-pointer ${
+              cardData.neonCyberMode
+                ? 'border-cyan-400 bg-cyan-500/20 text-cyan-200 font-bold shadow-[0_0_12px_rgba(0,229,255,0.3)] ring-1 ring-cyan-400/40'
+                : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <div className="text-[11px]">⚡ توهج نيون ليزري 100%</div>
+          </button>
+
+          {/* Toggle 2: 3D Perspective Cyber Grid */}
+          <button
+            onClick={() => updateCardData('showCyberGrid', !cardData.showCyberGrid)}
+            className={`p-2.5 rounded-xl border text-center transition-all cursor-pointer ${
+              cardData.showCyberGrid
+                ? 'border-fuchsia-400 bg-fuchsia-500/20 text-fuchsia-200 font-bold shadow-[0_0_12px_rgba(255,0,230,0.3)] ring-1 ring-fuchsia-400/40'
+                : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <div className="text-[11px]">🌐 شبكة نيون 3D أرضية</div>
+          </button>
+
+          {/* Toggle 3: Neon Tube Text Glow */}
+          <button
+            onClick={() => updateCardData('neonTextGlow', !cardData.neonTextGlow)}
+            className={`p-2.5 rounded-xl border text-center transition-all cursor-pointer ${
+              cardData.neonTextGlow
+                ? 'border-amber-400 bg-amber-500/20 text-amber-200 font-bold shadow-[0_0_12px_rgba(255,184,0,0.3)] ring-1 ring-amber-400/40'
+                : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <div className="text-[11px]">💡 لمعة نيون للنصوص</div>
+          </button>
+        </div>
+      </div>
+
+      {/* 3. Glass Finish Mode (Matte vs Glossy) */}
       <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-2.5">
         <label className="font-extrabold text-slate-100 flex items-center gap-2 text-xs">
           <Sparkles className="w-4 h-4 text-slate-300" />
@@ -97,15 +149,17 @@ export default function LayoutAndCardsPanel({
         </div>
       </div>
 
-      {/* 3. Box Dimensions & Proportions (Width & Height) */}
+      {/* 4. Box Dimensions & Proportions (Width & Height) */}
       <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5">
-        <label className="font-extrabold text-slate-100 flex items-center gap-2 text-xs">
-          <Maximize2 className="w-4 h-4 text-slate-300" />
-          <span>أبعاد وتمدد البوكس (العرض والارتفاع)</span>
-        </label>
+        <div className="flex items-center justify-between pb-1 border-b border-slate-800">
+          <label className="font-extrabold text-slate-100 flex items-center gap-2 text-xs">
+            <Maximize2 className="w-4 h-4 text-slate-300" />
+            <span>أبعاد وتناسب البوكس الزجاجي</span>
+          </label>
+          <span className="text-[10px] text-slate-400 font-mono">Pixel Perfect</span>
+        </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-          {/* Box Width */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <div className="flex justify-between items-center text-slate-300 mb-1 text-[11px]">
               <span className="font-medium">عرض البوكس</span>
@@ -115,7 +169,7 @@ export default function LayoutAndCardsPanel({
             </div>
             <input
               type="range"
-              min="65"
+              min="50"
               max="95"
               value={cardData.boxWidth ?? 84}
               onChange={(e) => updateCardData('boxWidth', Number(e.target.value))}
@@ -123,101 +177,71 @@ export default function LayoutAndCardsPanel({
             />
           </div>
 
-          {/* Box Height / Padding */}
           <div>
             <div className="flex justify-between items-center text-slate-300 mb-1 text-[11px]">
-              <span className="font-medium">ارتفاع وتمدد البوكس</span>
+              <span className="font-medium">الهامش والارتفاع الداخلي</span>
               <span className="px-2 py-0.5 rounded-md font-mono text-[10px] font-bold bg-slate-950 border border-slate-800 text-white">
                 {cardData.boxPaddingY ?? 20}px
               </span>
             </div>
             <input
               type="range"
-              min="10"
-              max="42"
+              min="8"
+              max="44"
               value={cardData.boxPaddingY ?? 20}
               onChange={(e) => updateCardData('boxPaddingY', Number(e.target.value))}
               className="luxury-slider mt-1"
             />
           </div>
         </div>
-      </div>
 
-      {/* 4. Glass Transparency, Blur & Position */}
-      <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5">
-        <label className="font-extrabold text-slate-100 flex items-center gap-2 text-xs">
-          <Layers className="w-4 h-4 text-slate-300" />
-          <span>الشفافية، البلور، والموضع</span>
-        </label>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-          {/* Glass Opacity */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
           <div>
             <div className="flex justify-between items-center text-slate-300 mb-1 text-[11px]">
-              <span className="font-medium">الشفافية</span>
+              <span className="font-medium">الموقع الرأسي (أعلى / أسفل)</span>
+              <span className="px-2 py-0.5 rounded-md font-mono text-[10px] font-bold bg-slate-950 border border-slate-800 text-white">
+                {cardData.verticalPosition ?? 50}%
+              </span>
+            </div>
+            <input
+              type="range"
+              min="20"
+              max="80"
+              value={cardData.verticalPosition ?? 50}
+              onChange={(e) => updateCardData('verticalPosition', Number(e.target.value))}
+              className="luxury-slider mt-1"
+            />
+          </div>
+
+          <div>
+            <div className="flex justify-between items-center text-slate-300 mb-1 text-[11px]">
+              <span className="font-medium">شفافية الزجاج الداكن</span>
               <span className="px-2 py-0.5 rounded-md font-mono text-[10px] font-bold bg-slate-950 border border-slate-800 text-white">
                 {cardData.boxOpacity ?? 60}%
               </span>
             </div>
             <input
               type="range"
-              min="0"
-              max="100"
+              min="10"
+              max="95"
               value={cardData.boxOpacity ?? 60}
               onChange={(e) => updateCardData('boxOpacity', Number(e.target.value))}
-              className="luxury-slider mt-1"
-            />
-          </div>
-
-          {/* Glass Blur */}
-          <div>
-            <div className="flex justify-between items-center text-slate-300 mb-1 text-[11px]">
-              <span className="font-medium">بلور الزجاج</span>
-              <span className="px-2 py-0.5 rounded-md font-mono text-[10px] font-bold bg-slate-950 border border-slate-800 text-white">
-                {cardData.boxBlur ?? 20}px
-              </span>
-            </div>
-            <input
-              type="range"
-              min="0"
-              max="45"
-              value={cardData.boxBlur ?? 20}
-              onChange={(e) => updateCardData('boxBlur', Number(e.target.value))}
-              className="luxury-slider mt-1"
-            />
-          </div>
-
-          {/* Vertical Position */}
-          <div>
-            <div className="flex justify-between items-center text-slate-300 mb-1 text-[11px]">
-              <span className="font-medium">الموضع الرأسي</span>
-              <span className="px-2 py-0.5 rounded-md font-mono text-[10px] font-bold bg-slate-950 border border-slate-800 text-white">
-                {cardData.verticalPosition || 50}%
-              </span>
-            </div>
-            <input
-              type="range"
-              min="25"
-              max="75"
-              value={cardData.verticalPosition || 50}
-              onChange={(e) => updateCardData('verticalPosition', Number(e.target.value))}
               className="luxury-slider mt-1"
             />
           </div>
         </div>
       </div>
 
-      {/* 5. Border & Glow */}
+      {/* 5. Border & Glow Controls with Dynamic Source Selection */}
       <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5">
-        <label className="font-extrabold text-slate-100 flex items-center gap-2 text-xs">
-          <Frame className="w-4 h-4 text-slate-300" />
-          <span>حدود البوكس والتوهج</span>
-        </label>
+        <div className="flex items-center justify-between pb-1 border-b border-slate-800">
+          <label className="font-extrabold text-slate-100 flex items-center gap-2 text-xs">
+            <Frame className="w-4 h-4 text-slate-300" />
+            <span>حدود البوكس والتوهج</span>
+          </label>
 
-        {/* Explicit Border Color Source Selector */}
-        <div className="space-y-1.5 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800">
-          <span className="text-[11px] font-bold text-slate-300 block">مصدر لون الحدود والتوهج:</span>
-          <div className="grid grid-cols-3 gap-2">
+          {/* 3-Way Segmented Control: Theme vs Platform vs Custom */}
+          <div className="flex items-center gap-1 p-0.5 rounded-lg bg-slate-950 border border-slate-800">
             <button
               onClick={() => {
                 updateCardData('borderColorMode', 'theme');
@@ -378,8 +402,8 @@ export default function LayoutAndCardsPanel({
               type="text"
               value={cardData.dividerTagText !== undefined ? cardData.dividerTagText : 'VIP'}
               onChange={(e) => updateCardData('dividerTagText', e.target.value)}
-              placeholder="اكتب نص الشارة..."
-              className="px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-800 text-xs text-white outline-none w-36 focus:border-slate-600 font-bold"
+              className="bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white outline-none w-28 font-bold"
+              placeholder="VIP"
             />
           </div>
         )}

@@ -1,6 +1,7 @@
-// 16 Master Luxury Palettes & Theme Engine
-// Group 1: 8 Muted Quiet Luxury Palettes (70% Saturation - مخملية وهادئة ومريحة للعين)
-// Group 2: 8 Vibrant Master Palettes (الألوان الحيوية الأصلية)
+// 24 Master Luxury & Cyber Neon Palettes (Theme Engine)
+// Group 1: 8 Muted Quiet Luxury Palettes (70% Saturation - مخملية وهادئة)
+// Group 2: 8 Cyber Neon Master Palettes (مود النيون الاحترافي - 100% True Neon Physics)
+// Group 3: 8 Vibrant Master Palettes (الألوان الحيوية الأصلية)
 
 export const MUTED_LUXURY_PALETTES = [
   {
@@ -249,6 +250,292 @@ export const MUTED_LUXURY_PALETTES = [
       pillBorder: 'rgba(156, 163, 196, 0.45)',
       pillTextColor: '#f4f5f9',
       shimmerClass: 'text-shimmer-chrome'
+    }
+  }
+];
+
+// Group 2: 8 Cyber Neon Systems (100% Physical Neon Simulation)
+export const NEON_PALETTES = [
+  {
+    id: 'neon-cyber-pink',
+    num: 'N1',
+    name: 'النيون سايبر بانك وماجنتا',
+    englishName: 'Cyber Pink & Neon Magenta',
+    icon: '💖',
+    group: 'neon',
+    isNeon: true,
+    bgDark: '#050714',
+    bgSurface: '#0c0f24',
+    bgCard: '#121735',
+    border: '#ff00e6',
+    borderSubtle: 'rgba(255, 0, 230, 0.25)',
+    accent: '#ff00e6',
+    accentHover: '#ff2d95',
+    accentGlow: 'rgba(255, 0, 230, 0.75)',
+    accentText: '#ffd4f6',
+    badgeBg: 'rgba(255, 0, 230, 0.25)',
+    textPrimary: '#ffffff',
+    textSecondary: '#ff80ea',
+    previewCard: {
+      borderColor: '#ff00e6',
+      borderGlow: 'rgba(255, 0, 230, 0.85)',
+      glassBg: 'rgba(14, 10, 28, 0.78)',
+      accent: '#ff2d95',
+      heroUnitColor: '#ffd4f6',
+      pillBg: 'linear-gradient(135deg, rgba(255, 0, 230, 0.4), rgba(5, 7, 20, 0.9))',
+      pillBorder: '#ff00e6',
+      pillTextColor: '#ffffff',
+      shimmerClass: 'text-shimmer-ruby',
+      isNeon: true,
+      neonCoreColor: '#ffffff',
+      neonAuraColor: '#ff00e6'
+    }
+  },
+  {
+    id: 'neon-aqua-cyan',
+    num: 'N2',
+    name: 'النيون أكوا ليزر وسايان',
+    englishName: 'Neon Aqua & Laser Cyan',
+    icon: '🌐',
+    group: 'neon',
+    isNeon: true,
+    bgDark: '#040712',
+    bgSurface: '#081224',
+    bgCard: '#0e1d38',
+    border: '#00e5ff',
+    borderSubtle: 'rgba(0, 229, 255, 0.25)',
+    accent: '#00e5ff',
+    accentHover: '#00ffa3',
+    accentGlow: 'rgba(0, 229, 255, 0.75)',
+    accentText: '#ccf7ff',
+    badgeBg: 'rgba(0, 229, 255, 0.22)',
+    textPrimary: '#ffffff',
+    textSecondary: '#66eeff',
+    previewCard: {
+      borderColor: '#00e5ff',
+      borderGlow: 'rgba(0, 229, 255, 0.85)',
+      glassBg: 'rgba(6, 18, 35, 0.78)',
+      accent: '#00ffa3',
+      heroUnitColor: '#ccf7ff',
+      pillBg: 'linear-gradient(135deg, rgba(0, 229, 255, 0.38), rgba(4, 7, 18, 0.9))',
+      pillBorder: '#00e5ff',
+      pillTextColor: '#ffffff',
+      shimmerClass: 'text-shimmer-teal',
+      isNeon: true,
+      neonCoreColor: '#ffffff',
+      neonAuraColor: '#00e5ff'
+    }
+  },
+  {
+    id: 'neon-dual-magenta-cyan',
+    num: 'N3',
+    name: 'تدرج النيون المزدوج (ماجنتا + سايان)',
+    englishName: 'Dual-Tone Magenta & Cyan',
+    icon: '⚡',
+    group: 'neon',
+    isNeon: true,
+    bgDark: '#050714',
+    bgSurface: '#0d1026',
+    bgCard: '#13183a',
+    border: '#00e5ff',
+    borderSubtle: 'rgba(255, 0, 230, 0.3)',
+    accent: '#00e5ff',
+    accentHover: '#ff00e6',
+    accentGlow: 'rgba(0, 229, 255, 0.8)',
+    accentText: '#ffffff',
+    badgeBg: 'rgba(0, 229, 255, 0.25)',
+    textPrimary: '#ffffff',
+    textSecondary: '#99f0ff',
+    previewCard: {
+      borderColor: '#00e5ff',
+      borderGlow: 'rgba(255, 0, 230, 0.85)',
+      glassBg: 'rgba(10, 12, 30, 0.8)',
+      accent: '#ff00e6',
+      heroUnitColor: '#ccf7ff',
+      pillBg: 'linear-gradient(135deg, rgba(255, 0, 230, 0.45) 0%, rgba(0, 229, 255, 0.45) 100%)',
+      pillBorder: '#00e5ff',
+      pillTextColor: '#ffffff',
+      shimmerClass: 'text-shimmer-teal',
+      isNeon: true,
+      isDualTone: true,
+      neonDualGradient: 'linear-gradient(135deg, #ff00e6 0%, #7b00ff 50%, #00e5ff 100%)',
+      neonCoreColor: '#ffffff',
+      neonAuraColor: '#00e5ff'
+    }
+  },
+  {
+    id: 'neon-cosmic-purple',
+    num: 'N4',
+    name: 'النيون الكوزميك والبنفسجي الكهربائي',
+    englishName: 'Neon Cosmic & Electric Purple',
+    icon: '🔮',
+    group: 'neon',
+    isNeon: true,
+    bgDark: '#060412',
+    bgSurface: '#0e0a24',
+    bgCard: '#161036',
+    border: '#7b00ff',
+    borderSubtle: 'rgba(123, 0, 255, 0.28)',
+    accent: '#7b00ff',
+    accentHover: '#a855f7',
+    accentGlow: 'rgba(123, 0, 255, 0.75)',
+    accentText: '#e5ccff',
+    badgeBg: 'rgba(123, 0, 255, 0.25)',
+    textPrimary: '#ffffff',
+    textSecondary: '#c084fc',
+    previewCard: {
+      borderColor: '#7b00ff',
+      borderGlow: 'rgba(123, 0, 255, 0.85)',
+      glassBg: 'rgba(12, 8, 28, 0.78)',
+      accent: '#c084fc',
+      heroUnitColor: '#e5ccff',
+      pillBg: 'linear-gradient(135deg, rgba(123, 0, 255, 0.4), rgba(6, 4, 18, 0.9))',
+      pillBorder: '#7b00ff',
+      pillTextColor: '#ffffff',
+      shimmerClass: 'text-shimmer-chrome',
+      isNeon: true,
+      neonCoreColor: '#ffffff',
+      neonAuraColor: '#7b00ff'
+    }
+  },
+  {
+    id: 'neon-lime-toxic',
+    num: 'N5',
+    name: 'النيون لايم والأخضر الفسفوري',
+    englishName: 'Neon Lime & Toxic Green',
+    icon: '💚',
+    group: 'neon',
+    isNeon: true,
+    bgDark: '#030d06',
+    bgSurface: '#07180d',
+    bgCard: '#0c2615',
+    border: '#39ff14',
+    borderSubtle: 'rgba(57, 255, 20, 0.25)',
+    accent: '#39ff14',
+    accentHover: '#a3ff12',
+    accentGlow: 'rgba(57, 255, 20, 0.75)',
+    accentText: '#d8ffd1',
+    badgeBg: 'rgba(57, 255, 20, 0.22)',
+    textPrimary: '#ffffff',
+    textSecondary: '#86efac',
+    previewCard: {
+      borderColor: '#39ff14',
+      borderGlow: 'rgba(57, 255, 20, 0.85)',
+      glassBg: 'rgba(6, 20, 11, 0.78)',
+      accent: '#a3ff12',
+      heroUnitColor: '#d8ffd1',
+      pillBg: 'linear-gradient(135deg, rgba(57, 255, 20, 0.38), rgba(3, 13, 6, 0.9))',
+      pillBorder: '#39ff14',
+      pillTextColor: '#ffffff',
+      shimmerClass: 'text-shimmer-teal',
+      isNeon: true,
+      neonCoreColor: '#ffffff',
+      neonAuraColor: '#39ff14'
+    }
+  },
+  {
+    id: 'neon-amber-energy',
+    num: 'N6',
+    name: 'النيون عنبر وبرتقالي طاقة',
+    englishName: 'Neon Amber & Solar Orange',
+    icon: '🧡',
+    group: 'neon',
+    isNeon: true,
+    bgDark: '#0e0702',
+    bgSurface: '#1c0f05',
+    bgCard: '#2b1708',
+    border: '#ff7a00',
+    borderSubtle: 'rgba(255, 122, 0, 0.28)',
+    accent: '#ff7a00',
+    accentHover: '#ffb800',
+    accentGlow: 'rgba(255, 122, 0, 0.75)',
+    accentText: '#ffe0cc',
+    badgeBg: 'rgba(255, 122, 0, 0.25)',
+    textPrimary: '#ffffff',
+    textSecondary: '#fdba74',
+    previewCard: {
+      borderColor: '#ff7a00',
+      borderGlow: 'rgba(255, 122, 0, 0.85)',
+      glassBg: 'rgba(22, 11, 4, 0.78)',
+      accent: '#ffb800',
+      heroUnitColor: '#ffe0cc',
+      pillBg: 'linear-gradient(135deg, rgba(255, 122, 0, 0.4), rgba(14, 7, 2, 0.9))',
+      pillBorder: '#ff7a00',
+      pillTextColor: '#ffffff',
+      shimmerClass: 'text-shimmer-bronze',
+      isNeon: true,
+      neonCoreColor: '#ffffff',
+      neonAuraColor: '#ff7a00'
+    }
+  },
+  {
+    id: 'neon-ice-arctic',
+    num: 'N7',
+    name: 'النيون آيس والبلاتين البارد',
+    englishName: 'Neon Ice & Frosted Arctic',
+    icon: '❄️',
+    group: 'neon',
+    isNeon: true,
+    bgDark: '#040b12',
+    bgSurface: '#081724',
+    bgCard: '#0e2438',
+    border: '#38bdf8',
+    borderSubtle: 'rgba(56, 189, 248, 0.25)',
+    accent: '#38bdf8',
+    accentHover: '#e0f2fe',
+    accentGlow: 'rgba(56, 189, 248, 0.75)',
+    accentText: '#e0f2fe',
+    badgeBg: 'rgba(56, 189, 248, 0.22)',
+    textPrimary: '#ffffff',
+    textSecondary: '#7dd3fc',
+    previewCard: {
+      borderColor: '#38bdf8',
+      borderGlow: 'rgba(56, 189, 248, 0.85)',
+      glassBg: 'rgba(8, 22, 38, 0.78)',
+      accent: '#e0f2fe',
+      heroUnitColor: '#ffffff',
+      pillBg: 'linear-gradient(135deg, rgba(56, 189, 248, 0.38), rgba(4, 11, 18, 0.9))',
+      pillBorder: '#38bdf8',
+      pillTextColor: '#ffffff',
+      shimmerClass: 'text-shimmer-chrome',
+      isNeon: true,
+      neonCoreColor: '#ffffff',
+      neonAuraColor: '#38bdf8'
+    }
+  },
+  {
+    id: 'neon-dark-future',
+    num: 'N8',
+    name: 'النيون المستقبلي والظلال العميقة',
+    englishName: 'Dark Future & Deep Blue',
+    icon: '🕶️',
+    group: 'neon',
+    isNeon: true,
+    bgDark: '#02040a',
+    bgSurface: '#050a18',
+    bgCard: '#0a132c',
+    border: '#3882ff',
+    borderSubtle: 'rgba(56, 130, 255, 0.28)',
+    accent: '#3882ff',
+    accentHover: '#00e5ff',
+    accentGlow: 'rgba(56, 130, 255, 0.75)',
+    accentText: '#d6e4ff',
+    badgeBg: 'rgba(56, 130, 255, 0.25)',
+    textPrimary: '#ffffff',
+    textSecondary: '#93c5fd',
+    previewCard: {
+      borderColor: '#3882ff',
+      borderGlow: 'rgba(56, 130, 255, 0.85)',
+      glassBg: 'rgba(5, 10, 26, 0.78)',
+      accent: '#00e5ff',
+      heroUnitColor: '#d6e4ff',
+      pillBg: 'linear-gradient(135deg, rgba(56, 130, 255, 0.4), rgba(2, 4, 10, 0.9))',
+      pillBorder: '#3882ff',
+      pillTextColor: '#ffffff',
+      shimmerClass: 'text-shimmer-teal',
+      isNeon: true,
+      neonCoreColor: '#ffffff',
+      neonAuraColor: '#3882ff'
     }
   }
 ];
@@ -504,7 +791,7 @@ export const MASTER_PALETTES = [
   }
 ];
 
-export const ALL_PALETTES = [...MUTED_LUXURY_PALETTES, ...MASTER_PALETTES];
+export const ALL_PALETTES = [...NEON_PALETTES, ...MUTED_LUXURY_PALETTES, ...MASTER_PALETTES];
 
 export const DEFAULT_PLATFORM_THEME_ID = 'matte-charcoal-platinum';
 

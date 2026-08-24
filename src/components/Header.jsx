@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Sparkles, Save, RotateCcw, Share2, Database, Palette } from 'lucide-react';
-import { MUTED_LUXURY_PALETTES, MASTER_PALETTES } from '../utils/themeEngine';
+import { Sparkles, Save, RotateCcw, Share2, Database, Palette, Zap } from 'lucide-react';
+import { NEON_PALETTES, MUTED_LUXURY_PALETTES, MASTER_PALETTES } from '../utils/themeEngine';
 
 export default function Header({
   presets = [],
@@ -26,7 +26,8 @@ export default function Header({
     }
   };
 
-  const theme = activeThemeObj || MUTED_LUXURY_PALETTES[0];
+  const theme = activeThemeObj || NEON_PALETTES[0];
+  const isCurrentThemeNeon = theme?.group === 'neon';
 
   return (
     <header
@@ -36,7 +37,7 @@ export default function Header({
         borderColor: theme.border
       }}
     >
-      {/* Brand Title */}
+      {/* Brand Title & Neon Mode Indicator */}
       <div className="flex items-center gap-2 shrink-0">
         <div
           className="w-7 h-7 rounded-xl flex items-center justify-center font-black text-xs shadow-sm transition-all"
@@ -65,6 +66,26 @@ export default function Header({
 
       {/* Center Theme Switcher & Presets Dropdown */}
       <div className="hidden md:flex items-center gap-2">
+        {/* ⚡ Quick Neon Mode Switcher Button */}
+        <button
+          onClick={() => {
+            if (isCurrentThemeNeon) {
+              onSelectPlatformTheme('matte-charcoal-platinum');
+            } else {
+              onSelectPlatformTheme('neon-cyber-pink');
+            }
+          }}
+          className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-extrabold border transition-all cursor-pointer shadow-sm ${
+            isCurrentThemeNeon
+              ? 'bg-cyan-500/20 text-cyan-200 border-cyan-400 shadow-[0_0_12px_rgba(0,229,255,0.4)]'
+              : 'bg-slate-900 text-slate-400 border-slate-800 hover:text-cyan-300 hover:border-cyan-500/40'
+          }`}
+          title="تبديل وضع السايبر نيون"
+        >
+          <Zap className={`w-3.5 h-3.5 ${isCurrentThemeNeon ? 'text-cyan-300 animate-pulse' : 'text-slate-500'}`} />
+          <span>{isCurrentThemeNeon ? 'مود النيون ⚡ (نشط)' : 'مود النيون ⚡'}</span>
+        </button>
+
         {/* Quick Platform Theme Selector */}
         <div
           className="flex items-center gap-1 border rounded-lg px-2 py-0.5"
@@ -79,6 +100,13 @@ export default function Header({
             onChange={(e) => onSelectPlatformTheme(e.target.value)}
             className="bg-transparent text-[11px] font-bold text-slate-200 outline-none cursor-pointer pr-1"
           >
+            <optgroup label="⚡ باقة مود النيون (Cyber Neon PRO)" style={{ backgroundColor: '#050714', color: '#00e5ff' }}>
+              {NEON_PALETTES.map((p) => (
+                <option key={p.id} value={p.id} style={{ backgroundColor: p.bgSurface, color: '#ffffff' }}>
+                  {p.num} {p.icon} {p.name}
+                </option>
+              ))}
+            </optgroup>
             <optgroup label="💎 باقة الفخامة الهادئة (70% Muted)" style={{ backgroundColor: '#111827', color: '#93c5fd' }}>
               {MUTED_LUXURY_PALETTES.map((p) => (
                 <option key={p.id} value={p.id} style={{ backgroundColor: p.bgSurface, color: '#ffffff' }}>

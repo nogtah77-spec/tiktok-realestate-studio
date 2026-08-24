@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Palette, Check, Smartphone, Monitor, Sparkles, Feather } from 'lucide-react';
-import { MUTED_LUXURY_PALETTES, MASTER_PALETTES } from '../utils/themeEngine';
+import { Palette, Check, Smartphone, Monitor, Sparkles, Feather, Zap } from 'lucide-react';
+import { NEON_PALETTES, MUTED_LUXURY_PALETTES, MASTER_PALETTES } from '../utils/themeEngine';
 
 export default function PalettesStudioPanel({
   activePlatformThemeId,
@@ -8,13 +8,15 @@ export default function PalettesStudioPanel({
   onApplyToCard,
   activeCardPaletteId
 }) {
-  const [activeGroup, setActiveGroup] = useState('muted'); // 'muted', 'vibrant', 'all'
+  const [activeGroup, setActiveGroup] = useState('neon'); // 'neon', 'muted', 'vibrant', 'all'
 
-  const displayedPalettes = activeGroup === 'muted'
-    ? MUTED_LUXURY_PALETTES
-    : activeGroup === 'vibrant'
-      ? MASTER_PALETTES
-      : [...MUTED_LUXURY_PALETTES, ...MASTER_PALETTES];
+  const displayedPalettes = activeGroup === 'neon'
+    ? NEON_PALETTES
+    : activeGroup === 'muted'
+      ? MUTED_LUXURY_PALETTES
+      : activeGroup === 'vibrant'
+        ? MASTER_PALETTES
+        : [...NEON_PALETTES, ...MUTED_LUXURY_PALETTES, ...MASTER_PALETTES];
 
   return (
     <div className="space-y-4 text-xs select-none">
@@ -22,18 +24,30 @@ export default function PalettesStudioPanel({
       <div className="p-3.5 sm:p-4 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3 shadow-md">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-xl bg-white/10 text-white flex items-center justify-center font-bold shadow-inner">
-              <Palette className="w-4 h-4" />
+            <div className="w-7 h-7 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 flex items-center justify-center font-bold shadow-inner">
+              <Zap className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="font-black text-slate-100 text-xs sm:text-sm tracking-tight">استوديو اللوحات اللونية الفاخرة (16 ثيم)</h3>
-              <p className="text-[10px] text-slate-400">اختر بين باقة الفخامة الهادئة أو الباقة الحيوية</p>
+              <h3 className="font-black text-slate-100 text-xs sm:text-sm tracking-tight">استوديو اللوحات اللونية والنيون (24 ثيماً)</h3>
+              <p className="text-[10px] text-slate-400">اختر بين باقة السايبر نيون، الفخامة الهادئة، أو الباقة الحيوية</p>
             </div>
           </div>
         </div>
 
-        {/* Group Selector Segmented Toggle */}
-        <div className="grid grid-cols-3 gap-1.5 p-1 rounded-xl bg-slate-950 border border-slate-800">
+        {/* Group Selector Segmented Toggle (4-way) */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 p-1 rounded-xl bg-slate-950 border border-slate-800">
+          <button
+            onClick={() => setActiveGroup('neon')}
+            className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
+              activeGroup === 'neon'
+                ? 'bg-cyan-400 text-slate-950 font-black shadow-[0_0_12px_rgba(0,229,255,0.4)]'
+                : 'text-cyan-400/80 hover:text-cyan-300'
+            }`}
+          >
+            <Zap className="w-3.5 h-3.5" />
+            <span>مود النيون (8)</span>
+          </button>
+
           <button
             onClick={() => setActiveGroup('muted')}
             className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
@@ -67,7 +81,7 @@ export default function PalettesStudioPanel({
             }`}
           >
             <Palette className="w-3.5 h-3.5" />
-            <span>عرض الكل (16)</span>
+            <span>الكل (24)</span>
           </button>
         </div>
       </div>
@@ -77,25 +91,39 @@ export default function PalettesStudioPanel({
         {displayedPalettes.map((palette) => {
           const isPlatformActive = activePlatformThemeId === palette.id;
           const isCardActive = activeCardPaletteId === palette.id;
+          const isNeon = palette.group === 'neon';
 
           return (
             <div
               key={palette.id}
               className={`p-3.5 rounded-2xl border transition-all space-y-3 ${
                 isPlatformActive || isCardActive
-                  ? 'border-white bg-slate-900 ring-1 ring-white/30 shadow-lg'
+                  ? isNeon
+                    ? 'border-cyan-400 bg-slate-900 ring-1 ring-cyan-400/50 shadow-[0_0_20px_rgba(0,229,255,0.2)]'
+                    : 'border-white bg-slate-900 ring-1 ring-white/30 shadow-lg'
                   : 'border-slate-800 bg-slate-950/70 hover:border-slate-700'
               }`}
             >
               {/* Header: Number, Icon, Title, and Color Dots Preview */}
               <div className="flex items-center justify-between gap-1.5">
                 <div className="flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-md bg-slate-900 border border-slate-800 flex items-center justify-center font-mono font-black text-white text-[10px]">
+                  <span
+                    className="w-6 h-6 rounded-md border flex items-center justify-center font-mono font-black text-[10px]"
+                    style={{
+                      backgroundColor: isNeon ? 'rgba(0, 229, 255, 0.15)' : '#0f172a',
+                      borderColor: isNeon ? palette.accent : '#334155',
+                      color: isNeon ? palette.accent : '#ffffff',
+                      boxShadow: isNeon ? `0 0 8px ${palette.accentGlow}` : 'none'
+                    }}
+                  >
                     {palette.num}
                   </span>
                   <span className="text-sm">{palette.icon}</span>
                   <div className="flex flex-col">
                     <span className="font-bold text-slate-100 text-xs">{palette.name}</span>
+                    {palette.group === 'neon' && (
+                      <span className="text-[9px] text-cyan-400 font-bold font-mono">⚡ نيون ليزري 100%</span>
+                    )}
                     {palette.group === 'muted' && (
                       <span className="text-[9px] text-emerald-400 font-medium font-mono">هادئ ومريح 70%</span>
                     )}
@@ -104,7 +132,13 @@ export default function PalettesStudioPanel({
 
                 {/* 3 Accent Color Dots */}
                 <div className="flex items-center gap-1 shrink-0">
-                  <span className="w-2.5 h-2.5 rounded-full border border-white/20" style={{ backgroundColor: palette.accent }} />
+                  <span
+                    className="w-2.5 h-2.5 rounded-full border border-white/20"
+                    style={{
+                      backgroundColor: palette.accent,
+                      boxShadow: isNeon ? `0 0 6px ${palette.accentGlow}` : 'none'
+                    }}
+                  />
                   <span className="w-2.5 h-2.5 rounded-full border border-white/20" style={{ backgroundColor: palette.bgSurface }} />
                   <span className="w-2.5 h-2.5 rounded-full border border-white/20" style={{ backgroundColor: palette.textPrimary }} />
                 </div>
@@ -117,7 +151,9 @@ export default function PalettesStudioPanel({
                   onClick={() => onSelectPlatformTheme(palette.id)}
                   className={`flex items-center justify-center gap-1 py-2 px-2 rounded-xl text-[10px] font-bold border transition-all active:scale-95 cursor-pointer ${
                     isPlatformActive
-                      ? 'border-white bg-white text-slate-950 font-black shadow'
+                      ? isNeon
+                        ? 'border-cyan-400 bg-cyan-400 text-slate-950 font-black shadow-[0_0_12px_rgba(0,229,255,0.4)]'
+                        : 'border-white bg-white text-slate-950 font-black shadow'
                       : 'border-slate-800 bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white'
                   }`}
                 >
