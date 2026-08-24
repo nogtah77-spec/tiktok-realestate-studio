@@ -97,6 +97,7 @@ export default function FullscreenPreviewModal({
             ref={canvasRef}
             {...previewProps}
             isPhoneMockup={true}
+            activeThemeObj={theme}
           />
         </div>
       </div>

@@ -112,14 +112,14 @@ export default function SocialCopywriterModal({
             >
               <Sparkles className="w-5 h-5" />
             </div>
-            <div className="space-y-1">
+            <div className="space-y-1.5">
               <h3 className="font-black text-sm tracking-tight text-white flex items-center gap-2">
                 <span>صانع النصوص الإعلانية والكابشن PRO</span>
                 <span className="px-2 py-0.5 rounded-full text-[9px] font-bold border" style={{ borderColor: theme.borderSubtle, backgroundColor: theme.bgDark, color: theme.accent }}>
                   Smart AI
                 </span>
               </h3>
-              <p className="text-[11px] font-medium opacity-80" style={{ color: theme.textMuted }}>
+              <p className="text-[11px] font-medium leading-relaxed opacity-80" style={{ color: theme.textMuted }}>
                 نصوص دعائية مهيأة للسوشيال ميديا ومنصات الفيديو القصيرة
               </p>
             </div>

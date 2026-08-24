@@ -22,10 +22,25 @@ export default function ImageFXPanel({
   hasVignette,
   setHasVignette,
   vignetteIntensity,
-  setVignetteIntensity
+  setVignetteIntensity,
+  activeThemeObj
 }) {
   const fileInputRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
+
+  const theme = activeThemeObj || {
+    bgDark: '#0f172a',
+    bgSurface: '#1e293b',
+    bgCard: '#1e293b',
+    border: 'rgba(255,255,255,0.2)',
+    borderSubtle: 'rgba(255,255,255,0.08)',
+    accent: '#ffffff',
+    accentGlow: 'rgba(255,255,255,0.3)',
+    accentText: '#ffffff',
+    badgeBg: 'rgba(255,255,255,0.1)',
+    textPrimary: '#ffffff',
+    textMuted: '#94a3b8'
+  };
 
   const processFile = (file) => {
     if (file && file.type.startsWith('image/')) {
@@ -67,11 +82,12 @@ export default function ImageFXPanel({
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         onClick={() => fileInputRef.current?.click()}
-        className={`relative flex flex-col items-center justify-center p-4 border-2 border-dashed rounded-2xl transition-all cursor-pointer text-center ${
-          isDragging
-            ? 'border-white bg-white/15 scale-[1.01]'
-            : 'border-slate-800 hover:border-slate-600 bg-slate-950/70 hover:bg-slate-950'
-        }`}
+        className="relative flex flex-col items-center justify-center p-5 border-2 border-dashed rounded-2xl transition-all cursor-pointer text-center"
+        style={{
+          backgroundColor: isDragging ? theme.bgCard : theme.bgSurface,
+          borderColor: isDragging ? theme.accent : theme.borderSubtle,
+          boxShadow: isDragging ? `0 0 16px ${theme.accentGlow}` : undefined
+        }}
       >
         <input
           type="file"
@@ -80,28 +96,58 @@ export default function ImageFXPanel({
           accept="image/*"
           className="hidden"
         />
-        <div className="w-10 h-10 rounded-2xl bg-blue-500/15 border border-blue-500/30 text-blue-400 flex items-center justify-center mb-2 shadow-inner">
+        <div
+          className="w-10 h-10 rounded-2xl flex items-center justify-center mb-2 shadow-inner border"
+          style={{
+            backgroundColor: theme.bgDark,
+            borderColor: theme.borderSubtle,
+            color: theme.accent
+          }}
+        >
           <Upload className="w-5 h-5" />
         </div>
-        <p className="text-xs font-black text-slate-100">
+        <p className="text-xs font-black" style={{ color: theme.textPrimary }}>
           {isDragging ? 'أفلت الصورة هنا الآن...' : 'اضغط أو اسحب صورة العقار إلى هنا (Drag & Drop)'}
         </p>
-        <p className="text-[10px] text-slate-400 mt-0.5 font-medium">PNG, JPG, WebP بدقة 4K سينمائية عالية</p>
+        <p className="text-[10.5px] mt-1.5 leading-relaxed font-medium" style={{ color: theme.textMuted }}>PNG, JPG, WebP بدقة 4K سينمائية عالية</p>
       </div>
 
       {/* 2. Quick Sample Real Estate Photos */}
-      <div className="p-4 sm:p-5 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5 shadow-sm">
-        <div className="flex items-center justify-between pb-2.5 border-b border-slate-800/80">
+      <div
+        className="p-4 sm:p-5 rounded-2xl border space-y-3.5 shadow-sm transition-colors duration-200"
+        style={{
+          backgroundColor: theme.bgSurface,
+          borderColor: theme.borderSubtle
+        }}
+      >
+        <div
+          className="flex items-center justify-between pb-2.5 border-b"
+          style={{ borderColor: theme.borderSubtle }}
+        >
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-400 flex items-center justify-center font-black shadow-inner">
+            <div
+              className="w-8 h-8 rounded-xl flex items-center justify-center font-black shadow-inner border"
+              style={{
+                backgroundColor: theme.bgDark,
+                borderColor: theme.borderSubtle,
+                color: theme.accent
+              }}
+            >
               <ImageIcon className="w-4 h-4" />
             </div>
             <div className="flex flex-col justify-center">
-              <h4 className="font-black text-slate-100 text-xs leading-snug mb-0.5">معرض الصور والنماذج السريعة</h4>
-              <p className="text-[10.5px] text-slate-400 leading-normal">عقارات وفلل جاهزة للتجربة الفورية</p>
+              <h4 className="font-black text-xs leading-normal mb-1.5" style={{ color: theme.textPrimary }}>معرض الصور والنماذج السريعة</h4>
+              <p className="text-[10.5px] leading-relaxed" style={{ color: theme.textMuted }}>عقارات وفلل جاهزة للتجربة الفورية</p>
             </div>
           </div>
-          <span className="text-[9px] font-extrabold text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded-full border border-amber-400/20">
+          <span
+            className="text-[9px] font-extrabold px-2 py-0.5 rounded-full border"
+            style={{
+              backgroundColor: theme.badgeBg,
+              color: theme.accentText,
+              borderColor: theme.border
+            }}
+          >
             GALLERY
           </span>
         </div>
@@ -111,9 +157,11 @@ export default function ImageFXPanel({
             <button
               key={sample.id}
               onClick={() => onImageChange(sample.url)}
-              className={`relative aspect-square rounded-xl overflow-hidden border-2 transition-all cursor-pointer shadow-sm hover:scale-[1.02] active:scale-98 ${
-                imageUrl === sample.url ? 'border-white ring-1 ring-white/30 shadow-md' : 'border-slate-800 hover:border-slate-700'
-              }`}
+              className="relative aspect-square rounded-xl overflow-hidden border-2 transition-all cursor-pointer shadow-sm hover:scale-[1.02] active:scale-98"
+              style={{
+                borderColor: imageUrl === sample.url ? theme.accent : theme.borderSubtle,
+                boxShadow: imageUrl === sample.url ? `0 0 12px ${theme.accentGlow}` : undefined
+              }}
               title={sample.name}
             >
               <img src={sample.url} alt={sample.name} className="w-full h-full object-cover" />
@@ -123,20 +171,41 @@ export default function ImageFXPanel({
       </div>
 
       {/* 3. Image Pan & Zoom */}
-      <div className="p-4 sm:p-5 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5 shadow-sm">
-        <div className="flex items-center justify-between pb-2.5 border-b border-slate-800/80">
+      <div
+        className="p-4 sm:p-5 rounded-2xl border space-y-3.5 shadow-sm transition-colors duration-200"
+        style={{
+          backgroundColor: theme.bgSurface,
+          borderColor: theme.borderSubtle
+        }}
+      >
+        <div
+          className="flex items-center justify-between pb-2.5 border-b"
+          style={{ borderColor: theme.borderSubtle }}
+        >
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-xl bg-purple-500/15 border border-purple-500/30 text-purple-400 flex items-center justify-center font-black shadow-inner">
+            <div
+              className="w-8 h-8 rounded-xl flex items-center justify-center font-black shadow-inner border"
+              style={{
+                backgroundColor: theme.bgDark,
+                borderColor: theme.borderSubtle,
+                color: theme.accent
+              }}
+            >
               <Sliders className="w-4 h-4" />
             </div>
             <div className="flex flex-col justify-center">
-              <h4 className="font-black text-slate-100 text-xs leading-snug mb-0.5">الموضع والتكبير (Pan & Zoom)</h4>
-              <p className="text-[10.5px] text-slate-400 leading-normal">تحريك الصورة أفقياً ورأسياً وضبط التركيز</p>
+              <h4 className="font-black text-xs leading-normal mb-1.5" style={{ color: theme.textPrimary }}>الموضع والتكبير (Pan & Zoom)</h4>
+              <p className="text-[10.5px] leading-relaxed" style={{ color: theme.textMuted }}>تحريك الصورة أفقياً ورأسياً وضبط التركيز</p>
             </div>
           </div>
           <button
             onClick={() => { setImageZoom(100); setImagePanX(0); setImagePanY(0); }}
-            className="text-[10.5px] text-purple-300 hover:text-white font-bold bg-purple-500/10 px-2.5 py-1 rounded-xl border border-purple-500/20 transition-all cursor-pointer hover:bg-purple-500/20"
+            className="text-[10.5px] font-bold px-2.5 py-1 rounded-xl border transition-all cursor-pointer hover:opacity-100"
+            style={{
+              backgroundColor: theme.bgDark,
+              borderColor: theme.borderSubtle,
+              color: theme.accent
+            }}
           >
             إعادة الضبط
           </button>
@@ -144,9 +213,15 @@ export default function ImageFXPanel({
 
         <div className="grid grid-cols-3 gap-3.5 pt-1">
           <div>
-            <div className="flex justify-between items-center text-slate-300 mb-1.5 text-[11px] font-semibold">
+            <div className="flex justify-between items-center mb-1.5 text-[11px] font-semibold" style={{ color: theme.textMuted }}>
               <span>التكبير</span>
-              <span className="px-2 py-0.5 rounded-md font-mono text-[10px] font-bold bg-slate-950 border border-slate-800 text-white">
+              <span
+                className="px-2 py-0.5 rounded-md font-mono text-[10px] font-bold border text-white"
+                style={{
+                  backgroundColor: theme.bgDark,
+                  borderColor: theme.borderSubtle
+                }}
+              >
                 {imageZoom}%
               </span>
             </div>
@@ -161,9 +236,15 @@ export default function ImageFXPanel({
           </div>
 
           <div>
-            <div className="flex justify-between items-center text-slate-300 mb-1.5 text-[11px] font-semibold">
+            <div className="flex justify-between items-center mb-1.5 text-[11px] font-semibold" style={{ color: theme.textMuted }}>
               <span>أفقي X</span>
-              <span className="px-2 py-0.5 rounded-md font-mono text-[10px] font-bold bg-slate-950 border border-slate-800 text-white">
+              <span
+                className="px-2 py-0.5 rounded-md font-mono text-[10px] font-bold border text-white"
+                style={{
+                  backgroundColor: theme.bgDark,
+                  borderColor: theme.borderSubtle
+                }}
+              >
                 {imagePanX}px
               </span>
             </div>
@@ -178,9 +259,15 @@ export default function ImageFXPanel({
           </div>
 
           <div>
-            <div className="flex justify-between items-center text-slate-300 mb-1.5 text-[11px] font-semibold">
+            <div className="flex justify-between items-center mb-1.5 text-[11px] font-semibold" style={{ color: theme.textMuted }}>
               <span>رأسي Y</span>
-              <span className="px-2 py-0.5 rounded-md font-mono text-[10px] font-bold bg-slate-950 border border-slate-800 text-white">
+              <span
+                className="px-2 py-0.5 rounded-md font-mono text-[10px] font-bold border text-white"
+                style={{
+                  backgroundColor: theme.bgDark,
+                  borderColor: theme.borderSubtle
+                }}
+              >
                 {imagePanY}px
               </span>
             </div>
@@ -197,26 +284,55 @@ export default function ImageFXPanel({
       </div>
 
       {/* 4. Blur & Color Overlay */}
-      <div className="p-4 sm:p-5 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5 shadow-sm">
-        <div className="flex items-center justify-between pb-2.5 border-b border-slate-800/80">
+      <div
+        className="p-4 sm:p-5 rounded-2xl border space-y-3.5 shadow-sm transition-colors duration-200"
+        style={{
+          backgroundColor: theme.bgSurface,
+          borderColor: theme.borderSubtle
+        }}
+      >
+        <div
+          className="flex items-center justify-between pb-2.5 border-b"
+          style={{ borderColor: theme.borderSubtle }}
+        >
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-xl bg-indigo-500/15 border border-indigo-500/30 text-indigo-400 flex items-center justify-center font-black shadow-inner">
+            <div
+              className="w-8 h-8 rounded-xl flex items-center justify-center font-black shadow-inner border"
+              style={{
+                backgroundColor: theme.bgDark,
+                borderColor: theme.borderSubtle,
+                color: theme.accent
+              }}
+            >
               <Sun className="w-4 h-4" />
             </div>
             <div className="flex flex-col justify-center">
-              <h4 className="font-black text-slate-100 text-xs leading-snug mb-0.5">تمويه الخلفية وطبقة التعتيم والظلال</h4>
-              <p className="text-[10.5px] text-slate-400 leading-normal">عزل الصورة وإبراز نصوص الغلاف بتباين سينمائي</p>
+              <h4 className="font-black text-xs leading-normal mb-1.5" style={{ color: theme.textPrimary }}>تمويه الخلفية وطبقة التعتيم والظلال</h4>
+              <p className="text-[10.5px] leading-relaxed" style={{ color: theme.textMuted }}>عزل الصورة وإبراز نصوص الغلاف بتباين سينمائي</p>
             </div>
           </div>
-          <span className="text-[9px] font-extrabold text-indigo-400 bg-indigo-400/10 px-2 py-0.5 rounded-full border border-indigo-400/20">
+          <span
+            className="text-[9px] font-extrabold px-2 py-0.5 rounded-full border"
+            style={{
+              backgroundColor: theme.badgeBg,
+              color: theme.accentText,
+              borderColor: theme.border
+            }}
+          >
             CINEMATIC
           </span>
         </div>
 
         <div>
-          <div className="flex justify-between items-center text-[11px] text-slate-300 mb-1.5 font-semibold">
+          <div className="flex justify-between items-center text-[11px] mb-1.5 font-semibold" style={{ color: theme.textMuted }}>
             <span>بلور وتمويه الخلفية:</span>
-            <span className="px-2 py-0.5 rounded-md font-mono text-[10px] font-bold bg-slate-950 border border-slate-800 text-white">
+            <span
+              className="px-2 py-0.5 rounded-md font-mono text-[10px] font-bold border text-white"
+              style={{
+                backgroundColor: theme.bgDark,
+                borderColor: theme.borderSubtle
+              }}
+            >
               {imageBlur}px
             </span>
           </div>
@@ -232,10 +348,19 @@ export default function ImageFXPanel({
         </div>
 
         {/* Color Tint Palette */}
-        <div className="pt-3 border-t border-slate-800/80 space-y-3">
+        <div
+          className="pt-3 border-t space-y-3"
+          style={{ borderColor: theme.borderSubtle }}
+        >
           <div className="flex items-center justify-between text-[11px]">
-            <span className="font-bold text-slate-200">طبقة التعتيم واللون (Overlay):</span>
-            <span className="px-2 py-0.5 rounded-md font-mono text-[10px] font-bold bg-slate-950 border border-slate-800 text-white">
+            <span className="font-bold" style={{ color: theme.textPrimary }}>طبقة التعتيم واللون (Overlay):</span>
+            <span
+              className="px-2 py-0.5 rounded-md font-mono text-[10px] font-bold border text-white"
+              style={{
+                backgroundColor: theme.bgDark,
+                borderColor: theme.borderSubtle
+              }}
+            >
               {overlayOpacity}%
             </span>
           </div>
@@ -248,11 +373,13 @@ export default function ImageFXPanel({
                   setOverlayColor(preset.color);
                   setOverlayOpacity(preset.defaultOpacity);
                 }}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[11px] font-semibold border transition-all cursor-pointer shadow-sm ${
-                  overlayColor === preset.color
-                    ? 'border-white bg-slate-800 text-white shadow'
-                    : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'
-                }`}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[11px] font-semibold border transition-all cursor-pointer shadow-sm"
+                style={{
+                  backgroundColor: overlayColor === preset.color ? theme.bgCard : theme.bgDark,
+                  borderColor: overlayColor === preset.color ? theme.accent : theme.borderSubtle,
+                  color: overlayColor === preset.color ? theme.textPrimary : theme.textMuted,
+                  boxShadow: overlayColor === preset.color ? `0 0 10px ${theme.accentGlow}` : undefined
+                }}
               >
                 <span
                   className="w-3 h-3 rounded-full border border-white/20"
@@ -262,7 +389,14 @@ export default function ImageFXPanel({
               </button>
             ))}
 
-            <label className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-800 bg-slate-950 text-slate-400 cursor-pointer text-[11px] font-semibold hover:text-slate-200 shadow-sm">
+            <label
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border cursor-pointer text-[11px] font-semibold transition-colors shadow-sm"
+              style={{
+                backgroundColor: theme.bgDark,
+                borderColor: theme.borderSubtle,
+                color: theme.textMuted
+              }}
+            >
               <input
                 type="color"
                 value={overlayColor}
@@ -284,18 +418,23 @@ export default function ImageFXPanel({
         </div>
 
         {/* Cinematic Filters */}
-        <div className="pt-3 border-t border-slate-800/80 space-y-2.5">
-          <span className="font-bold text-slate-200 text-[11px]">الفلاتر اللونية والسينمائية:</span>
+        <div
+          className="pt-3 border-t space-y-2.5"
+          style={{ borderColor: theme.borderSubtle }}
+        >
+          <span className="font-bold text-[11px]" style={{ color: theme.textPrimary }}>الفلاتر اللونية والسينمائية:</span>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             {IMAGE_FILTER_PRESETS.map((filter) => (
               <button
                 key={filter.id}
                 onClick={() => setImageFilter(filter.id)}
-                className={`py-2 px-2 rounded-xl text-[10.5px] font-semibold border text-center transition-all cursor-pointer shadow-sm ${
-                  imageFilter === filter.id
-                    ? 'border-white bg-slate-800 text-white font-black shadow ring-1 ring-white/30'
-                    : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'
-                }`}
+                className="py-2 px-2 rounded-xl text-[10.5px] font-semibold border text-center transition-all cursor-pointer shadow-sm"
+                style={{
+                  backgroundColor: imageFilter === filter.id ? theme.bgCard : theme.bgDark,
+                  borderColor: imageFilter === filter.id ? theme.accent : theme.borderSubtle,
+                  color: imageFilter === filter.id ? theme.textPrimary : theme.textMuted,
+                  boxShadow: imageFilter === filter.id ? `0 0 10px ${theme.accentGlow}` : undefined
+                }}
               >
                 {filter.name}
               </button>

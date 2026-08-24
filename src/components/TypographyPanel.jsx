@@ -76,18 +76,41 @@ export default function TypographyPanel({
   return (
     <div className="space-y-4 text-xs">
       {/* 1. Upload Custom Font Header */}
-      <div className="p-4 sm:p-5 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5 shadow-sm">
-        <div className="flex items-center justify-between pb-2.5 border-b border-slate-800/80">
+      <div
+        className="p-4 sm:p-5 rounded-2xl border space-y-3.5 shadow-sm transition-colors duration-200"
+        style={{
+          backgroundColor: theme.bgSurface,
+          borderColor: theme.borderSubtle
+        }}
+      >
+        <div
+          className="flex items-center justify-between pb-2.5 border-b"
+          style={{ borderColor: theme.borderSubtle }}
+        >
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-xl bg-blue-500/15 border border-blue-500/30 text-blue-400 flex items-center justify-center font-black shadow-inner">
+            <div
+              className="w-8 h-8 rounded-xl flex items-center justify-center font-black shadow-inner border"
+              style={{
+                backgroundColor: theme.bgDark,
+                borderColor: theme.borderSubtle,
+                color: theme.accent
+              }}
+            >
               <Type className="w-4 h-4" />
             </div>
             <div className="flex flex-col justify-center">
-              <h4 className="font-black text-slate-100 text-xs leading-snug mb-0.5">رفع وتثبيت خط مخصص</h4>
-              <p className="text-[10.5px] text-slate-400 leading-normal">يدعم الخطوط العربية والإنجليزية الاحترافية</p>
+              <h4 className="font-black text-xs leading-normal mb-1.5" style={{ color: theme.textPrimary }}>رفع وتثبيت خط مخصص</h4>
+              <p className="text-[10.5px] leading-relaxed" style={{ color: theme.textMuted }}>يدعم الخطوط العربية والإنجليزية الاحترافية</p>
             </div>
           </div>
-          <span className="text-[9px] font-extrabold text-blue-400 bg-blue-400/10 px-2 py-0.5 rounded-full border border-blue-400/20">
+          <span
+            className="text-[9px] font-extrabold px-2 py-0.5 rounded-full border"
+            style={{
+              backgroundColor: theme.badgeBg || 'rgba(255,255,255,0.08)',
+              color: theme.accentText || theme.textPrimary,
+              borderColor: theme.border
+            }}
+          >
             FONTS
           </span>
         </div>
@@ -101,7 +124,12 @@ export default function TypographyPanel({
 
         <div
           onClick={() => fileInputRef.current?.click()}
-          className="flex items-center justify-center gap-2.5 p-4 border border-dashed border-slate-700 hover:border-slate-500 rounded-xl bg-slate-950/60 hover:bg-slate-950 transition-all cursor-pointer text-xs font-bold text-white shadow-sm"
+          className="flex items-center justify-center gap-2.5 p-4 border border-dashed rounded-xl transition-all cursor-pointer text-xs font-bold shadow-sm"
+          style={{
+            backgroundColor: theme.bgDark,
+            borderColor: theme.borderSubtle,
+            color: theme.textPrimary
+          }}
         >
           <input
             type="file"
@@ -110,25 +138,48 @@ export default function TypographyPanel({
             accept=".ttf,.otf,.woff,.woff2"
             className="hidden"
           />
-          <Upload className="w-4 h-4 text-slate-300" />
+          <Upload className="w-4 h-4" style={{ color: theme.accent }} />
           <span>{isUploading ? 'جاري تسجيل الخط في المتصفح...' : 'اختر ملف الخط من جهازك للرفع (TTF, OTF, WOFF)'}</span>
         </div>
       </div>
 
       {/* 2. User Custom Uploaded Fonts */}
       {customFonts.length > 0 && (
-        <div className="p-4 sm:p-5 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5 shadow-sm">
-          <div className="flex items-center justify-between pb-2.5 border-b border-slate-800/80">
+        <div
+          className="p-4 sm:p-5 rounded-2xl border space-y-3.5 shadow-sm transition-colors duration-200"
+          style={{
+            backgroundColor: theme.bgSurface,
+            borderColor: theme.borderSubtle
+          }}
+        >
+          <div
+            className="flex items-center justify-between pb-2.5 border-b"
+            style={{ borderColor: theme.borderSubtle }}
+          >
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 flex items-center justify-center font-black shadow-inner">
+              <div
+                className="w-8 h-8 rounded-xl flex items-center justify-center font-black shadow-inner border"
+                style={{
+                  backgroundColor: theme.bgDark,
+                  borderColor: theme.borderSubtle,
+                  color: theme.accent
+                }}
+              >
                 <CheckCircle2 className="w-4 h-4" />
               </div>
               <div className="flex flex-col justify-center">
-                <h4 className="font-black text-slate-100 text-xs leading-snug mb-0.5">الخطوط المخصصة المثبتة</h4>
-                <p className="text-[10.5px] text-slate-400 leading-normal">إجمالي {customFonts.length} خطوط نشطة</p>
+                <h4 className="font-black text-xs leading-normal mb-1.5" style={{ color: theme.textPrimary }}>الخطوط المخصصة المثبتة</h4>
+                <p className="text-[10.5px] leading-relaxed" style={{ color: theme.textMuted }}>إجمالي {customFonts.length} خطوط نشطة</p>
               </div>
             </div>
-            <span className="text-[9px] font-extrabold text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded-full border border-emerald-400/20">
+            <span
+              className="text-[9px] font-extrabold px-2 py-0.5 rounded-full border"
+              style={{
+                backgroundColor: theme.badgeBg || 'rgba(255,255,255,0.08)',
+                color: theme.accentText || theme.textPrimary,
+                borderColor: theme.border
+              }}
+            >
               ACTIVE
             </span>
           </div>
@@ -137,20 +188,26 @@ export default function TypographyPanel({
             {customFonts.map((font) => (
               <div
                 key={font.id}
-                className="flex items-center justify-between p-4 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-200 shadow-sm"
+                className="flex items-center justify-between p-4 rounded-xl border text-xs shadow-sm"
+                style={{
+                  backgroundColor: theme.bgDark,
+                  borderColor: theme.borderSubtle,
+                  color: theme.textPrimary
+                }}
               >
                 <div className="flex flex-col gap-1.5">
                   <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                    <span className="font-bold text-xs text-slate-300">{font.name}</span>
+                    <span className="w-2 h-2 rounded-full" style={{ backgroundColor: theme.accent }} />
+                    <span className="font-bold text-xs" style={{ color: theme.textMuted }}>{font.name}</span>
                   </div>
-                  <span className="font-bold text-sm text-white pt-0.5 leading-relaxed" style={{ fontFamily: font.fontClass }}>
+                  <span className="font-bold text-sm pt-0.5 leading-relaxed" style={{ fontFamily: font.fontClass, color: theme.textPrimary }}>
                     العمودي للعقارات — شقة فاخرة 185 م² (VIP)
                   </span>
                 </div>
                 <button
                   onClick={() => handleDeleteFont(font)}
-                  className="text-slate-500 hover:text-rose-400 p-2 cursor-pointer transition-colors"
+                  className="p-2 cursor-pointer transition-colors opacity-70 hover:opacity-100 hover:text-rose-400"
+                  style={{ color: theme.textMuted }}
                   title="حذف الخط"
                 >
                   <Trash2 className="w-4 h-4" />
@@ -162,18 +219,41 @@ export default function TypographyPanel({
       )}
 
       {/* 3. Pre-installed Luxury Fonts List with Authentic Rendered Typography */}
-      <div className="p-4 sm:p-5 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3.5 shadow-sm">
-        <div className="flex items-center justify-between pb-2.5 border-b border-slate-800/80">
+      <div
+        className="p-4 sm:p-5 rounded-2xl border space-y-3.5 shadow-sm transition-colors duration-200"
+        style={{
+          backgroundColor: theme.bgSurface,
+          borderColor: theme.borderSubtle
+        }}
+      >
+        <div
+          className="flex items-center justify-between pb-2.5 border-b"
+          style={{ borderColor: theme.borderSubtle }}
+        >
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-400 flex items-center justify-center font-black shadow-inner">
+            <div
+              className="w-8 h-8 rounded-xl flex items-center justify-center font-black shadow-inner border"
+              style={{
+                backgroundColor: theme.bgDark,
+                borderColor: theme.borderSubtle,
+                color: theme.accent
+              }}
+            >
               <Sparkles className="w-4 h-4" />
             </div>
             <div className="flex flex-col justify-center">
-              <h4 className="font-black text-slate-100 text-xs leading-snug mb-0.5">مكتبة الخطوط العربية المدمجة</h4>
-              <p className="text-[10.5px] text-slate-400 leading-normal">إجمالي {BUILTIN_FONTS.length} خطوط مختارة بعناية للأغلفة</p>
+              <h4 className="font-black text-xs leading-normal mb-1.5" style={{ color: theme.textPrimary }}>مكتبة الخطوط العربية المدمجة</h4>
+              <p className="text-[10.5px] leading-relaxed" style={{ color: theme.textMuted }}>إجمالي {BUILTIN_FONTS.length} خطوط مختارة بعناية للأغلفة</p>
             </div>
           </div>
-          <span className="text-[9px] font-extrabold text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded-full border border-amber-400/20">
+          <span
+            className="text-[9px] font-extrabold px-2 py-0.5 rounded-full border"
+            style={{
+              backgroundColor: theme.badgeBg || 'rgba(255,255,255,0.08)',
+              color: theme.accentText || theme.textPrimary,
+              borderColor: theme.border
+            }}
+          >
             LIBRARY
           </span>
         </div>
@@ -182,17 +262,28 @@ export default function TypographyPanel({
           {BUILTIN_FONTS.map((font) => (
             <div
               key={font.id}
-              className="p-4 rounded-xl bg-slate-950 border border-slate-800 text-xs space-y-2 hover:border-slate-700 transition-colors shadow-sm"
+              className="p-4 rounded-xl border text-xs space-y-2 transition-colors shadow-sm"
+              style={{
+                backgroundColor: theme.bgDark,
+                borderColor: theme.borderSubtle
+              }}
             >
-              <div className="flex items-center justify-between text-slate-400 text-[10.5px]">
-                <span className="font-bold text-slate-200">{font.name}</span>
-                <span className="font-mono text-[9px] bg-slate-900 px-2 py-0.5 rounded border border-slate-800 text-slate-400">
+              <div className="flex items-center justify-between text-[10.5px]">
+                <span className="font-bold" style={{ color: theme.textPrimary }}>{font.name}</span>
+                <span
+                  className="font-mono text-[9px] px-2 py-0.5 rounded border"
+                  style={{
+                    backgroundColor: theme.bgSurface,
+                    borderColor: theme.borderSubtle,
+                    color: theme.textMuted
+                  }}
+                >
                   {font.id}
                 </span>
               </div>
               <p
-                className="text-sm text-slate-100 font-bold truncate leading-relaxed pt-0.5"
-                style={{ fontFamily: font.fontClass }}
+                className="text-sm font-bold truncate leading-relaxed pt-0.5"
+                style={{ fontFamily: font.fontClass, color: theme.textPrimary }}
               >
                 العمودي للخدمات العقارية 2026
               </p>

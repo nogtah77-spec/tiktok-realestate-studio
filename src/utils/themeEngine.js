@@ -813,11 +813,16 @@ export function applyThemeToCSS(theme) {
   if (!theme) return;
   const root = document.documentElement;
   root.style.setProperty('--theme-accent', theme.accent);
+  root.style.setProperty('--theme-accent-hover', theme.accentHover || theme.accent);
   root.style.setProperty('--theme-accent-glow', theme.accentGlow);
+  root.style.setProperty('--theme-accent-text', theme.accentText || '#ffffff');
   root.style.setProperty('--theme-bg-dark', theme.bgDark);
   root.style.setProperty('--theme-bg-surface', theme.bgSurface);
   root.style.setProperty('--theme-bg-card', theme.bgCard);
   root.style.setProperty('--theme-border', theme.border);
+  root.style.setProperty('--theme-border-subtle', theme.borderSubtle || 'rgba(255, 255, 255, 0.08)');
   root.style.setProperty('--theme-text-primary', theme.textPrimary);
-  root.style.setProperty('--theme-text-muted', theme.textSecondary);
+  root.style.setProperty('--theme-text-muted', theme.textSecondary || theme.textMuted || '#94a3b8');
+  root.style.setProperty('--theme-badge-bg', theme.badgeBg || 'rgba(255, 255, 255, 0.1)');
 }
+

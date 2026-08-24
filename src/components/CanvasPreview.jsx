@@ -36,8 +36,8 @@ const CanvasPreview = forwardRef(({
   showGridIndicator = true,
   gridViewsCount = '1916'
 }, ref) => {
-  const activeTheme = LUXURY_THEMES.find(t => t.id === themeId) || LUXURY_THEMES[0];
-  const activePlatformTheme = ALL_PALETTES.find(p => p.id === activePlatformThemeId) || ALL_PALETTES[0];
+  const activePlatformTheme = activeThemeObj || ALL_PALETTES.find(p => p.id === activePlatformThemeId) || ALL_PALETTES[0];
+  const theme = activePlatformTheme;
 
   // Image Filter CSS with Cyberpunk options
   let filterCss = 'none';
@@ -467,12 +467,30 @@ const CanvasPreview = forwardRef(({
   return (
     <div className="relative flex items-center justify-center select-none bg-transparent gpu-accelerated">
       {/* Phone Frame Container */}
-      <div className={`relative ${isPhoneMockup ? 'rounded-[38px] p-2 bg-slate-900/90 ring-1 ring-slate-800 shadow-[0_20px_60px_rgba(0,0,0,0.7)]' : ''}`}>
+      <div
+        className={`relative transition-all duration-300 ${
+          isPhoneMockup
+            ? 'rounded-[38px] p-2 ring-1 shadow-[0_20px_60px_rgba(0,0,0,0.7)]'
+            : ''
+        }`}
+        style={
+          isPhoneMockup
+            ? {
+                backgroundColor: theme.bgSurface,
+                borderColor: theme.border,
+                boxShadow: `0 20px 60px rgba(0,0,0,0.7), 0 0 20px ${theme.accentGlow}`
+              }
+            : {}
+        }
+      >
         
         {/* Dynamic Island */}
         {isPhoneMockup && (
-          <div className="no-export absolute top-4 left-1/2 -translate-x-1/2 w-24 h-4 bg-black rounded-full z-40 flex items-center justify-end px-2 pointer-events-none shadow-sm">
-            <div className="w-2 h-2 rounded-full bg-slate-900 ring-1 ring-slate-800" />
+          <div
+            className="no-export absolute top-4 left-1/2 -translate-x-1/2 w-24 h-4 rounded-full z-40 flex items-center justify-end px-2 pointer-events-none shadow-sm"
+            style={{ backgroundColor: theme.bgDark }}
+          >
+            <div className="w-2 h-2 rounded-full ring-1" style={{ backgroundColor: theme.bgCard, borderColor: theme.borderSubtle }} />
           </div>
         )}
 

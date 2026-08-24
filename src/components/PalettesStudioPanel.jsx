@@ -6,9 +6,24 @@ export default function PalettesStudioPanel({
   activePlatformThemeId,
   onSelectPlatformTheme,
   onApplyToCard,
-  activeCardPaletteId
+  activeCardPaletteId,
+  activeThemeObj
 }) {
   const [activeGroup, setActiveGroup] = useState('neon'); // 'neon', 'muted', 'vibrant', 'all'
+
+  const theme = activeThemeObj || {
+    bgDark: '#0f172a',
+    bgSurface: '#1e293b',
+    bgCard: '#1e293b',
+    border: 'rgba(255,255,255,0.2)',
+    borderSubtle: 'rgba(255,255,255,0.08)',
+    accent: '#ffffff',
+    accentGlow: 'rgba(255,255,255,0.3)',
+    accentText: '#ffffff',
+    badgeBg: 'rgba(255,255,255,0.1)',
+    textPrimary: '#ffffff',
+    textMuted: '#94a3b8'
+  };
 
   const displayedPalettes = activeGroup === 'neon'
     ? NEON_PALETTES
@@ -21,28 +36,58 @@ export default function PalettesStudioPanel({
   return (
     <div className="space-y-4 text-xs select-none">
       {/* Header & Group Selector Tabs */}
-      <div className="p-4 sm:p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3.5 shadow-md">
+      <div
+        className="p-4 sm:p-5 rounded-2xl border space-y-3.5 shadow-md transition-colors duration-200"
+        style={{
+          backgroundColor: theme.bgSurface,
+          borderColor: theme.borderSubtle
+        }}
+      >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 flex items-center justify-center font-bold shadow-inner">
+            <div
+              className="w-8 h-8 rounded-xl border flex items-center justify-center font-bold shadow-inner"
+              style={{
+                backgroundColor: theme.bgDark,
+                borderColor: theme.borderSubtle,
+                color: theme.accent
+              }}
+            >
               <Zap className="w-4 h-4" />
             </div>
             <div className="flex flex-col justify-center">
-              <h3 className="font-black text-slate-100 text-xs sm:text-sm tracking-tight leading-snug mb-0.5">استوديو اللوحات اللونية والنيون (24 ثيماً)</h3>
-              <p className="text-[10.5px] text-slate-400 leading-normal">اختر بين باقة السايبر نيون، الفخامة الهادئة، أو الباقة الحيوية</p>
+              <h3 className="font-black text-xs sm:text-sm tracking-tight leading-normal mb-1.5" style={{ color: theme.textPrimary }}>
+                استوديو اللوحات اللونية والنيون (24 ثيماً)
+              </h3>
+              <p className="text-[10.5px] leading-relaxed" style={{ color: theme.textMuted }}>
+                اختر بين باقة السايبر نيون، الفخامة الهادئة، أو الباقة الحيوية
+              </p>
             </div>
           </div>
         </div>
 
         {/* Group Selector Segmented Toggle (4-way) */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 p-1 rounded-xl bg-slate-950 border border-slate-800 shadow-inner">
+        <div
+          className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 p-1 rounded-xl border shadow-inner"
+          style={{
+            backgroundColor: theme.bgDark,
+            borderColor: theme.borderSubtle
+          }}
+        >
           <button
             onClick={() => setActiveGroup('neon')}
-            className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-[10.5px] font-bold transition-all cursor-pointer ${
+            className="flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-[10.5px] font-bold transition-all cursor-pointer"
+            style={
               activeGroup === 'neon'
-                ? 'bg-cyan-400 text-slate-950 font-black shadow-[0_0_12px_rgba(0,229,255,0.4)]'
-                : 'text-cyan-400/80 hover:text-cyan-300'
-            }`}
+                ? {
+                    backgroundColor: theme.accent,
+                    color: theme.bgDark,
+                    boxShadow: `0 0 10px ${theme.accentGlow}`
+                  }
+                : {
+                    color: theme.textMuted
+                  }
+            }
           >
             <Zap className="w-3.5 h-3.5" />
             <span>مود النيون (8)</span>
@@ -50,11 +95,18 @@ export default function PalettesStudioPanel({
 
           <button
             onClick={() => setActiveGroup('muted')}
-            className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-[10.5px] font-bold transition-all cursor-pointer ${
+            className="flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-[10.5px] font-bold transition-all cursor-pointer"
+            style={
               activeGroup === 'muted'
-                ? 'bg-white text-slate-950 font-black shadow-md'
-                : 'text-slate-400 hover:text-slate-200'
-            }`}
+                ? {
+                    backgroundColor: theme.accent,
+                    color: theme.bgDark,
+                    boxShadow: `0 0 10px ${theme.accentGlow}`
+                  }
+                : {
+                    color: theme.textMuted
+                  }
+            }
           >
             <Feather className="w-3.5 h-3.5" />
             <span>الهادئة 70% (8)</span>
@@ -62,11 +114,18 @@ export default function PalettesStudioPanel({
 
           <button
             onClick={() => setActiveGroup('vibrant')}
-            className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-[10.5px] font-bold transition-all cursor-pointer ${
+            className="flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-[10.5px] font-bold transition-all cursor-pointer"
+            style={
               activeGroup === 'vibrant'
-                ? 'bg-white text-slate-950 font-black shadow-md'
-                : 'text-slate-400 hover:text-slate-200'
-            }`}
+                ? {
+                    backgroundColor: theme.accent,
+                    color: theme.bgDark,
+                    boxShadow: `0 0 10px ${theme.accentGlow}`
+                  }
+                : {
+                    color: theme.textMuted
+                  }
+            }
           >
             <Sparkles className="w-3.5 h-3.5" />
             <span>الحيوية (8)</span>
@@ -74,11 +133,18 @@ export default function PalettesStudioPanel({
 
           <button
             onClick={() => setActiveGroup('all')}
-            className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-[10.5px] font-bold transition-all cursor-pointer ${
+            className="flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-[10.5px] font-bold transition-all cursor-pointer"
+            style={
               activeGroup === 'all'
-                ? 'bg-white text-slate-950 font-black shadow-md'
-                : 'text-slate-400 hover:text-slate-200'
-            }`}
+                ? {
+                    backgroundColor: theme.accent,
+                    color: theme.bgDark,
+                    boxShadow: `0 0 10px ${theme.accentGlow}`
+                  }
+                : {
+                    color: theme.textMuted
+                  }
+            }
           >
             <Palette className="w-3.5 h-3.5" />
             <span>الكل (24)</span>
@@ -96,13 +162,12 @@ export default function PalettesStudioPanel({
           return (
             <div
               key={palette.id}
-              className={`p-3.5 rounded-2xl border transition-all space-y-3 ${
-                isPlatformActive || isCardActive
-                  ? isNeon
-                    ? 'border-cyan-400 bg-slate-900 ring-1 ring-cyan-400/50 shadow-[0_0_20px_rgba(0,229,255,0.2)]'
-                    : 'border-white bg-slate-900 ring-1 ring-white/30 shadow-lg'
-                  : 'border-slate-800 bg-slate-950/70 hover:border-slate-700'
-              }`}
+              className="p-3.5 rounded-2xl border transition-all space-y-3"
+              style={{
+                backgroundColor: isPlatformActive || isCardActive ? theme.bgCard : theme.bgSurface,
+                borderColor: isPlatformActive || isCardActive ? palette.accent : theme.borderSubtle,
+                boxShadow: isPlatformActive || isCardActive ? `0 0 14px ${palette.accentGlow}` : undefined
+              }}
             >
               {/* Header: Number, Icon, Title, and Color Dots Preview */}
               <div className="flex items-center justify-between gap-2">
@@ -110,29 +175,35 @@ export default function PalettesStudioPanel({
                   <span
                     className="w-7 h-7 rounded-xl border flex items-center justify-center text-xs shadow-inner shrink-0"
                     style={{
-                      backgroundColor: isNeon ? 'rgba(0, 229, 255, 0.15)' : 'rgba(255, 255, 255, 0.05)',
-                      borderColor: isNeon ? palette.accent : 'rgba(255, 255, 255, 0.15)',
+                      backgroundColor: palette.bgDark,
+                      borderColor: palette.accent,
                       boxShadow: isNeon ? `0 0 10px ${palette.accentGlow}` : 'none'
                     }}
                   >
                     {palette.icon}
                   </span>
                   <div className="flex flex-col justify-center">
-                    <span className="font-bold text-slate-100 text-xs leading-snug mb-0.5">{palette.name}</span>
+                    <span className="font-bold text-xs leading-snug mb-0.5" style={{ color: theme.textPrimary }}>{palette.name}</span>
                     {palette.group === 'neon' && (
-                      <span className="text-[9px] text-cyan-400 font-bold font-mono leading-tight">⚡ نيون ليزري 100%</span>
+                      <span className="text-[9px] font-bold font-mono leading-tight" style={{ color: palette.accent }}>⚡ نيون ليزري 100%</span>
                     )}
                     {palette.group === 'muted' && (
-                      <span className="text-[9px] text-emerald-400 font-medium font-mono leading-tight">هادئ ومريح 70%</span>
+                      <span className="text-[9px] font-medium font-mono leading-tight" style={{ color: palette.accent }}>هادئ ومريح 70%</span>
                     )}
                     {palette.group === 'vibrant' && (
-                      <span className="text-[9px] text-amber-400 font-medium font-mono leading-tight">حيوي وتباين عالي</span>
+                      <span className="text-[9px] font-medium font-mono leading-tight" style={{ color: palette.accent }}>حيوي وتباين عالي</span>
                     )}
                   </div>
                 </div>
 
                 {/* 3 Accent Color Dots */}
-                <div className="flex items-center gap-1.5 shrink-0 bg-slate-900/90 px-2 py-1 rounded-xl border border-slate-800">
+                <div
+                  className="flex items-center gap-1.5 shrink-0 px-2 py-1 rounded-xl border"
+                  style={{
+                    backgroundColor: theme.bgDark,
+                    borderColor: theme.borderSubtle
+                  }}
+                >
                   <span
                     className="w-3 h-3 rounded-full border border-white/20"
                     style={{
@@ -146,17 +217,28 @@ export default function PalettesStudioPanel({
               </div>
 
               {/* Two Action Buttons with Breathing Room */}
-              <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-800/80">
+              <div
+                className="grid grid-cols-2 gap-2 pt-2 border-t"
+                style={{ borderColor: theme.borderSubtle }}
+              >
                 {/* 1. Apply to Platform */}
                 <button
                   onClick={() => onSelectPlatformTheme(palette.id)}
-                  className={`flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl text-[10.5px] font-bold border transition-all active:scale-95 cursor-pointer shadow-sm ${
+                  className="flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl text-[10.5px] font-bold border transition-all active:scale-95 cursor-pointer shadow-sm"
+                  style={
                     isPlatformActive
-                      ? isNeon
-                        ? 'border-cyan-400 bg-cyan-400 text-slate-950 font-black shadow-[0_0_12px_rgba(0,229,255,0.4)]'
-                        : 'border-white bg-white text-slate-950 font-black shadow'
-                      : 'border-slate-800 bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white'
-                  }`}
+                      ? {
+                          backgroundColor: palette.accent,
+                          color: palette.bgDark,
+                          borderColor: palette.accent,
+                          boxShadow: `0 0 10px ${palette.accentGlow}`
+                        }
+                      : {
+                          backgroundColor: theme.bgDark,
+                          borderColor: theme.borderSubtle,
+                          color: theme.textMuted
+                        }
+                  }
                 >
                   {isPlatformActive ? <Check className="w-3 h-3 stroke-[3]" /> : <Monitor className="w-3 h-3" />}
                   <span>{isPlatformActive ? 'ثيم المنصة (نشط)' : 'ثيم المنصة'}</span>
@@ -165,11 +247,21 @@ export default function PalettesStudioPanel({
                 {/* 2. Apply to TikTok Cover Card */}
                 <button
                   onClick={() => onApplyToCard(palette)}
-                  className={`flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl text-[10.5px] font-bold border transition-all active:scale-95 cursor-pointer shadow-sm ${
+                  className="flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl text-[10.5px] font-bold border transition-all active:scale-95 cursor-pointer shadow-sm"
+                  style={
                     isCardActive
-                      ? 'border-emerald-400 bg-emerald-500/20 text-emerald-300 font-black shadow ring-1 ring-emerald-400/40'
-                      : 'border-slate-800 bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white'
-                  }`}
+                      ? {
+                          backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                          borderColor: '#34d399',
+                          color: '#6ee7b7',
+                          boxShadow: '0 0 10px rgba(52, 211, 153, 0.3)'
+                        }
+                      : {
+                          backgroundColor: theme.bgDark,
+                          borderColor: theme.borderSubtle,
+                          color: theme.textMuted
+                        }
+                  }
                 >
                   {isCardActive ? <Check className="w-3 h-3 stroke-[3] text-emerald-400" /> : <Smartphone className="w-3 h-3" />}
                   <span>{isCardActive ? 'مطبّق على الغلاف ✓' : 'تطبيق على الغلاف'}</span>

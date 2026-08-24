@@ -70,8 +70,8 @@ export default function SupabaseModal({ isOpen, onClose, activeThemeObj }) {
               <Cloud className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-white m-0 p-0">إعدادات سحابة Supabase</h2>
-              <p className="text-xs opacity-75 m-0 p-0" style={{ color: theme.textMuted }}>مزامنة الخطوط المخصصة والنماذج سحابياً</p>
+              <h2 className="text-base font-bold text-white leading-normal mb-1">إعدادات سحابة Supabase</h2>
+              <p className="text-xs leading-relaxed opacity-75" style={{ color: theme.textMuted }}>مزامنة الخطوط المخصصة والنماذج سحابياً</p>
             </div>
           </div>
           <button

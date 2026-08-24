@@ -69,9 +69,12 @@ export default function App() {
   const [showGridLines, setShowGridLines] = useState(false);
   const [showGridIndicator, setShowGridIndicator] = useState(true);
 
-  // Load custom fonts & apply theme CSS variables on startup
+  // Load custom fonts & apply theme CSS variables on startup or theme change
   useEffect(() => {
     applyThemeToCSS(activeThemeObj);
+  }, [activePlatformThemeId, activeThemeObj]);
+
+  useEffect(() => {
     loadSavedCustomFonts().then((loaded) => {
       if (loaded && loaded.length > 0) {
         setCustomFonts(loaded);
@@ -254,13 +257,14 @@ export default function App() {
     activePlatformThemeId
   };
 
-  // Get Side Action Wings for the Stage Bay
+  // Get Side Action Wings for the Stage Bay with dynamic theme
   const sideWings = SideActionWings({
     canvasRef,
     showGridLines,
     setShowGridLines,
     showLogo,
-    setShowLogo
+    setShowLogo,
+    activeThemeObj
   });
 
   return (
@@ -289,11 +293,11 @@ export default function App() {
       </div>
 
       {/* 2. Main Studio Workspace (Mobile: Vertical Split Flex / Desktop: 12-Col Grid) */}
-      <main className="flex-1 overflow-hidden flex flex-col lg:grid lg:grid-cols-12 max-w-[1550px] w-full mx-auto p-2 sm:p-3 lg:p-4 gap-3 lg:overflow-y-auto">
+      <main className="flex-1 overflow-hidden flex flex-col lg:grid lg:grid-cols-12 max-w-[1600px] w-full mx-auto p-2 sm:p-3 lg:p-4 gap-4 lg:overflow-y-auto">
         
         {/* TOP PREVIEW STAGE (MOBILE: Fixed top / DESKTOP: Smooth Sticky Floating Pane) */}
         <div
-          className="flex-none lg:col-span-5 xl:col-span-5 flex flex-col items-center gap-1.5 py-1.5 border-b lg:border-none shadow-md lg:shadow-none w-full transition-all duration-200 lg:sticky lg:top-0 lg:self-start z-20"
+          className="flex-none lg:col-span-5 xl:col-span-5 flex flex-col items-center gap-2 py-2 px-1 sm:px-2 border-b lg:border-none shadow-md lg:shadow-none w-full transition-all duration-200 lg:sticky lg:top-0 lg:self-start z-20 rounded-3xl"
           style={{
             backgroundColor: activeThemeObj.bgSurface,
             borderColor: activeThemeObj.borderSubtle
@@ -302,7 +306,7 @@ export default function App() {
           
           {/* Mobile Top Bar: Title + Open Fullscreen Lightbox Button */}
           <div className="lg:hidden w-full flex items-center justify-between px-1 text-[11px] pb-0.5">
-            <span className="font-bold text-slate-300">المعاينة الحية:</span>
+            <span className="font-bold" style={{ color: activeThemeObj.textMuted }}>المعاينة الحية:</span>
             <button
               onClick={() => setIsFullscreenPreviewOpen(true)}
               className="flex items-center gap-1 text-[10px] font-bold px-2.5 py-1 rounded-lg transition-all active:scale-95 cursor-pointer shadow-sm border"
@@ -317,10 +321,10 @@ export default function App() {
             </button>
           </div>
 
-          {/* Stage Bay: Flanked by Perfectly Centered Right and Left Wings */}
-          <div className="w-full flex items-center justify-between px-1 sm:px-3 lg:px-4">
-            {/* Right Wing: Centered in the space between canvas and right border */}
-            <div className="flex-1 flex items-center justify-center">
+          {/* Stage Bay: Centered with Generous Breathing Room between Canvas and Side Wings */}
+          <div className="w-full flex items-center justify-center gap-3 sm:gap-4 lg:gap-5 xl:gap-6 px-1 sm:px-2 lg:px-3">
+            {/* Right Wing: Centered with comfortable margin */}
+            <div className="flex-none flex items-center justify-center">
               {sideWings.rightWing}
             </div>
 
@@ -348,6 +352,7 @@ export default function App() {
                     ref={canvasRef}
                     {...previewProps}
                     isPhoneMockup={false}
+                    activeThemeObj={activeThemeObj}
                   />
                 </div>
               </div>
@@ -358,22 +363,24 @@ export default function App() {
                   ref={canvasRef}
                   {...previewProps}
                   isPhoneMockup={isPhoneMockup}
+                  activeThemeObj={activeThemeObj}
                 />
               </div>
             </div>
 
-            {/* Left Wing: Centered in the space between canvas and left border */}
-            <div className="flex-1 flex items-center justify-center">
+            {/* Left Wing: Centered with comfortable margin */}
+            <div className="flex-none flex items-center justify-center">
               {sideWings.leftWing}
             </div>
           </div>
 
           {/* Compact Bottom Action Bar: High-Res Download & Views */}
-          <div className="w-full max-w-[360px] lg:max-w-[420px] pt-1">
+          <div className="w-full max-w-[360px] lg:max-w-[400px] pt-1">
             <ExportControls
               canvasRef={canvasRef}
               showGridIndicator={showGridIndicator}
               setShowGridIndicator={setShowGridIndicator}
+              activeThemeObj={activeThemeObj}
             />
           </div>
         </div>
@@ -402,7 +409,7 @@ export default function App() {
                   <button
                     onClick={() => setActiveTab(tab.id)}
                     className={`flex-1 flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-xl text-[11px] font-bold whitespace-nowrap transition-all cursor-pointer ${
-                      isActive ? 'shadow-md font-black scale-[1.02]' : 'text-slate-400 hover:text-slate-200'
+                      isActive ? 'shadow-md font-black scale-[1.02]' : 'hover:opacity-100 opacity-75'
                     }`}
                     style={
                       isActive
@@ -411,7 +418,9 @@ export default function App() {
                             color: activeThemeObj.bgDark,
                             boxShadow: `0 0 12px ${activeThemeObj.accentGlow}`
                           }
-                        : {}
+                        : {
+                            color: activeThemeObj.textMuted
+                          }
                     }
                   >
                     <Icon className="w-3.5 h-3.5" />
@@ -437,6 +446,7 @@ export default function App() {
                 customFonts={customFonts}
                 imageUrl={imageUrl}
                 onImageChange={setImageUrl}
+                activeThemeObj={activeThemeObj}
               />
             )}
 
@@ -449,6 +459,7 @@ export default function App() {
                 cardData={cardData}
                 setCardData={setCardData}
                 activePlatformThemeId={activePlatformThemeId}
+                activeThemeObj={activeThemeObj}
               />
             )}
 
@@ -474,6 +485,7 @@ export default function App() {
                 setHasVignette={setHasVignette}
                 vignetteIntensity={vignetteIntensity}
                 setVignetteIntensity={setVignetteIntensity}
+                activeThemeObj={activeThemeObj}
               />
             )}
 
@@ -497,6 +509,7 @@ export default function App() {
                 setLogoScale={setLogoScale}
                 logoOpacity={logoOpacity}
                 setLogoOpacity={setLogoOpacity}
+                activeThemeObj={activeThemeObj}
               />
             )}
 
@@ -506,6 +519,7 @@ export default function App() {
                 onSelectPlatformTheme={handleSelectPlatformTheme}
                 onApplyToCard={handleApplyPaletteToCard}
                 activeCardPaletteId={activeCardPaletteId}
+                activeThemeObj={activeThemeObj}
               />
             )}
           </div>
