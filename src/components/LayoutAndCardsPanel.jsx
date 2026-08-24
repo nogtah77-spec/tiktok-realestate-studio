@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sparkles, Palette, Sliders, Layers, Frame, Maximize2, Monitor, Tag, Zap, Radio } from 'lucide-react';
+import { Sparkles, Palette, Sliders, Layers, Frame, Maximize2, Monitor, Tag, Zap, Radio, Paintbrush, RotateCcw } from 'lucide-react';
 import { LUXURY_THEMES, DIVIDER_STYLES, DIVIDER_CATEGORIES } from '../utils/constants';
 
 export default function LayoutAndCardsPanel({
@@ -87,6 +87,26 @@ export default function LayoutAndCardsPanel({
           >
             THEMES
           </span>
+          <button
+            onClick={() => {
+              setThemeId('sale-gold');
+              setCardData(prev => ({
+                ...prev,
+                borderColorMode: 'theme',
+                glowColorMode: 'theme',
+                neonCyberMode: false
+              }));
+            }}
+            className="w-6 h-6 rounded-lg border flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95"
+            style={{
+              backgroundColor: theme.bgDark,
+              borderColor: theme.borderSubtle,
+              color: theme.textMuted
+            }}
+            title="إعادة ضبط هذا القسم"
+          >
+            <RotateCcw className="w-3 h-3" />
+          </button>
         </div>
 
         {/* Real Estate Category Buttons with Generous Breathing Room */}
@@ -161,6 +181,26 @@ export default function LayoutAndCardsPanel({
           >
             NEON PRO
           </span>
+          <button
+            onClick={() => {
+              setCardData(prev => ({
+                ...prev,
+                neonCyberMode: false,
+                showCyberGrid: false,
+                neonGradientBorder: false,
+                neonTextGlow: false
+              }));
+            }}
+            className="w-6 h-6 rounded-lg border flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95"
+            style={{
+              backgroundColor: theme.bgDark,
+              borderColor: theme.borderSubtle,
+              color: theme.textMuted
+            }}
+            title="إعادة ضبط هذا القسم"
+          >
+            <RotateCcw className="w-3 h-3" />
+          </button>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
@@ -246,6 +286,18 @@ export default function LayoutAndCardsPanel({
           >
             FINISH
           </span>
+          <button
+            onClick={() => setFinish('matte')}
+            className="w-6 h-6 rounded-lg border flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95"
+            style={{
+              backgroundColor: theme.bgDark,
+              borderColor: theme.borderSubtle,
+              color: theme.textMuted
+            }}
+            title="إعادة ضبط هذا القسم"
+          >
+            <RotateCcw className="w-3 h-3" />
+          </button>
         </div>
 
         <div className="grid grid-cols-2 gap-2.5">
@@ -331,6 +383,27 @@ export default function LayoutAndCardsPanel({
           >
             LAYOUT
           </span>
+          <button
+            onClick={() => {
+              setCardData(prev => ({
+                ...prev,
+                boxWidth: 84,
+                boxPaddingY: 20,
+                boxBlur: 20,
+                boxOpacity: 60,
+                verticalPosition: 50
+              }));
+            }}
+            className="w-6 h-6 rounded-lg border flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95"
+            style={{
+              backgroundColor: theme.bgDark,
+              borderColor: theme.borderSubtle,
+              color: theme.textMuted
+            }}
+            title="إعادة ضبط هذا القسم"
+          >
+            <RotateCcw className="w-3 h-3" />
+          </button>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -565,6 +638,30 @@ export default function LayoutAndCardsPanel({
               <span>مخصص</span>
             </button>
           </div>
+          <button
+            onClick={() => {
+              setCardData(prev => ({
+                ...prev,
+                borderWidth: 1.5,
+                borderRadius: 32,
+                borderColorMode: 'theme',
+                customBorderColor: '#d4af37',
+                borderGlowIntensity: 75,
+                glowColorMode: 'theme',
+                customGlowColor: '#d4af37',
+                borderStyle: 'solid'
+              }));
+            }}
+            className="w-6 h-6 rounded-lg border flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95"
+            style={{
+              backgroundColor: theme.bgDark,
+              borderColor: theme.borderSubtle,
+              color: theme.textMuted
+            }}
+            title="إعادة ضبط هذا القسم"
+          >
+            <RotateCcw className="w-3 h-3" />
+          </button>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
@@ -709,6 +806,30 @@ export default function LayoutAndCardsPanel({
           >
             DIVIDERS
           </span>
+          <button
+            onClick={() => {
+              setCardData(prev => ({
+                ...prev,
+                showDividers: true,
+                dividerStyle: 'wireframe-pill',
+                dividerTagText: 'VIP',
+                dividerOpacity: 100,
+                dividerThickness: 1.5,
+                dividerGlow: 80,
+                dividerWidth: 88,
+                dividerCustomColor: ''
+              }));
+            }}
+            className="w-6 h-6 rounded-lg border flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95"
+            style={{
+              backgroundColor: theme.bgDark,
+              borderColor: theme.borderSubtle,
+              color: theme.textMuted
+            }}
+            title="إعادة ضبط هذا القسم"
+          >
+            <RotateCcw className="w-3 h-3" />
+          </button>
         </div>
 
         {/* Compact Segmented Pills for Categories */}
@@ -939,6 +1060,71 @@ export default function LayoutAndCardsPanel({
             </div>
           );
         })()}
+
+        {/* Divider Custom Color Picker */}
+        <div
+          className="pt-2 flex flex-col gap-2.5 p-3 rounded-xl border"
+          style={{
+            backgroundColor: theme.bgDark,
+            borderColor: theme.borderSubtle
+          }}
+        >
+          <div className="flex items-center gap-2">
+            <Paintbrush className="w-3.5 h-3.5" style={{ color: theme.accent }} />
+            <span className="text-[11px] font-bold" style={{ color: theme.textPrimary }}>لون الفواصل المعمارية والسينمائية</span>
+          </div>
+          <div className="flex items-center gap-2 flex-wrap">
+            <button
+              onClick={() => updateCardData('dividerCustomColor', '')}
+              className="px-3 py-1.5 rounded-lg border text-[10px] font-bold transition-all cursor-pointer"
+              style={{
+                backgroundColor: !cardData.dividerCustomColor ? theme.accent : theme.bgSurface,
+                color: !cardData.dividerCustomColor ? theme.bgDark : theme.textMuted,
+                borderColor: !cardData.dividerCustomColor ? theme.accent : theme.borderSubtle,
+                boxShadow: !cardData.dividerCustomColor ? `0 0 8px ${theme.accentGlow}` : undefined
+              }}
+            >
+              تلقائي (حسب الثيم)
+            </button>
+            <button
+              onClick={() => updateCardData('dividerCustomColor', cardData.dividerCustomColor || '#d4af37')}
+              className="px-3 py-1.5 rounded-lg border text-[10px] font-bold transition-all cursor-pointer"
+              style={{
+                backgroundColor: cardData.dividerCustomColor ? theme.accent : theme.bgSurface,
+                color: cardData.dividerCustomColor ? theme.bgDark : theme.textMuted,
+                borderColor: cardData.dividerCustomColor ? theme.accent : theme.borderSubtle,
+                boxShadow: cardData.dividerCustomColor ? `0 0 8px ${theme.accentGlow}` : undefined
+              }}
+            >
+              لون مخصص
+            </button>
+            {cardData.dividerCustomColor && (
+              <div className="flex items-center gap-2">
+                <input
+                  type="color"
+                  value={cardData.dividerCustomColor}
+                  onChange={(e) => updateCardData('dividerCustomColor', e.target.value)}
+                  className="w-7 h-7 rounded-lg cursor-pointer bg-transparent border-0 p-0"
+                />
+                <span className="text-[10px] font-mono font-bold" style={{ color: theme.textMuted }}>
+                  {cardData.dividerCustomColor}
+                </span>
+              </div>
+            )}
+            <button
+              onClick={() => updateCardData('dividerCustomColor', '')}
+              className="w-6 h-6 rounded-lg border flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95 mr-auto"
+              style={{
+                backgroundColor: theme.bgSurface,
+                borderColor: theme.borderSubtle,
+                color: theme.textMuted
+              }}
+              title="إعادة ضبط اللون"
+            >
+              <RotateCcw className="w-3 h-3" />
+            </button>
+          </div>
+        </div>
 
         {/* Advanced Multi-Parameter Sliders for Pro Divider Customization */}
         <div className="space-y-3 pt-1 border-t border-slate-800/80">
