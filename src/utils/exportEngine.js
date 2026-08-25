@@ -1,6 +1,48 @@
 import { toPng, toJpeg, toBlob } from 'html-to-image';
 import confetti from 'canvas-confetti';
 
+/**
+ * Mobile-aware download: uses Web Share API on mobile (saves to Photos gallery)
+ * and falls back to standard <a download> on desktop.
+ */
+async function downloadForDevice(dataUrl, fileName, mimeType = 'image/png') {
+  // Convert dataUrl to blob
+  const res = await fetch(dataUrl);
+  const blob = await res.blob();
+
+  // Detect mobile (iOS / Android)
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+  // Try Web Share API on mobile (allows "Save Image" to Photos gallery)
+  if (isMobile && navigator.canShare) {
+    try {
+      const file = new File([blob], fileName, { type: mimeType });
+      if (navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: fileName
+        });
+        return true;
+      }
+    } catch (shareErr) {
+      // User cancelled share or share failed — fall through to blob download
+      if (shareErr.name === 'AbortError') return true; // user cancelled, not an error
+    }
+  }
+
+  // Fallback: blob URL download (works reliably on desktop, better than dataUrl on some mobile)
+  const blobUrl = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.download = fileName;
+  link.href = blobUrl;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  // Clean up blob URL after a short delay
+  setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
+  return true;
+}
+
 export async function exportCoverImage({
   node,
   format = 'png',
@@ -37,12 +79,9 @@ export async function exportCoverImage({
       dataUrl = await toPng(node, options);
     }
 
-    const link = document.createElement('a');
-    link.download = fileName + '-' + Date.now() + '.' + format;
-    link.href = dataUrl;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const fullFileName = fileName + '-' + Date.now() + '.' + format;
+    const mimeType = (format === 'jpeg' || format === 'jpg') ? 'image/jpeg' : 'image/png';
+    await downloadForDevice(dataUrl, fullFileName, mimeType);
 
     try {
       confetti({
@@ -89,12 +128,8 @@ export async function exportTransparentGlassCard({
       filter
     });
 
-    const link = document.createElement('a');
-    link.download = fileName + '-' + Date.now() + '.png';
-    link.href = dataUrl;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const fullFileName = fileName + '-' + Date.now() + '.png';
+    await downloadForDevice(dataUrl, fullFileName, 'image/png');
 
     try {
       confetti({
