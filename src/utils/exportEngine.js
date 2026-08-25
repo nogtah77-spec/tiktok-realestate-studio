@@ -159,6 +159,13 @@ export async function exportCoverImage({
     pixelRatio: 3, // 360x640 * 3 = exact 1080x1920 UHD resolution
     quality: 1,
     cacheBust: true,
+    width: 360,
+    height: 640,
+    style: {
+      transform: 'none',
+      transformOrigin: '0 0',
+      borderRadius: '0px'
+    },
     filter
   };
 
@@ -215,6 +222,13 @@ export async function exportTransparentGlassCard({
       pixelRatio: 3,
       quality: 1,
       cacheBust: true,
+      width: 360,
+      height: 640,
+      style: {
+        transform: 'none',
+        transformOrigin: '0 0',
+        borderRadius: '0px'
+      },
       backgroundColor: 'transparent',
       filter
     });
@@ -225,14 +239,14 @@ export async function exportTransparentGlassCard({
     try {
       confetti({
         particleCount: 60,
-        spread: 60,
+        spread: 65,
         origin: { y: 0.6 }
       });
     } catch (e) {}
 
     return true;
   } catch (err) {
-    console.error('Transparent export failed:', err);
+    console.error('Export transparent card failed:', err);
     throw err;
   } finally {
     cardNode.classList.remove('is-exporting');
@@ -260,14 +274,23 @@ export async function copyCoverImageToClipboard({ node }) {
       pixelRatio: 3,
       quality: 1,
       cacheBust: true,
+      width: 360,
+      height: 640,
+      style: {
+        transform: 'none',
+        transformOrigin: '0 0',
+        borderRadius: '0px'
+      },
       filter
     });
 
-    if (!blob) throw new Error('فشل توليد بيانات الصورة');
-
-    await navigator.clipboard.write([
-      new ClipboardItem({ 'image/png': blob })
-    ]);
+    if (navigator.clipboard && navigator.clipboard.write) {
+      await navigator.clipboard.write([
+        new ClipboardItem({ 'image/png': blob })
+      ]);
+    } else {
+      throw new Error('متصفحك لا يدعم النسخ المباشر للصور، استخدم زر التحميل');
+    }
 
     try {
       confetti({

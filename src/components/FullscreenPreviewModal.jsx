@@ -28,10 +28,19 @@ export default function FullscreenPreviewModal({
     textMuted: '#94a3b8'
   };
 
-  const targetNode = canvasRef?.current;
+  const internalRef = React.useRef(null);
+
+  const getTargetNode = () => {
+    return internalRef.current || canvasRef?.current || document.getElementById('fullscreen-tiktok-canvas') || document.querySelector('#tiktok-canvas-target');
+  };
 
   const handleDownloadFull = async () => {
-    if (!targetNode || isExporting) return;
+    const targetNode = getTargetNode();
+    if (!targetNode) {
+      alert('لم يتم العثور على عنصر الغلاف، يرجى إعادة فتح المعاينة');
+      return;
+    }
+    if (isExporting) return;
     setIsExporting(true);
     try {
       await exportCoverImage({
@@ -40,6 +49,7 @@ export default function FullscreenPreviewModal({
         fileName: 'alamoudi-tiktok-cover'
       });
     } catch (err) {
+      console.error('Export error:', err);
       alert('حدث خطأ أثناء التصدير: ' + err.message);
     } finally {
       setIsExporting(false);
@@ -47,13 +57,19 @@ export default function FullscreenPreviewModal({
   };
 
   const handleCopyClipboard = async () => {
-    if (!targetNode || isCopying) return;
+    const targetNode = getTargetNode();
+    if (!targetNode) {
+      alert('لم يتم العثور على عنصر الغلاف، يرجى إعادة فتح المعاينة');
+      return;
+    }
+    if (isCopying) return;
     setIsCopying(true);
     try {
       await copyCoverImageToClipboard({ node: targetNode });
       setCopiedSuccess(true);
       setTimeout(() => setCopiedSuccess(false), 2000);
     } catch (err) {
+      console.error('Copy error:', err);
       alert('تعذر النسخ: ' + err.message);
     } finally {
       setIsCopying(false);
@@ -96,7 +112,14 @@ export default function FullscreenPreviewModal({
       <div className="flex-1 flex items-center justify-center w-full max-w-md mx-auto overflow-hidden py-1">
         <div className="scale-[0.88] sm:scale-100 origin-center transition-transform rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10">
           <CanvasPreview
-            ref={canvasRef}
+            ref={(node) => {
+              internalRef.current = node;
+              if (canvasRef) {
+                if (typeof canvasRef === 'function') canvasRef(node);
+                else canvasRef.current = node;
+              }
+            }}
+            id="fullscreen-tiktok-canvas"
             {...previewProps}
             isPhoneMockup={false}
             showGridLines={false}
