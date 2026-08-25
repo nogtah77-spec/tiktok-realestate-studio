@@ -403,16 +403,22 @@ export function deleteUserPreset(presetId) {
   }
 }
 
+// Unique Device Instance ID to prevent echo loops in real-time sync
+export const CLIENT_DEVICE_ID = 'dev_' + Math.random().toString(36).substring(2, 9) + '_' + Date.now().toString(36);
+
 // Debounced Cloud Session Sync timer
 let cloudSyncTimer = null;
 
-// Workspace Session Persistence (Auto-Save State)
+// Workspace Session Persistence (Auto-Save State & Cloud Sync)
 export function saveWorkspaceSession(state) {
   try {
     if (!state) return;
     localStorage.setItem(WORKSPACE_STORAGE_KEY, JSON.stringify(state));
 
-    // Debounced Cloud Sync for current workspace
+    // If state change came from a remote real-time update, do not re-broadcast
+    if (state._fromRemote) return;
+
+    // Debounced Cloud Sync for current workspace (500ms for near-instant mirroring)
     if (cloudSyncTimer) clearTimeout(cloudSyncTimer);
     cloudSyncTimer = setTimeout(() => {
       const supabase = getSupabaseClient();
@@ -441,7 +447,9 @@ export function saveWorkspaceSession(state) {
               logoUrl: state.logoUrl,
               logoPosition: state.logoPosition,
               logoScale: state.logoScale,
-              logoOpacity: state.logoOpacity
+              logoOpacity: state.logoOpacity,
+              _deviceId: CLIENT_DEVICE_ID,
+              _updatedAt: Date.now()
             }
           },
           image_url: state.imageUrl || null,
@@ -450,7 +458,7 @@ export function saveWorkspaceSession(state) {
           if (error) console.warn('Failed to sync workspace to Supabase:', error);
         });
       }
-    }, 2000);
+    }, 500);
   } catch (e) {
     console.warn('Unable to auto-save session state:', e);
   }
@@ -509,6 +517,70 @@ export async function fetchCloudWorkspaceSession() {
   } catch (err) {
     console.warn('Could not fetch cloud workspace session:', err);
     return null;
+  }
+}
+
+// Subscribe to Live Cross-Device Realtime Workspace Changes
+export function subscribeToWorkspaceRealtime(onRemoteChange) {
+  try {
+    const supabase = getSupabaseClient();
+    if (!supabase) return () => {};
+
+    const channel = supabase
+      .channel('workspace_realtime_sync')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'presets',
+          filter: 'id=eq.current_workspace_session'
+        },
+        (payload) => {
+          if (!payload.new) return;
+          const row = payload.new;
+          const sessionMeta = row.card_data?._sessionMeta || {};
+          // Ignore changes from this exact device
+          if (sessionMeta._deviceId === CLIENT_DEVICE_ID) return;
+
+          const remoteState = {
+            themeId: row.theme_id,
+            finish: row.finish,
+            overlayColor: row.overlay_color,
+            overlayOpacity: row.overlay_opacity !== null ? Number(row.overlay_opacity) : 35,
+            imageBlur: row.image_blur !== null ? Number(row.image_blur) : 0,
+            imageFilter: row.image_filter,
+            hasVignette: row.has_vignette,
+            vignetteIntensity: row.vignette_intensity !== null ? Number(row.vignette_intensity) : 50,
+            imageUrl: row.image_url || '',
+            cardData: row.card_data || {},
+            activePlatformThemeId: sessionMeta.activePlatformThemeId,
+            activePresetId: sessionMeta.activePresetId,
+            activeCardPaletteId: sessionMeta.activeCardPaletteId,
+            imageZoom: sessionMeta.imageZoom ?? 100,
+            imagePanX: sessionMeta.imagePanX ?? 0,
+            imagePanY: sessionMeta.imagePanY ?? 0,
+            showLogo: sessionMeta.showLogo ?? true,
+            logoUrl: sessionMeta.logoUrl ?? '',
+            logoPosition: sessionMeta.logoPosition ?? 'top-right',
+            logoScale: sessionMeta.logoScale ?? 100,
+            logoOpacity: sessionMeta.logoOpacity ?? 100,
+            _fromRemote: true
+          };
+
+          if (onRemoteChange) {
+            onRemoteChange(remoteState);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  } catch (e) {
+    console.warn('Realtime subscription error:', e);
+    return () => {};
   }
 }
 

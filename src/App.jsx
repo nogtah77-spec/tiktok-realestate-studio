@@ -11,7 +11,7 @@ import SocialCopywriterModal from './components/SocialCopywriterModal';
 import FullscreenPreviewModal from './components/FullscreenPreviewModal';
 import SupabaseModal from './components/SupabaseModal';
 import { DEFAULT_GLASS_CARD_DATA, SAMPLE_IMAGES, LUXURY_THEMES } from './utils/constants';
-import { getAllPresets, saveUserPreset, deleteUserPreset, BUILTIN_PRESETS, saveWorkspaceSession, loadWorkspaceSession, clearWorkspaceSession, syncPresetsFromCloud, fetchCloudWorkspaceSession } from './utils/presetStorage';
+import { getAllPresets, saveUserPreset, deleteUserPreset, BUILTIN_PRESETS, saveWorkspaceSession, loadWorkspaceSession, clearWorkspaceSession, syncPresetsFromCloud, fetchCloudWorkspaceSession, subscribeToWorkspaceRealtime } from './utils/presetStorage';
 import { loadSavedCustomFonts } from './utils/fontLoader';
 import { ALL_PALETTES, getSavedPlatformThemeId, savePlatformThemeId, applyThemeToCSS } from './utils/themeEngine';
 import { Image as ImageIcon, Type, LayoutGrid, FileText, Shield, Maximize2, Palette } from 'lucide-react';
@@ -90,17 +90,62 @@ export default function App() {
       }
     });
 
-    // 3. If local session is empty, fetch cloud session for cross-device continuation
+    // 3. Cloud-First Workspace Hydration (Always pull latest workspace state from cloud)
     fetchCloudWorkspaceSession().then((cloudSession) => {
-      if (cloudSession && !initialSession) {
+      if (cloudSession) {
         if (cloudSession.themeId) setThemeId(cloudSession.themeId);
         if (cloudSession.finish) setFinish(cloudSession.finish);
         if (cloudSession.imageUrl) setImageUrl(cloudSession.imageUrl);
+        if (cloudSession.overlayColor) setOverlayColor(cloudSession.overlayColor);
+        if (cloudSession.overlayOpacity !== undefined) setOverlayOpacity(cloudSession.overlayOpacity);
+        if (cloudSession.imageBlur !== undefined) setImageBlur(cloudSession.imageBlur);
+        if (cloudSession.imageFilter) setImageFilter(cloudSession.imageFilter);
+        if (cloudSession.hasVignette !== undefined) setHasVignette(cloudSession.hasVignette);
+        if (cloudSession.vignetteIntensity !== undefined) setVignetteIntensity(cloudSession.vignetteIntensity);
         if (cloudSession.cardData) setCardData(cloudSession.cardData);
+        if (cloudSession.showLogo !== undefined) setShowLogo(cloudSession.showLogo);
+        if (cloudSession.logoUrl !== undefined) setLogoUrl(cloudSession.logoUrl);
+        if (cloudSession.logoPosition) setLogoPosition(cloudSession.logoPosition);
+        if (cloudSession.logoScale !== undefined) setLogoScale(cloudSession.logoScale);
+        if (cloudSession.logoOpacity !== undefined) setLogoOpacity(cloudSession.logoOpacity);
+        if (cloudSession.imageZoom !== undefined) setImageZoom(cloudSession.imageZoom);
+        if (cloudSession.imagePanX !== undefined) setImagePanX(cloudSession.imagePanX);
+        if (cloudSession.imagePanY !== undefined) setImagePanY(cloudSession.imagePanY);
         if (cloudSession.activePlatformThemeId) handleSelectPlatformTheme(cloudSession.activePlatformThemeId);
         if (cloudSession.activePresetId) setActivePresetId(cloudSession.activePresetId);
+        if (cloudSession.activeCardPaletteId) setActiveCardPaletteId(cloudSession.activeCardPaletteId);
       }
     });
+
+    // 4. Live Cross-Device Realtime Subscription (WebSocket mirror)
+    const unsubscribe = subscribeToWorkspaceRealtime((remoteState) => {
+      if (!remoteState) return;
+      if (remoteState.themeId) setThemeId(remoteState.themeId);
+      if (remoteState.finish) setFinish(remoteState.finish);
+      if (remoteState.imageUrl) setImageUrl(remoteState.imageUrl);
+      if (remoteState.overlayColor) setOverlayColor(remoteState.overlayColor);
+      if (remoteState.overlayOpacity !== undefined) setOverlayOpacity(remoteState.overlayOpacity);
+      if (remoteState.imageBlur !== undefined) setImageBlur(remoteState.imageBlur);
+      if (remoteState.imageFilter) setImageFilter(remoteState.imageFilter);
+      if (remoteState.hasVignette !== undefined) setHasVignette(remoteState.hasVignette);
+      if (remoteState.vignetteIntensity !== undefined) setVignetteIntensity(remoteState.vignetteIntensity);
+      if (remoteState.cardData) setCardData(remoteState.cardData);
+      if (remoteState.showLogo !== undefined) setShowLogo(remoteState.showLogo);
+      if (remoteState.logoUrl !== undefined) setLogoUrl(remoteState.logoUrl);
+      if (remoteState.logoPosition) setLogoPosition(remoteState.logoPosition);
+      if (remoteState.logoScale !== undefined) setLogoScale(remoteState.logoScale);
+      if (remoteState.logoOpacity !== undefined) setLogoOpacity(remoteState.logoOpacity);
+      if (remoteState.imageZoom !== undefined) setImageZoom(remoteState.imageZoom);
+      if (remoteState.imagePanX !== undefined) setImagePanX(remoteState.imagePanX);
+      if (remoteState.imagePanY !== undefined) setImagePanY(remoteState.imagePanY);
+      if (remoteState.activePlatformThemeId) handleSelectPlatformTheme(remoteState.activePlatformThemeId);
+      if (remoteState.activePresetId) setActivePresetId(remoteState.activePresetId);
+      if (remoteState.activeCardPaletteId) setActiveCardPaletteId(remoteState.activeCardPaletteId);
+    });
+
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
   }, []);
 
   // Auto-save session state to local storage

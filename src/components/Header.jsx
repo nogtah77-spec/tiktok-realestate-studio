@@ -56,7 +56,7 @@ export default function Header({
         <div className="flex items-center gap-1.5">
           <span className="font-extrabold text-xs sm:text-sm text-white tracking-tight whitespace-nowrap">العمودي للعقارات</span>
           <span
-            className="text-[9px] font-extrabold px-1 py-0.5 rounded border"
+            className="text-[9px] font-extrabold px-1 py-0.5 rounded border hidden sm:inline"
             style={{
               backgroundColor: theme.badgeBg,
               color: theme.accentText,
@@ -68,7 +68,60 @@ export default function Header({
         </div>
       </div>
 
-      {/* Center Theme Switcher & Presets Dropdown */}
+      {/* Mobile Theme & Neon Switcher (Accessible directly on Mobile Header) */}
+      <div className="flex md:hidden items-center gap-1.5 shrink-0">
+        {/* Mobile Platform Theme Selector */}
+        <div
+          className="h-7 flex items-center gap-1 border rounded-lg px-1.5 max-w-[105px]"
+          style={{
+            backgroundColor: theme.bgDark,
+            borderColor: theme.border
+          }}
+        >
+          <Palette className="w-3.5 h-3.5 shrink-0" style={{ color: theme.accent }} />
+          <select
+            value={activePlatformThemeId}
+            onChange={(e) => onSelectPlatformTheme(e.target.value)}
+            className="bg-transparent text-[10px] font-bold text-slate-200 outline-none cursor-pointer pr-0.5 w-full truncate"
+          >
+            <optgroup label="⚡ باقة مود النيون (Cyber Neon)" style={{ backgroundColor: '#050714', color: '#00e5ff' }}>
+              {NEON_PALETTES.map((p) => (
+                <option key={p.id} value={p.id} style={{ backgroundColor: p.bgSurface, color: '#ffffff' }}>
+                  {p.num} {p.name}
+                </option>
+              ))}
+            </optgroup>
+            <optgroup label="💎 باقة الفخامة الهادئة (70% Muted)" style={{ backgroundColor: '#111827', color: '#93c5fd' }}>
+              {MUTED_LUXURY_PALETTES.map((p) => (
+                <option key={p.id} value={p.id} style={{ backgroundColor: p.bgSurface, color: '#ffffff' }}>
+                  {p.num} {p.name}
+                </option>
+              ))}
+            </optgroup>
+            <optgroup label="🎨 الباقة الحيوية (Vibrant)" style={{ backgroundColor: '#111827', color: '#f472b6' }}>
+              {MASTER_PALETTES.map((p) => (
+                <option key={p.id} value={p.id} style={{ backgroundColor: p.bgSurface, color: '#ffffff' }}>
+                  {p.num} {p.name}
+                </option>
+              ))}
+            </optgroup>
+          </select>
+        </div>
+
+        {/* Mobile Quick Neon Button */}
+        <NeonButton
+          isActive={isCurrentThemeNeon}
+          onClick={() => {
+            if (isCurrentThemeNeon) {
+              onSelectPlatformTheme('matte-charcoal-platinum');
+            } else {
+              onSelectPlatformTheme('neon-cyber-pink');
+            }
+          }}
+        />
+      </div>
+
+      {/* Center Theme Switcher & Presets Dropdown (Desktop) */}
       <div className="hidden md:flex items-center gap-2">
         {/* 1. Quick Platform Theme Selector */}
         <div
