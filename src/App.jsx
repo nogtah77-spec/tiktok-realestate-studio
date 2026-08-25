@@ -370,6 +370,15 @@ export default function App() {
                   isPhoneMockup={isPhoneMockup}
                   activeThemeObj={activeThemeObj}
                 />
+                <div className="pt-2.5">
+                  <ExportControls
+                    canvasRef={canvasRef}
+                    onOpenFullscreenPreview={() => setIsFullscreenPreviewOpen(true)}
+                    showGridIndicator={showGridIndicator}
+                    setShowGridIndicator={setShowGridIndicator}
+                    activeThemeObj={activeThemeObj}
+                  />
+                </div>
               </div>
             </div>
 

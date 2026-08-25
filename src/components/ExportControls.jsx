@@ -3,11 +3,16 @@ import { Download, Copy, Check, Grid, Shield, Layers, Eye } from 'lucide-react';
 import { exportCoverImage, exportTransparentGlassCard, copyCoverImageToClipboard } from '../utils/exportEngine';
 
 export default function ExportControls({
+  canvasRef,
   onOpenFullscreenPreview,
   showGridIndicator,
   setShowGridIndicator,
   activeThemeObj
 }) {
+  const [isExporting, setIsExporting] = useState(false);
+  const [isCopying, setIsCopying] = useState(false);
+  const [copiedSuccess, setCopiedSuccess] = useState(false);
+
   const theme = activeThemeObj || {
     bgDark: '#0f172a',
     bgSurface: '#1e293b',
@@ -19,26 +24,94 @@ export default function ExportControls({
     textMuted: '#94a3b8'
   };
 
+  const handleDownload = async () => {
+    const node = canvasRef?.current || document.getElementById('tiktok-canvas-target');
+    if (!node) {
+      alert('عنصر المعاينة غير جاهز بعد');
+      return;
+    }
+    if (isExporting) return;
+    setIsExporting(true);
+    try {
+      await exportCoverImage({
+        node,
+        format: 'png',
+        fileName: 'alamoudi-tiktok-cover'
+      });
+    } catch (err) {
+      console.error('Export error:', err);
+      alert('حدث خطأ أثناء التصدير: ' + err.message);
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  const handleCopy = async () => {
+    const node = canvasRef?.current || document.getElementById('tiktok-canvas-target');
+    if (!node) {
+      alert('عنصر المعاينة غير جاهز بعد');
+      return;
+    }
+    if (isCopying) return;
+    setIsCopying(true);
+    try {
+      await copyCoverImageToClipboard({ node });
+      setCopiedSuccess(true);
+      setTimeout(() => setCopiedSuccess(false), 2000);
+    } catch (err) {
+      console.error('Copy error:', err);
+      alert('تعذر النسخ: ' + err.message);
+    } finally {
+      setIsCopying(false);
+    }
+  };
+
   return (
     <div className="w-full flex items-center gap-2 select-none">
-      {/* Main Preview & Export Button that opens the Fullscreen Preview Modal */}
+      {/* 1. Direct Desktop Download Button */}
       <button
-        onClick={onOpenFullscreenPreview}
-        className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl font-black text-xs shadow-lg transition-all active:scale-95 cursor-pointer"
+        onClick={handleDownload}
+        disabled={isExporting}
+        className="flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl font-black text-xs shadow-lg transition-all active:scale-95 cursor-pointer disabled:opacity-50"
         style={{
           backgroundColor: theme.accent,
           color: theme.bgDark,
           boxShadow: `0 0 16px ${theme.accentGlow}`
         }}
       >
-        <Eye className="w-4 h-4 stroke-[2.5]" />
-        <span>معاينة وتصدير الغلاف (1080×1920)</span>
+        <Download className="w-4 h-4 stroke-[2.5]" />
+        <span>{isExporting ? 'جاري التحميل...' : 'تحميل الغلاف (1080×1920)'}</span>
       </button>
 
-      {/* TikTok Views Toggle Button */}
+      {/* 2. Direct Desktop Copy Button */}
+      <button
+        onClick={handleCopy}
+        disabled={isCopying}
+        className="flex items-center gap-1.5 py-2.5 px-3 rounded-xl border text-[11px] font-bold transition-all active:scale-95 cursor-pointer disabled:opacity-50 shadow-sm"
+        style={{
+          backgroundColor: theme.bgSurface,
+          borderColor: theme.border,
+          color: theme.textPrimary
+        }}
+        title="نسخ الغلاف للحافظة"
+      >
+        {copiedSuccess ? (
+          <>
+            <Check className="w-3.5 h-3.5 text-emerald-400 stroke-[3]" />
+            <span className="text-emerald-400">تم!</span>
+          </>
+        ) : (
+          <>
+            <Copy className="w-3.5 h-3.5" />
+            <span>نسخ</span>
+          </>
+        )}
+      </button>
+
+      {/* 3. TikTok Views Toggle Button */}
       <button
         onClick={() => setShowGridIndicator(!showGridIndicator)}
-        className="flex items-center gap-1.5 py-2.5 px-3 rounded-xl border text-[11px] font-bold transition-all cursor-pointer shadow-sm"
+        className="flex items-center gap-1 py-2.5 px-2.5 rounded-xl border text-[11px] font-bold transition-all cursor-pointer shadow-sm shrink-0"
         style={
           showGridIndicator
             ? {
