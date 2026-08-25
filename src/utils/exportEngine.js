@@ -2,8 +2,10 @@ import { toPng, toJpeg, toBlob } from 'html-to-image';
 import confetti from 'canvas-confetti';
 
 /**
- * Mobile-aware download: uses Web Share API on mobile (saves to Photos gallery)
- * and falls back to standard <a download> on desktop.
+ * Mobile-aware download:
+ * - Desktop: standard blob URL download (unchanged)
+ * - Mobile: opens image in new tab with long-press save instructions
+ *   (most reliable cross-platform method, works on all iOS/Android browsers)
  */
 async function downloadForDevice(dataUrl, fileName, mimeType = 'image/png') {
   // Convert dataUrl to blob
@@ -13,24 +15,89 @@ async function downloadForDevice(dataUrl, fileName, mimeType = 'image/png') {
   // Detect mobile (iOS / Android)
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-  // Try Web Share API on mobile (allows "Save Image" to Photos gallery)
-  if (isMobile && navigator.canShare) {
-    try {
-      const file = new File([blob], fileName, { type: mimeType });
-      if (navigator.canShare({ files: [file] })) {
-        await navigator.share({
-          files: [file],
-          title: fileName
-        });
-        return true;
-      }
-    } catch (shareErr) {
-      // User cancelled share or share failed — fall through to blob download
-      if (shareErr.name === 'AbortError') return true; // user cancelled, not an error
+  if (isMobile) {
+    // Open a new tab with the image displayed full-screen
+    // User long-presses → "Save to Photos" / "Add to Photos" — guaranteed to work
+    const blobUrl = URL.createObjectURL(blob);
+    const newTab = window.open('', '_blank');
+    if (newTab) {
+      newTab.document.write(`
+        <!DOCTYPE html>
+        <html dir="rtl" lang="ar">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+          <title>حفظ الغلاف</title>
+          <style>
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            body {
+              background: #0a0a0a;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              min-height: 100vh;
+              min-height: 100dvh;
+              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+              padding: 16px;
+              gap: 16px;
+            }
+            .instruction {
+              background: rgba(255,255,255,0.1);
+              backdrop-filter: blur(10px);
+              border: 1px solid rgba(255,255,255,0.15);
+              border-radius: 14px;
+              padding: 14px 20px;
+              text-align: center;
+              color: #fff;
+              font-size: 14px;
+              font-weight: 700;
+              line-height: 1.7;
+              max-width: 340px;
+              animation: fadeIn 0.4s ease;
+            }
+            .instruction .icon { font-size: 22px; margin-bottom: 4px; }
+            .instruction .sub { color: #94a3b8; font-size: 12px; font-weight: 500; margin-top: 4px; }
+            img {
+              max-width: 92%;
+              max-height: 72vh;
+              max-height: 72dvh;
+              border-radius: 12px;
+              box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+              object-fit: contain;
+              -webkit-touch-callout: default !important;
+              animation: fadeIn 0.5s ease;
+            }
+            @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+          </style>
+        </head>
+        <body>
+          <div class="instruction">
+            <div class="icon">👆</div>
+            <div>اضغط مطولاً على الصورة</div>
+            <div>ثم اختر «حفظ الصورة»</div>
+            <div class="sub">الصورة ستُحفظ في معرض الصور مباشرة</div>
+          </div>
+          <img src="${blobUrl}" alt="غلاف تيك توك" />
+        </body>
+        </html>
+      `);
+      newTab.document.close();
+    } else {
+      // Popup blocked — fallback to direct blob link
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.target = '_blank';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
+    // Don't revoke immediately — the new tab needs the URL
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 120000);
+    return true;
   }
 
-  // Fallback: blob URL download (works reliably on desktop, better than dataUrl on some mobile)
+  // Desktop: standard blob URL download (unchanged behavior)
   const blobUrl = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.download = fileName;
@@ -38,7 +105,6 @@ async function downloadForDevice(dataUrl, fileName, mimeType = 'image/png') {
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
-  // Clean up blob URL after a short delay
   setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
   return true;
 }
