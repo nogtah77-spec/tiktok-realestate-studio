@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Shield, Upload, Trash2, Sliders, Eye, EyeOff } from 'lucide-react';
+import { Shield, Upload, Trash2, Sliders, Eye, EyeOff, RotateCcw } from 'lucide-react';
 
 export default function LogoPanel({
   showLogo,
@@ -194,16 +194,34 @@ export default function LogoPanel({
                   <p className="text-[10.5px] leading-relaxed" style={{ color: theme.textMuted }}>ضبط إحداثيات ومقياس الشعار على الكانفاس</p>
                 </div>
               </div>
-              <span
-                className="text-[9px] font-extrabold px-2 py-0.5 rounded-full border"
-                style={{
-                  backgroundColor: theme.badgeBg || 'rgba(255,255,255,0.08)',
-                  color: theme.accentText || theme.textPrimary,
-                  borderColor: theme.border
-                }}
-              >
-                POSITION
-              </span>
+              <div className="flex items-center gap-1.5 shrink-0">
+                <span
+                  className="text-[9px] font-extrabold px-2 py-0.5 rounded-full border"
+                  style={{
+                    backgroundColor: theme.badgeBg || 'rgba(255,255,255,0.08)',
+                    color: theme.accentText || theme.textPrimary,
+                    borderColor: theme.border
+                  }}
+                >
+                  POSITION
+                </span>
+                <button
+                  onClick={() => {
+                    setLogoPosition('top-right');
+                    setLogoScale(100);
+                    setLogoOpacity(100);
+                  }}
+                  className="w-7 h-7 rounded-xl border flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95"
+                  style={{
+                    backgroundColor: theme.bgDark,
+                    borderColor: theme.borderSubtle,
+                    color: theme.textMuted
+                  }}
+                  title="إعادة ضبط هذا القسم"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                </button>
+              </div>
             </div>
 
             <div>

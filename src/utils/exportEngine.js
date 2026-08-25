@@ -2,102 +2,127 @@ import { toPng, toJpeg, toBlob } from 'html-to-image';
 import confetti from 'canvas-confetti';
 
 /**
+ * Show luxurious In-App Modal on mobile for direct long-press save to Photos/Gallery
+ * (Zero popup blockers, zero blob isolation issues, 100% reliable)
+ */
+function showMobileSaveModal(dataUrl, fileName) {
+  const existing = document.getElementById('mobile-image-save-modal');
+  if (existing) existing.remove();
+
+  const modal = document.createElement('div');
+  modal.id = 'mobile-image-save-modal';
+  modal.style.cssText = `
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 12px;
+    padding-top: max(14px, env(safe-area-inset-top));
+    padding-bottom: max(14px, env(safe-area-inset-bottom));
+    box-sizing: border-box;
+    overflow-y: auto;
+    animation: mobileModalFadeIn 0.25s ease-out;
+  `;
+
+  modal.innerHTML = `
+    <style>
+      @keyframes mobileModalFadeIn {
+        from { opacity: 0; transform: scale(0.97); }
+        to { opacity: 1; transform: scale(1); }
+      }
+      .mobile-save-img {
+        max-width: 90vw;
+        max-height: 65vh;
+        max-height: 65dvh;
+        border-radius: 16px;
+        box-shadow: 0 12px 48px rgba(0,0,0,0.85), 0 0 0 1px rgba(255,255,255,0.15);
+        object-fit: contain;
+        -webkit-touch-callout: default !important;
+        user-select: auto !important;
+        -webkit-user-select: auto !important;
+      }
+    </style>
+
+    <!-- Top Bar: Title & Close Button -->
+    <div style="width: 100%; max-width: 380px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+      <span style="color: #f8fafc; font-size: 13px; font-weight: 800; font-family: -apple-system, BlinkMacSystemFont, sans-serif;">
+        حفظ الغلاف للاستوديو 📸
+      </span>
+      <button id="close-mobile-save-modal" style="
+        background: rgba(255,255,255,0.15);
+        border: 1px solid rgba(255,255,255,0.2);
+        color: #ffffff;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 6px 14px;
+        border-radius: 10px;
+        cursor: pointer;
+      ">
+        ✕ إغلاق
+      </button>
+    </div>
+
+    <!-- Center: High-Res Image -->
+    <div style="flex: 1; display: flex; align-items: center; justify-content: center; width: 100%; padding: 6px 0;">
+      <img src="${dataUrl}" alt="غلاف تيك توك بدقة فائقة" class="mobile-save-img" />
+    </div>
+
+    <!-- Bottom Instruction Pill -->
+    <div style="
+      width: 100%;
+      max-width: 380px;
+      background: linear-gradient(135deg, rgba(30,41,59,0.95), rgba(15,23,42,0.95));
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 16px;
+      padding: 12px 16px;
+      text-align: center;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+      margin-top: 6px;
+    ">
+      <div style="color: #ffffff; font-size: 12.5px; font-weight: 900; font-family: -apple-system, BlinkMacSystemFont, sans-serif; display: flex; align-items: center; justify-content: center; gap: 6px;">
+        <span>👆</span>
+        <span>اضغط مطولاً على الصورة ثم اختر «حفظ الصورة»</span>
+      </div>
+      <div style="color: #94a3b8; font-size: 11px; font-weight: 600; margin-top: 3px; font-family: -apple-system, BlinkMacSystemFont, sans-serif;">
+        تُحفظ مباشرة في ألبوم الكاميرا (1080×1920 بدقة فائقة)
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  // Close handlers
+  const closeBtn = modal.querySelector('#close-mobile-save-modal');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => modal.remove());
+  }
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) modal.remove();
+  });
+}
+
+/**
  * Mobile-aware download:
- * - Desktop: standard blob URL download (unchanged)
- * - Mobile: opens image in new tab with long-press save instructions
- *   (most reliable cross-platform method, works on all iOS/Android browsers)
+ * - Mobile: opens In-App modal with native long-press save to Photos
+ * - Desktop: standard blob URL download
  */
 async function downloadForDevice(dataUrl, fileName, mimeType = 'image/png') {
-  // Convert dataUrl to blob
-  const res = await fetch(dataUrl);
-  const blob = await res.blob();
-
-  // Detect mobile (iOS / Android)
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || ('ontouchstart' in window && window.innerWidth <= 768);
 
   if (isMobile) {
-    // Open a new tab with the image displayed full-screen
-    // User long-presses → "Save to Photos" / "Add to Photos" — guaranteed to work
-    const blobUrl = URL.createObjectURL(blob);
-    const newTab = window.open('', '_blank');
-    if (newTab) {
-      newTab.document.write(`
-        <!DOCTYPE html>
-        <html dir="rtl" lang="ar">
-        <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-          <title>حفظ الغلاف</title>
-          <style>
-            * { margin: 0; padding: 0; box-sizing: border-box; }
-            body {
-              background: #0a0a0a;
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-              justify-content: center;
-              min-height: 100vh;
-              min-height: 100dvh;
-              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-              padding: 16px;
-              gap: 16px;
-            }
-            .instruction {
-              background: rgba(255,255,255,0.1);
-              backdrop-filter: blur(10px);
-              border: 1px solid rgba(255,255,255,0.15);
-              border-radius: 14px;
-              padding: 14px 20px;
-              text-align: center;
-              color: #fff;
-              font-size: 14px;
-              font-weight: 700;
-              line-height: 1.7;
-              max-width: 340px;
-              animation: fadeIn 0.4s ease;
-            }
-            .instruction .icon { font-size: 22px; margin-bottom: 4px; }
-            .instruction .sub { color: #94a3b8; font-size: 12px; font-weight: 500; margin-top: 4px; }
-            img {
-              max-width: 92%;
-              max-height: 72vh;
-              max-height: 72dvh;
-              border-radius: 12px;
-              box-shadow: 0 8px 40px rgba(0,0,0,0.6);
-              object-fit: contain;
-              -webkit-touch-callout: default !important;
-              animation: fadeIn 0.5s ease;
-            }
-            @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-          </style>
-        </head>
-        <body>
-          <div class="instruction">
-            <div class="icon">👆</div>
-            <div>اضغط مطولاً على الصورة</div>
-            <div>ثم اختر «حفظ الصورة»</div>
-            <div class="sub">الصورة ستُحفظ في معرض الصور مباشرة</div>
-          </div>
-          <img src="${blobUrl}" alt="غلاف تيك توك" />
-        </body>
-        </html>
-      `);
-      newTab.document.close();
-    } else {
-      // Popup blocked — fallback to direct blob link
-      const link = document.createElement('a');
-      link.href = blobUrl;
-      link.target = '_blank';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-    // Don't revoke immediately — the new tab needs the URL
-    setTimeout(() => URL.revokeObjectURL(blobUrl), 120000);
+    showMobileSaveModal(dataUrl, fileName);
     return true;
   }
 
   // Desktop: standard blob URL download (unchanged behavior)
+  const res = await fetch(dataUrl);
+  const blob = await res.blob();
   const blobUrl = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.download = fileName;

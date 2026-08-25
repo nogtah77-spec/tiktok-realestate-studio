@@ -77,36 +77,38 @@ export default function LayoutAndCardsPanel({
               <p className="text-[10.5px] leading-relaxed" style={{ color: theme.textMuted }}>تطبيق الهوية البصرية العقارية الكاملة</p>
             </div>
           </div>
-          <span
-            className="text-[9px] font-extrabold px-2 py-0.5 rounded-full border"
-            style={{
-              backgroundColor: theme.badgeBg,
-              color: theme.accentText,
-              borderColor: theme.border
-            }}
-          >
-            THEMES
-          </span>
-          <button
-            onClick={() => {
-              setThemeId('sale-gold');
-              setCardData(prev => ({
-                ...prev,
-                borderColorMode: 'theme',
-                glowColorMode: 'theme',
-                neonCyberMode: false
-              }));
-            }}
-            className="w-6 h-6 rounded-lg border flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95"
-            style={{
-              backgroundColor: theme.bgDark,
-              borderColor: theme.borderSubtle,
-              color: theme.textMuted
-            }}
-            title="إعادة ضبط هذا القسم"
-          >
-            <RotateCcw className="w-3 h-3" />
-          </button>
+          <div className="flex items-center gap-1.5 shrink-0">
+            <span
+              className="text-[9px] font-extrabold px-2 py-0.5 rounded-full border"
+              style={{
+                backgroundColor: theme.badgeBg,
+                color: theme.accentText,
+                borderColor: theme.border
+              }}
+            >
+              THEMES
+            </span>
+            <button
+              onClick={() => {
+                setThemeId('sale-gold');
+                setCardData(prev => ({
+                  ...prev,
+                  borderColorMode: 'theme',
+                  glowColorMode: 'theme',
+                  neonCyberMode: false
+                }));
+              }}
+              className="w-7 h-7 rounded-xl border flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95"
+              style={{
+                backgroundColor: theme.bgDark,
+                borderColor: theme.borderSubtle,
+                color: theme.textMuted
+              }}
+              title="إعادة ضبط هذا القسم"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+            </button>
+          </div>
         </div>
 
         {/* Real Estate Category Buttons with Generous Breathing Room */}
@@ -171,36 +173,38 @@ export default function LayoutAndCardsPanel({
               <p className="text-[10.5px] leading-relaxed" style={{ color: theme.textMuted }}>توهج ليزري وشبكة نيون أرضية ثلاثية الأبعاد</p>
             </div>
           </div>
-          <span
-            className="text-[9px] font-bold px-2 py-0.5 rounded-full border"
-            style={{
-              backgroundColor: theme.badgeBg,
-              color: theme.accentText,
-              borderColor: theme.border
-            }}
-          >
-            NEON PRO
-          </span>
-          <button
-            onClick={() => {
-              setCardData(prev => ({
-                ...prev,
-                neonCyberMode: false,
-                showCyberGrid: false,
-                neonGradientBorder: false,
-                neonTextGlow: false
-              }));
-            }}
-            className="w-6 h-6 rounded-lg border flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95"
-            style={{
-              backgroundColor: theme.bgDark,
-              borderColor: theme.borderSubtle,
-              color: theme.textMuted
-            }}
-            title="إعادة ضبط هذا القسم"
-          >
-            <RotateCcw className="w-3 h-3" />
-          </button>
+          <div className="flex items-center gap-1.5 shrink-0">
+            <span
+              className="text-[9px] font-bold px-2 py-0.5 rounded-full border"
+              style={{
+                backgroundColor: theme.badgeBg,
+                color: theme.accentText,
+                borderColor: theme.border
+              }}
+            >
+              NEON PRO
+            </span>
+            <button
+              onClick={() => {
+                setCardData(prev => ({
+                  ...prev,
+                  neonCyberMode: false,
+                  showCyberGrid: false,
+                  neonGradientBorder: false,
+                  neonTextGlow: false
+                }));
+              }}
+              className="w-7 h-7 rounded-xl border flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95"
+              style={{
+                backgroundColor: theme.bgDark,
+                borderColor: theme.borderSubtle,
+                color: theme.textMuted
+              }}
+              title="إعادة ضبط هذا القسم"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+            </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
@@ -276,28 +280,30 @@ export default function LayoutAndCardsPanel({
               <p className="text-[10.5px] leading-relaxed" style={{ color: theme.textMuted }}>انعكاسات زجاجية بلمعة أو ملمس مخملي مطفي</p>
             </div>
           </div>
-          <span
-            className="text-[9px] font-extrabold px-2 py-0.5 rounded-full border"
-            style={{
-              backgroundColor: theme.badgeBg,
-              color: theme.accentText,
-              borderColor: theme.border
-            }}
-          >
-            FINISH
-          </span>
-          <button
-            onClick={() => setFinish('matte')}
-            className="w-6 h-6 rounded-lg border flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95"
-            style={{
-              backgroundColor: theme.bgDark,
-              borderColor: theme.borderSubtle,
-              color: theme.textMuted
-            }}
-            title="إعادة ضبط هذا القسم"
-          >
-            <RotateCcw className="w-3 h-3" />
-          </button>
+          <div className="flex items-center gap-1.5 shrink-0">
+            <span
+              className="text-[9px] font-extrabold px-2 py-0.5 rounded-full border"
+              style={{
+                backgroundColor: theme.badgeBg,
+                color: theme.accentText,
+                borderColor: theme.border
+              }}
+            >
+              FINISH
+            </span>
+            <button
+              onClick={() => setFinish('matte')}
+              className="w-7 h-7 rounded-xl border flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95"
+              style={{
+                backgroundColor: theme.bgDark,
+                borderColor: theme.borderSubtle,
+                color: theme.textMuted
+              }}
+              title="إعادة ضبط هذا القسم"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+            </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-2 gap-2.5">
@@ -373,37 +379,39 @@ export default function LayoutAndCardsPanel({
               <p className="text-[10.5px] leading-relaxed" style={{ color: theme.textMuted }}>العرض، الهامش، الموقع الرأسي، والشفافية الكريستالية</p>
             </div>
           </div>
-          <span
-            className="text-[9px] font-extrabold px-2 py-0.5 rounded-full border"
-            style={{
-              backgroundColor: theme.badgeBg,
-              color: theme.accentText,
-              borderColor: theme.border
-            }}
-          >
-            LAYOUT
-          </span>
-          <button
-            onClick={() => {
-              setCardData(prev => ({
-                ...prev,
-                boxWidth: 84,
-                boxPaddingY: 20,
-                boxBlur: 20,
-                boxOpacity: 60,
-                verticalPosition: 50
-              }));
-            }}
-            className="w-6 h-6 rounded-lg border flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95"
-            style={{
-              backgroundColor: theme.bgDark,
-              borderColor: theme.borderSubtle,
-              color: theme.textMuted
-            }}
-            title="إعادة ضبط هذا القسم"
-          >
-            <RotateCcw className="w-3 h-3" />
-          </button>
+          <div className="flex items-center gap-1.5 shrink-0">
+            <span
+              className="text-[9px] font-extrabold px-2 py-0.5 rounded-full border"
+              style={{
+                backgroundColor: theme.badgeBg,
+                color: theme.accentText,
+                borderColor: theme.border
+              }}
+            >
+              LAYOUT
+            </span>
+            <button
+              onClick={() => {
+                setCardData(prev => ({
+                  ...prev,
+                  boxWidth: 84,
+                  boxPaddingY: 20,
+                  boxBlur: 20,
+                  boxOpacity: 60,
+                  verticalPosition: 50
+                }));
+              }}
+              className="w-7 h-7 rounded-xl border flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95"
+              style={{
+                backgroundColor: theme.bgDark,
+                borderColor: theme.borderSubtle,
+                color: theme.textMuted
+              }}
+              title="إعادة ضبط هذا القسم"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+            </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -535,12 +543,12 @@ export default function LayoutAndCardsPanel({
         }}
       >
         <div
-          className="flex items-center justify-between pb-2.5 border-b"
+          className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-2.5 border-b"
           style={{ borderColor: theme.borderSubtle }}
         >
           <div className="flex items-center gap-3">
             <div
-              className="w-8 h-8 rounded-xl flex items-center justify-center font-black shadow-inner border"
+              className="w-8 h-8 rounded-xl flex items-center justify-center font-black shadow-inner border shrink-0"
               style={{
                 backgroundColor: theme.bgDark,
                 borderColor: theme.borderSubtle,
@@ -555,113 +563,116 @@ export default function LayoutAndCardsPanel({
             </div>
           </div>
 
-          {/* 3-Way Segmented Control: Theme vs Platform vs Custom */}
-          <div
-            className="flex items-center gap-1 p-1 rounded-xl border shadow-inner"
-            style={{
-              backgroundColor: theme.bgDark,
-              borderColor: theme.borderSubtle
-            }}
-          >
-            <button
-              onClick={() => {
-                updateCardData('borderColorMode', 'theme');
-                updateCardData('glowColorMode', 'theme');
+          <div className="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto">
+            {/* 3-Way Segmented Control: Theme vs Platform vs Custom */}
+            <div
+              className="flex items-center gap-1 p-1 rounded-xl border shadow-inner shrink-0"
+              style={{
+                backgroundColor: theme.bgDark,
+                borderColor: theme.borderSubtle
               }}
-              className="flex items-center justify-center gap-1.5 py-1.5 px-2.5 rounded-lg text-[10px] font-bold border transition-all cursor-pointer"
-              style={
-                borderMode === 'theme'
-                  ? {
-                      backgroundColor: theme.accent,
-                      color: theme.bgDark,
-                      borderColor: theme.accent,
-                      boxShadow: `0 0 10px ${theme.accentGlow}`
-                    }
-                  : {
-                      backgroundColor: theme.bgDark,
-                      borderColor: 'transparent',
-                      color: theme.textMuted
-                    }
-              }
             >
-              <Tag className="w-3 h-3" />
-              <span>تصنيف العرض</span>
-            </button>
+              <button
+                onClick={() => {
+                  updateCardData('borderColorMode', 'theme');
+                  updateCardData('glowColorMode', 'theme');
+                }}
+                className="flex items-center justify-center gap-1.5 py-1.5 px-2.5 rounded-lg text-[10px] font-bold border transition-all cursor-pointer"
+                style={
+                  borderMode === 'theme'
+                    ? {
+                        backgroundColor: theme.accent,
+                        color: theme.bgDark,
+                        borderColor: theme.accent,
+                        boxShadow: `0 0 10px ${theme.accentGlow}`
+                      }
+                    : {
+                        backgroundColor: theme.bgDark,
+                        borderColor: 'transparent',
+                        color: theme.textMuted
+                      }
+                }
+              >
+                <Tag className="w-3 h-3" />
+                <span>تصنيف العرض</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  updateCardData('borderColorMode', 'platform');
+                  updateCardData('glowColorMode', 'platform');
+                }}
+                className="flex items-center justify-center gap-1.5 py-1.5 px-2.5 rounded-lg text-[10px] font-bold border transition-all cursor-pointer"
+                style={
+                  borderMode === 'platform'
+                    ? {
+                        backgroundColor: theme.accent,
+                        color: theme.bgDark,
+                        borderColor: theme.accent,
+                        boxShadow: `0 0 10px ${theme.accentGlow}`
+                      }
+                    : {
+                        backgroundColor: theme.bgDark,
+                        borderColor: 'transparent',
+                        color: theme.textMuted
+                      }
+                }
+              >
+                <Monitor className="w-3 h-3" />
+                <span>ثيم المنصة</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  updateCardData('borderColorMode', 'custom');
+                  updateCardData('glowColorMode', 'custom');
+                }}
+                className="flex items-center justify-center gap-1.5 py-1.5 px-2.5 rounded-lg text-[10px] font-bold border transition-all cursor-pointer"
+                style={
+                  borderMode === 'custom'
+                    ? {
+                        backgroundColor: theme.accent,
+                        color: theme.bgDark,
+                        borderColor: theme.accent,
+                        boxShadow: `0 0 10px ${theme.accentGlow}`
+                      }
+                    : {
+                        backgroundColor: theme.bgDark,
+                        borderColor: 'transparent',
+                        color: theme.textMuted
+                      }
+                }
+              >
+                <Palette className="w-3 h-3" />
+                <span>مخصص</span>
+              </button>
+            </div>
 
             <button
               onClick={() => {
-                updateCardData('borderColorMode', 'platform');
-                updateCardData('glowColorMode', 'platform');
+                setCardData(prev => ({
+                  ...prev,
+                  borderWidth: 1.5,
+                  borderRadius: 32,
+                  borderColorMode: 'theme',
+                  customBorderColor: '#d4af37',
+                  borderGlowIntensity: 75,
+                  glowColorMode: 'theme',
+                  customGlowColor: '#d4af37',
+                  borderStyle: 'solid'
+                }));
               }}
-              className="flex items-center justify-center gap-1.5 py-1.5 px-2.5 rounded-lg text-[10px] font-bold border transition-all cursor-pointer"
-              style={
-                borderMode === 'platform'
-                  ? {
-                      backgroundColor: theme.accent,
-                      color: theme.bgDark,
-                      borderColor: theme.accent,
-                      boxShadow: `0 0 10px ${theme.accentGlow}`
-                    }
-                  : {
-                      backgroundColor: theme.bgDark,
-                      borderColor: 'transparent',
-                      color: theme.textMuted
-                    }
-              }
-            >
-              <Monitor className="w-3 h-3" />
-              <span>ثيم المنصة</span>
-            </button>
-
-            <button
-              onClick={() => {
-                updateCardData('borderColorMode', 'custom');
-                updateCardData('glowColorMode', 'custom');
+              className="w-7 h-7 rounded-xl border flex items-center justify-center shrink-0 transition-all cursor-pointer hover:scale-105 active:scale-95"
+              style={{
+                backgroundColor: theme.bgDark,
+                borderColor: theme.borderSubtle,
+                color: theme.textMuted
               }}
-              className="flex items-center justify-center gap-1.5 py-1.5 px-2.5 rounded-lg text-[10px] font-bold border transition-all cursor-pointer"
-              style={
-                borderMode === 'custom'
-                  ? {
-                      backgroundColor: theme.accent,
-                      color: theme.bgDark,
-                      borderColor: theme.accent,
-                      boxShadow: `0 0 10px ${theme.accentGlow}`
-                    }
-                  : {
-                      backgroundColor: theme.bgDark,
-                      borderColor: 'transparent',
-                      color: theme.textMuted
-                    }
-              }
+              title="إعادة ضبط هذا القسم"
             >
-              <Palette className="w-3 h-3" />
-              <span>مخصص</span>
+              <RotateCcw className="w-3.5 h-3.5" />
             </button>
           </div>
-          <button
-            onClick={() => {
-              setCardData(prev => ({
-                ...prev,
-                borderWidth: 1.5,
-                borderRadius: 32,
-                borderColorMode: 'theme',
-                customBorderColor: '#d4af37',
-                borderGlowIntensity: 75,
-                glowColorMode: 'theme',
-                customGlowColor: '#d4af37',
-                borderStyle: 'solid'
-              }));
-            }}
-            className="w-6 h-6 rounded-lg border flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95"
-            style={{
-              backgroundColor: theme.bgDark,
-              borderColor: theme.borderSubtle,
-              color: theme.textMuted
-            }}
-            title="إعادة ضبط هذا القسم"
-          >
-            <RotateCcw className="w-3 h-3" />
-          </button>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
@@ -796,40 +807,42 @@ export default function LayoutAndCardsPanel({
               <p className="text-[10.5px] leading-relaxed" style={{ color: theme.textMuted }}>16 نمطاً هندسياً وتحريرياً مع تحكم كامل بالسماكة والسطوع</p>
             </div>
           </div>
-          <span
-            className="text-[9px] font-extrabold px-2 py-0.5 rounded-full border"
-            style={{
-              backgroundColor: theme.badgeBg,
-              color: theme.accentText,
-              borderColor: theme.border
-            }}
-          >
-            DIVIDERS
-          </span>
-          <button
-            onClick={() => {
-              setCardData(prev => ({
-                ...prev,
-                showDividers: true,
-                dividerStyle: 'wireframe-pill',
-                dividerTagText: 'VIP',
-                dividerOpacity: 100,
-                dividerThickness: 1.5,
-                dividerGlow: 80,
-                dividerWidth: 88,
-                dividerCustomColor: ''
-              }));
-            }}
-            className="w-6 h-6 rounded-lg border flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95"
-            style={{
-              backgroundColor: theme.bgDark,
-              borderColor: theme.borderSubtle,
-              color: theme.textMuted
-            }}
-            title="إعادة ضبط هذا القسم"
-          >
-            <RotateCcw className="w-3 h-3" />
-          </button>
+          <div className="flex items-center gap-1.5 shrink-0">
+            <span
+              className="text-[9px] font-extrabold px-2 py-0.5 rounded-full border"
+              style={{
+                backgroundColor: theme.badgeBg,
+                color: theme.accentText,
+                borderColor: theme.border
+              }}
+            >
+              DIVIDERS
+            </span>
+            <button
+              onClick={() => {
+                setCardData(prev => ({
+                  ...prev,
+                  showDividers: true,
+                  dividerStyle: 'wireframe-pill',
+                  dividerTagText: 'VIP',
+                  dividerOpacity: 100,
+                  dividerThickness: 1.5,
+                  dividerGlow: 80,
+                  dividerWidth: 88,
+                  dividerCustomColor: ''
+                }));
+              }}
+              className="w-7 h-7 rounded-xl border flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95"
+              style={{
+                backgroundColor: theme.bgDark,
+                borderColor: theme.borderSubtle,
+                color: theme.textMuted
+              }}
+              title="إعادة ضبط هذا القسم"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+            </button>
+          </div>
         </div>
 
         {/* Compact Segmented Pills for Categories */}
@@ -1113,7 +1126,7 @@ export default function LayoutAndCardsPanel({
             )}
             <button
               onClick={() => updateCardData('dividerCustomColor', '')}
-              className="w-6 h-6 rounded-lg border flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95 mr-auto"
+              className="w-7 h-7 rounded-xl border flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95 mr-auto"
               style={{
                 backgroundColor: theme.bgSurface,
                 borderColor: theme.borderSubtle,
@@ -1121,7 +1134,7 @@ export default function LayoutAndCardsPanel({
               }}
               title="إعادة ضبط اللون"
             >
-              <RotateCcw className="w-3 h-3" />
+              <RotateCcw className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>

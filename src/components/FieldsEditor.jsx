@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Type, Palette, Sparkles, Zap, Upload, Image as ImageIcon, ChevronDown, Heading, Hash, MapPin } from 'lucide-react';
+import { Type, Palette, Sparkles, Zap, Upload, Image as ImageIcon, ChevronDown, Heading, Hash, MapPin, RotateCcw } from 'lucide-react';
 import { BUILTIN_FONTS, QUICK_TEXT_PRESETS } from '../utils/constants';
 
 export default function FieldsEditor({
@@ -182,16 +182,37 @@ export default function FieldsEditor({
               <p className="text-[10.5px] leading-relaxed" style={{ color: theme.textMuted }}>النص البارز في أعلى الغلاف</p>
             </div>
           </div>
-          <span
-            className="text-[9px] font-extrabold px-2 py-0.5 rounded-full border"
-            style={{
-              backgroundColor: theme.badgeBg,
-              color: theme.accentText,
-              borderColor: theme.border
-            }}
-          >
-            TITLE
-          </span>
+          <div className="flex items-center gap-1.5 shrink-0">
+            <span
+              className="text-[9px] font-extrabold px-2 py-0.5 rounded-full border"
+              style={{
+                backgroundColor: theme.badgeBg,
+                color: theme.accentText,
+                borderColor: theme.border
+              }}
+            >
+              TITLE
+            </span>
+            <button
+              onClick={() => {
+                update('title', 'شقة للبيع');
+                update('titleFont', 'Lalezar');
+                update('titleSize', 38);
+                update('titleOpacity', 100);
+                update('titleColor', '#ffffff');
+                update('titleShimmer', false);
+              }}
+              className="w-7 h-7 rounded-xl border flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95"
+              style={{
+                backgroundColor: theme.bgDark,
+                borderColor: theme.borderSubtle,
+                color: theme.textMuted
+              }}
+              title="إعادة ضبط هذا القسم"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+            </button>
+          </div>
         </div>
 
         <div>
@@ -354,16 +375,40 @@ export default function FieldsEditor({
               <p className="text-[10.5px] leading-relaxed" style={{ color: theme.textMuted }}>المساحة أو السعر أو عدد الغرف</p>
             </div>
           </div>
-          <span
-            className="text-[9px] font-extrabold px-2 py-0.5 rounded-full border"
-            style={{
-              backgroundColor: theme.badgeBg,
-              color: theme.accentText,
-              borderColor: theme.border
-            }}
-          >
-            METRICS
-          </span>
+          <div className="flex items-center gap-1.5 shrink-0">
+            <span
+              className="text-[9px] font-extrabold px-2 py-0.5 rounded-full border"
+              style={{
+                backgroundColor: theme.badgeBg,
+                color: theme.accentText,
+                borderColor: theme.border
+              }}
+            >
+              METRICS
+            </span>
+            <button
+              onClick={() => {
+                update('showSubtitle', false);
+                update('subtitle', 'المساحة');
+                update('heroNumber', '185');
+                update('heroUnit', 'م²');
+                update('heroFont', 'Lalezar');
+                update('heroNumberSize', 76);
+                update('heroNumberOpacity', 100);
+                update('heroNumberColor', '#ffffff');
+                update('heroShimmer', false);
+              }}
+              className="w-7 h-7 rounded-xl border flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95"
+              style={{
+                backgroundColor: theme.bgDark,
+                borderColor: theme.borderSubtle,
+                color: theme.textMuted
+              }}
+              title="إعادة ضبط هذا القسم"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+            </button>
+          </div>
         </div>
 
         {/* Subtitle Checkbox */}
@@ -579,16 +624,36 @@ export default function FieldsEditor({
               <p className="text-[10.5px] leading-relaxed" style={{ color: theme.textMuted }}>اسم الحي أو الميزة التنافسية للعقار</p>
             </div>
           </div>
-          <span
-            className="text-[9px] font-extrabold px-2 py-0.5 rounded-full border"
-            style={{
-              backgroundColor: theme.badgeBg,
-              color: theme.accentText,
-              borderColor: theme.border
-            }}
-          >
-            LOCATION
-          </span>
+          <div className="flex items-center gap-1.5 shrink-0">
+            <span
+              className="text-[9px] font-extrabold px-2 py-0.5 rounded-full border"
+              style={{
+                backgroundColor: theme.badgeBg,
+                color: theme.accentText,
+                borderColor: theme.border
+              }}
+            >
+              LOCATION
+            </span>
+            <button
+              onClick={() => {
+                update('bottomText', 'حي النرجس');
+                update('bottomFont', 'Alexandria');
+                update('bottomSize', 18);
+                update('bottomTextOpacity', 100);
+                update('bottomPillStyle', 'pill');
+              }}
+              className="w-7 h-7 rounded-xl border flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95"
+              style={{
+                backgroundColor: theme.bgDark,
+                borderColor: theme.borderSubtle,
+                color: theme.textMuted
+              }}
+              title="إعادة ضبط هذا القسم"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+            </button>
+          </div>
         </div>
 
         <div>

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Upload, Sliders, Wand2, Sun, Image as ImageIcon, Sparkles } from 'lucide-react';
+import { Upload, Sliders, Wand2, Sun, Image as ImageIcon, Sparkles, RotateCcw } from 'lucide-react';
 import { OVERLAY_COLOR_PRESETS, IMAGE_FILTER_PRESETS, SAMPLE_IMAGES } from '../utils/constants';
 
 export default function ImageFXPanel({
@@ -198,17 +198,30 @@ export default function ImageFXPanel({
               <p className="text-[10.5px] leading-relaxed" style={{ color: theme.textMuted }}>تحريك الصورة أفقياً ورأسياً وضبط التركيز</p>
             </div>
           </div>
-          <button
-            onClick={() => { setImageZoom(100); setImagePanX(0); setImagePanY(0); }}
-            className="text-[10.5px] font-bold px-2.5 py-1 rounded-xl border transition-all cursor-pointer hover:opacity-100"
-            style={{
-              backgroundColor: theme.bgDark,
-              borderColor: theme.borderSubtle,
-              color: theme.accent
-            }}
-          >
-            إعادة الضبط
-          </button>
+          <div className="flex items-center gap-1.5 shrink-0">
+            <span
+              className="text-[9px] font-extrabold px-2 py-0.5 rounded-full border"
+              style={{
+                backgroundColor: theme.badgeBg,
+                color: theme.accentText,
+                borderColor: theme.border
+              }}
+            >
+              ZOOM
+            </span>
+            <button
+              onClick={() => { setImageZoom(100); setImagePanX(0); setImagePanY(0); }}
+              className="w-7 h-7 rounded-xl border flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95"
+              style={{
+                backgroundColor: theme.bgDark,
+                borderColor: theme.borderSubtle,
+                color: theme.textMuted
+              }}
+              title="إعادة ضبط هذا القسم"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+            </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-3 gap-3.5 pt-1">
@@ -311,16 +324,35 @@ export default function ImageFXPanel({
               <p className="text-[10.5px] leading-relaxed" style={{ color: theme.textMuted }}>عزل الصورة وإبراز نصوص الغلاف بتباين سينمائي</p>
             </div>
           </div>
-          <span
-            className="text-[9px] font-extrabold px-2 py-0.5 rounded-full border"
-            style={{
-              backgroundColor: theme.badgeBg,
-              color: theme.accentText,
-              borderColor: theme.border
-            }}
-          >
-            CINEMATIC
-          </span>
+          <div className="flex items-center gap-1.5 shrink-0">
+            <span
+              className="text-[9px] font-extrabold px-2 py-0.5 rounded-full border"
+              style={{
+                backgroundColor: theme.badgeBg,
+                color: theme.accentText,
+                borderColor: theme.border
+              }}
+            >
+              CINEMATIC
+            </span>
+            <button
+              onClick={() => {
+                setImageBlur(0);
+                setOverlayColor('#000000');
+                setOverlayOpacity(30);
+                setImageFilter('none');
+              }}
+              className="w-7 h-7 rounded-xl border flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95"
+              style={{
+                backgroundColor: theme.bgDark,
+                borderColor: theme.borderSubtle,
+                color: theme.textMuted
+              }}
+              title="إعادة ضبط هذا القسم"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+            </button>
+          </div>
         </div>
 
         <div>

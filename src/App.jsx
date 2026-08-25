@@ -6,7 +6,6 @@ import TypographyPanel from './components/TypographyPanel';
 import LayoutAndCardsPanel from './components/LayoutAndCardsPanel';
 import FieldsEditor from './components/FieldsEditor';
 import LogoPanel from './components/LogoPanel';
-import PalettesStudioPanel from './components/PalettesStudioPanel';
 import ExportControls, { RightActionWing, LeftActionWing } from './components/ExportControls';
 import SocialCopywriterModal from './components/SocialCopywriterModal';
 import FullscreenPreviewModal from './components/FullscreenPreviewModal';
@@ -220,14 +219,13 @@ export default function App() {
     setImageUrl(SAMPLE_IMAGES[0].url);
   };
 
-  // Reordered Tabs: Theme Studio is strictly the LAST tab after Logo
+  // Studio Control Tabs
   const tabs = [
     { id: 'fields', name: 'النصوص والأرقام', icon: FileText },
     { id: 'layout', name: 'الثيم والحدود', icon: LayoutGrid },
     { id: 'image', name: 'الصورة والبلور', icon: ImageIcon },
     { id: 'typography', name: 'الخطوط', icon: Type },
-    { id: 'logo', name: 'الشعار', icon: Shield },
-    { id: 'palettes', name: 'استوديو الثيمات (8)', icon: Palette }
+    { id: 'logo', name: 'الشعار', icon: Shield }
   ];
 
   // Helper fields for copywriter
@@ -518,20 +516,6 @@ export default function App() {
                 logoOpacity={logoOpacity}
                 setLogoOpacity={setLogoOpacity}
                 activeThemeObj={activeThemeObj}
-              />
-            )}
-
-            {activeTab === 'palettes' && (
-              <PalettesStudioPanel
-                activePlatformThemeId={activePlatformThemeId}
-                onSelectPlatformTheme={handleSelectPlatformTheme}
-                onApplyToCard={handleApplyPaletteToCard}
-                activeCardPaletteId={activeCardPaletteId}
-                activeThemeObj={activeThemeObj}
-                activeNeonButtonStyleId={activeNeonButtonStyleId}
-                onSelectNeonButtonStyle={setActiveNeonButtonStyleId}
-                neonButtonOpacity={neonButtonOpacity}
-                onNeonButtonOpacityChange={setNeonButtonOpacity}
               />
             )}
           </div>

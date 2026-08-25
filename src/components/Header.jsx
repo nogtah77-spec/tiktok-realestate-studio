@@ -69,11 +69,9 @@ export default function Header({
 
       {/* Center Theme Switcher & Presets Dropdown */}
       <div className="hidden md:flex items-center gap-2">
-        {/* ⚡ Quick Neon Mode Switcher Button (Dynamic 1 of 20 Styles) */}
+        {/* ⚡ Quick Dark Neon Mode Switcher Button */}
         <NeonButton
-          styleId={activeNeonButtonStyleId}
           isActive={isCurrentThemeNeon}
-          opacity={neonButtonOpacity}
           onClick={() => {
             if (isCurrentThemeNeon) {
               onSelectPlatformTheme('matte-charcoal-platinum');
@@ -85,7 +83,7 @@ export default function Header({
 
         {/* Quick Platform Theme Selector */}
         <div
-          className="flex items-center gap-1 border rounded-lg px-2 py-0.5"
+          className="h-7 flex items-center gap-1 border rounded-lg px-2"
           style={{
             backgroundColor: theme.bgDark,
             borderColor: theme.border
@@ -95,7 +93,7 @@ export default function Header({
           <select
             value={activePlatformThemeId}
             onChange={(e) => onSelectPlatformTheme(e.target.value)}
-            className="bg-transparent text-[11px] font-bold text-slate-200 outline-none cursor-pointer pr-1"
+            className="bg-transparent text-[11px] font-bold text-slate-200 outline-none cursor-pointer pr-1 h-full"
           >
             <optgroup label="⚡ باقة مود النيون (Cyber Neon PRO)" style={{ backgroundColor: '#050714', color: '#00e5ff' }}>
               {NEON_PALETTES.map((p) => (
@@ -128,7 +126,7 @@ export default function Header({
             const found = presets.find(p => p.id === e.target.value);
             if (found) onSelectPreset(found);
           }}
-          className="px-2.5 py-1 rounded-lg border text-[11px] font-semibold text-slate-200 outline-none cursor-pointer"
+          className="h-7 px-2.5 rounded-lg border text-[11px] font-semibold text-slate-200 outline-none cursor-pointer"
           style={{
             backgroundColor: theme.bgDark,
             borderColor: theme.borderSubtle
