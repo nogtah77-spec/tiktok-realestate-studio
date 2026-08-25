@@ -440,6 +440,8 @@ export function saveWorkspaceSession(state) {
               activePlatformThemeId: state.activePlatformThemeId,
               activePresetId: state.activePresetId,
               activeCardPaletteId: state.activeCardPaletteId,
+              activeNeonButtonStyleId: state.activeNeonButtonStyleId,
+              neonButtonOpacity: state.neonButtonOpacity,
               imageZoom: state.imageZoom,
               imagePanX: state.imagePanX,
               imagePanY: state.imagePanY,
@@ -505,6 +507,8 @@ export async function fetchCloudWorkspaceSession() {
       activePlatformThemeId: sessionMeta.activePlatformThemeId,
       activePresetId: sessionMeta.activePresetId,
       activeCardPaletteId: sessionMeta.activeCardPaletteId,
+      activeNeonButtonStyleId: sessionMeta.activeNeonButtonStyleId ?? 'frame-01',
+      neonButtonOpacity: sessionMeta.neonButtonOpacity ?? 100,
       imageZoom: sessionMeta.imageZoom ?? 100,
       imagePanX: sessionMeta.imagePanX ?? 0,
       imagePanY: sessionMeta.imagePanY ?? 0,
@@ -520,8 +524,8 @@ export async function fetchCloudWorkspaceSession() {
   }
 }
 
-// Subscribe to Live Cross-Device Realtime Workspace Changes
-export function subscribeToWorkspaceRealtime(onRemoteChange) {
+// Subscribe to Live Cross-Device Realtime Workspace Changes and Presets
+export function subscribeToWorkspaceRealtime(onWorkspaceChange, onPresetsChange) {
   try {
     const supabase = getSupabaseClient();
     if (!supabase) return () => {};
@@ -533,43 +537,54 @@ export function subscribeToWorkspaceRealtime(onRemoteChange) {
         {
           event: '*',
           schema: 'public',
-          table: 'presets',
-          filter: 'id=eq.current_workspace_session'
+          table: 'presets'
         },
         (payload) => {
-          if (!payload.new) return;
-          const row = payload.new;
-          const sessionMeta = row.card_data?._sessionMeta || {};
-          // Ignore changes from this exact device
-          if (sessionMeta._deviceId === CLIENT_DEVICE_ID) return;
+          if (!payload) return;
+          const { new: newRow, old: oldRow } = payload;
 
-          const remoteState = {
-            themeId: row.theme_id,
-            finish: row.finish,
-            overlayColor: row.overlay_color,
-            overlayOpacity: row.overlay_opacity !== null ? Number(row.overlay_opacity) : 35,
-            imageBlur: row.image_blur !== null ? Number(row.image_blur) : 0,
-            imageFilter: row.image_filter,
-            hasVignette: row.has_vignette,
-            vignetteIntensity: row.vignette_intensity !== null ? Number(row.vignette_intensity) : 50,
-            imageUrl: row.image_url || '',
-            cardData: row.card_data || {},
-            activePlatformThemeId: sessionMeta.activePlatformThemeId,
-            activePresetId: sessionMeta.activePresetId,
-            activeCardPaletteId: sessionMeta.activeCardPaletteId,
-            imageZoom: sessionMeta.imageZoom ?? 100,
-            imagePanX: sessionMeta.imagePanX ?? 0,
-            imagePanY: sessionMeta.imagePanY ?? 0,
-            showLogo: sessionMeta.showLogo ?? true,
-            logoUrl: sessionMeta.logoUrl ?? '',
-            logoPosition: sessionMeta.logoPosition ?? 'top-right',
-            logoScale: sessionMeta.logoScale ?? 100,
-            logoOpacity: sessionMeta.logoOpacity ?? 100,
-            _fromRemote: true
-          };
+          // 1. Live Workspace State Change (Theme, Neon, Cards, Numbers, etc.)
+          if (newRow && newRow.id === 'current_workspace_session') {
+            const sessionMeta = newRow.card_data?._sessionMeta || {};
+            if (sessionMeta._deviceId === CLIENT_DEVICE_ID) return;
 
-          if (onRemoteChange) {
-            onRemoteChange(remoteState);
+            const remoteState = {
+              themeId: newRow.theme_id,
+              finish: newRow.finish,
+              overlayColor: newRow.overlay_color,
+              overlayOpacity: newRow.overlay_opacity !== null ? Number(newRow.overlay_opacity) : 35,
+              imageBlur: newRow.image_blur !== null ? Number(newRow.image_blur) : 0,
+              imageFilter: newRow.image_filter,
+              hasVignette: newRow.has_vignette,
+              vignetteIntensity: newRow.vignette_intensity !== null ? Number(newRow.vignette_intensity) : 50,
+              imageUrl: newRow.image_url || '',
+              cardData: newRow.card_data || {},
+              activePlatformThemeId: sessionMeta.activePlatformThemeId,
+              activePresetId: sessionMeta.activePresetId,
+              activeCardPaletteId: sessionMeta.activeCardPaletteId,
+              activeNeonButtonStyleId: sessionMeta.activeNeonButtonStyleId ?? 'frame-01',
+              neonButtonOpacity: sessionMeta.neonButtonOpacity ?? 100,
+              imageZoom: sessionMeta.imageZoom ?? 100,
+              imagePanX: sessionMeta.imagePanX ?? 0,
+              imagePanY: sessionMeta.imagePanY ?? 0,
+              showLogo: sessionMeta.showLogo ?? true,
+              logoUrl: sessionMeta.logoUrl ?? '',
+              logoPosition: sessionMeta.logoPosition ?? 'top-right',
+              logoScale: sessionMeta.logoScale ?? 100,
+              logoOpacity: sessionMeta.logoOpacity ?? 100,
+              _fromRemote: true
+            };
+            if (onWorkspaceChange) onWorkspaceChange(remoteState);
+            return;
+          }
+
+          // 2. Custom Presets Realtime Sync (Add/Delete/Update "مجمع" or any custom template)
+          if ((newRow && newRow.id !== 'current_workspace_session') || (oldRow && oldRow.id !== 'current_workspace_session')) {
+            syncPresetsFromCloud().then((updatedList) => {
+              if (onPresetsChange && updatedList) {
+                onPresetsChange(updatedList);
+              }
+            });
           }
         }
       )

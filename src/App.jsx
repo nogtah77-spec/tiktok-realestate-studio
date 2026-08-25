@@ -70,6 +70,16 @@ export default function App() {
   const [showGridLines, setShowGridLines] = useState(false);
   const [showGridIndicator, setShowGridIndicator] = useState(true);
 
+  const handleSelectPlatformTheme = (newThemeId) => {
+    if (!newThemeId) return;
+    setActivePlatformThemeId(newThemeId);
+    savePlatformThemeId(newThemeId);
+    const foundTheme = ALL_PALETTES.find(p => p.id === newThemeId);
+    if (foundTheme) {
+      applyThemeToCSS(foundTheme);
+    }
+  };
+
   // Load custom fonts & apply theme CSS variables on startup or theme change
   useEffect(() => {
     applyThemeToCSS(activeThemeObj);
@@ -95,7 +105,7 @@ export default function App() {
       if (cloudSession) {
         if (cloudSession.themeId) setThemeId(cloudSession.themeId);
         if (cloudSession.finish) setFinish(cloudSession.finish);
-        if (cloudSession.imageUrl) setImageUrl(cloudSession.imageUrl);
+        if (cloudSession.imageUrl !== undefined) setImageUrl(cloudSession.imageUrl);
         if (cloudSession.overlayColor) setOverlayColor(cloudSession.overlayColor);
         if (cloudSession.overlayOpacity !== undefined) setOverlayOpacity(cloudSession.overlayOpacity);
         if (cloudSession.imageBlur !== undefined) setImageBlur(cloudSession.imageBlur);
@@ -113,35 +123,46 @@ export default function App() {
         if (cloudSession.imagePanY !== undefined) setImagePanY(cloudSession.imagePanY);
         if (cloudSession.activePlatformThemeId) handleSelectPlatformTheme(cloudSession.activePlatformThemeId);
         if (cloudSession.activePresetId) setActivePresetId(cloudSession.activePresetId);
-        if (cloudSession.activeCardPaletteId) setActiveCardPaletteId(cloudSession.activeCardPaletteId);
+        if (cloudSession.activeCardPaletteId !== undefined) setActiveCardPaletteId(cloudSession.activeCardPaletteId);
+        if (cloudSession.activeNeonButtonStyleId) setActiveNeonButtonStyleId(cloudSession.activeNeonButtonStyleId);
+        if (cloudSession.neonButtonOpacity !== undefined) setNeonButtonOpacity(cloudSession.neonButtonOpacity);
       }
     });
 
-    // 4. Live Cross-Device Realtime Subscription (WebSocket mirror)
-    const unsubscribe = subscribeToWorkspaceRealtime((remoteState) => {
-      if (!remoteState) return;
-      if (remoteState.themeId) setThemeId(remoteState.themeId);
-      if (remoteState.finish) setFinish(remoteState.finish);
-      if (remoteState.imageUrl) setImageUrl(remoteState.imageUrl);
-      if (remoteState.overlayColor) setOverlayColor(remoteState.overlayColor);
-      if (remoteState.overlayOpacity !== undefined) setOverlayOpacity(remoteState.overlayOpacity);
-      if (remoteState.imageBlur !== undefined) setImageBlur(remoteState.imageBlur);
-      if (remoteState.imageFilter) setImageFilter(remoteState.imageFilter);
-      if (remoteState.hasVignette !== undefined) setHasVignette(remoteState.hasVignette);
-      if (remoteState.vignetteIntensity !== undefined) setVignetteIntensity(remoteState.vignetteIntensity);
-      if (remoteState.cardData) setCardData(remoteState.cardData);
-      if (remoteState.showLogo !== undefined) setShowLogo(remoteState.showLogo);
-      if (remoteState.logoUrl !== undefined) setLogoUrl(remoteState.logoUrl);
-      if (remoteState.logoPosition) setLogoPosition(remoteState.logoPosition);
-      if (remoteState.logoScale !== undefined) setLogoScale(remoteState.logoScale);
-      if (remoteState.logoOpacity !== undefined) setLogoOpacity(remoteState.logoOpacity);
-      if (remoteState.imageZoom !== undefined) setImageZoom(remoteState.imageZoom);
-      if (remoteState.imagePanX !== undefined) setImagePanX(remoteState.imagePanX);
-      if (remoteState.imagePanY !== undefined) setImagePanY(remoteState.imagePanY);
-      if (remoteState.activePlatformThemeId) handleSelectPlatformTheme(remoteState.activePlatformThemeId);
-      if (remoteState.activePresetId) setActivePresetId(remoteState.activePresetId);
-      if (remoteState.activeCardPaletteId) setActiveCardPaletteId(remoteState.activeCardPaletteId);
-    });
+    // 4. Live Cross-Device Realtime Subscription (WebSocket mirror for both state & custom presets)
+    const unsubscribe = subscribeToWorkspaceRealtime(
+      (remoteState) => {
+        if (!remoteState) return;
+        if (remoteState.themeId) setThemeId(remoteState.themeId);
+        if (remoteState.finish) setFinish(remoteState.finish);
+        if (remoteState.imageUrl !== undefined) setImageUrl(remoteState.imageUrl);
+        if (remoteState.overlayColor) setOverlayColor(remoteState.overlayColor);
+        if (remoteState.overlayOpacity !== undefined) setOverlayOpacity(remoteState.overlayOpacity);
+        if (remoteState.imageBlur !== undefined) setImageBlur(remoteState.imageBlur);
+        if (remoteState.imageFilter) setImageFilter(remoteState.imageFilter);
+        if (remoteState.hasVignette !== undefined) setHasVignette(remoteState.hasVignette);
+        if (remoteState.vignetteIntensity !== undefined) setVignetteIntensity(remoteState.vignetteIntensity);
+        if (remoteState.cardData) setCardData(remoteState.cardData);
+        if (remoteState.showLogo !== undefined) setShowLogo(remoteState.showLogo);
+        if (remoteState.logoUrl !== undefined) setLogoUrl(remoteState.logoUrl);
+        if (remoteState.logoPosition) setLogoPosition(remoteState.logoPosition);
+        if (remoteState.logoScale !== undefined) setLogoScale(remoteState.logoScale);
+        if (remoteState.logoOpacity !== undefined) setLogoOpacity(remoteState.logoOpacity);
+        if (remoteState.imageZoom !== undefined) setImageZoom(remoteState.imageZoom);
+        if (remoteState.imagePanX !== undefined) setImagePanX(remoteState.imagePanX);
+        if (remoteState.imagePanY !== undefined) setImagePanY(remoteState.imagePanY);
+        if (remoteState.activePlatformThemeId) handleSelectPlatformTheme(remoteState.activePlatformThemeId);
+        if (remoteState.activePresetId) setActivePresetId(remoteState.activePresetId);
+        if (remoteState.activeCardPaletteId !== undefined) setActiveCardPaletteId(remoteState.activeCardPaletteId);
+        if (remoteState.activeNeonButtonStyleId) setActiveNeonButtonStyleId(remoteState.activeNeonButtonStyleId);
+        if (remoteState.neonButtonOpacity !== undefined) setNeonButtonOpacity(remoteState.neonButtonOpacity);
+      },
+      (newPresetsList) => {
+        if (newPresetsList && newPresetsList.length > 0) {
+          setPresets(newPresetsList);
+        }
+      }
+    );
 
     return () => {
       if (unsubscribe) unsubscribe();
@@ -204,15 +225,6 @@ export default function App() {
     logoScale,
     logoOpacity
   ]);
-
-  const handleSelectPlatformTheme = (newThemeId) => {
-    setActivePlatformThemeId(newThemeId);
-    savePlatformThemeId(newThemeId);
-    const foundTheme = ALL_PALETTES.find(p => p.id === newThemeId);
-    if (foundTheme) {
-      applyThemeToCSS(foundTheme);
-    }
-  };
 
   const handleApplyPaletteToCard = (palette) => {
     if (!palette) return;
