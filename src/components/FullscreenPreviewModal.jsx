@@ -7,7 +7,6 @@ export default function FullscreenPreviewModal({
   isOpen,
   onClose,
   canvasRef,
-  exportStageRef,
   previewProps = {},
   activeThemeObj
 }) {
@@ -29,7 +28,7 @@ export default function FullscreenPreviewModal({
     textMuted: '#94a3b8'
   };
 
-  const targetNode = exportStageRef?.current || canvasRef?.current;
+  const targetNode = canvasRef?.current;
 
   const handleDownloadFull = async () => {
     if (!targetNode || isExporting) return;
@@ -76,12 +75,12 @@ export default function FullscreenPreviewModal({
       >
         <div className="flex items-center gap-1.5 text-xs font-bold text-white">
           <Sparkles className="w-4 h-4" style={{ color: theme.accent }} />
-          <span>معاينة الغلاف بالكامل (1080×1920)</span>
+          <span>معاينة وتصدير الغلاف (1080×1920)</span>
         </div>
 
         <button
           onClick={onClose}
-          className="flex items-center gap-1 px-3 py-1.5 rounded-xl border text-xs font-bold transition-colors cursor-pointer"
+          className="flex items-center gap-1 px-3 py-1.5 rounded-xl border text-xs font-bold transition-colors cursor-pointer active:scale-95"
           style={{
             backgroundColor: theme.bgSurface,
             borderColor: theme.borderSubtle,
@@ -93,13 +92,15 @@ export default function FullscreenPreviewModal({
         </button>
       </div>
 
-      {/* Center Phone Mockup (Locked in view, zero scrolling) */}
-      <div className="flex-1 flex items-center justify-center w-full max-w-sm mx-auto overflow-hidden py-1">
-        <div className="scale-[0.78] sm:scale-95 origin-center">
+      {/* Center Phone Mockup (Enlarged, pristine 9:16 rectangular format) */}
+      <div className="flex-1 flex items-center justify-center w-full max-w-md mx-auto overflow-hidden py-1">
+        <div className="scale-[0.88] sm:scale-100 origin-center transition-transform rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10">
           <CanvasPreview
             ref={canvasRef}
             {...previewProps}
-            isPhoneMockup={true}
+            isPhoneMockup={false}
+            showGridLines={false}
+            showGridIndicator={false}
             activeThemeObj={theme}
           />
         </div>

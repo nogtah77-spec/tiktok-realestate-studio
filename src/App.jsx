@@ -19,7 +19,6 @@ import { Image as ImageIcon, Type, LayoutGrid, FileText, Shield, Maximize2, Pale
 export default function App() {
   const canvasRef = useRef(null);
   const fullscreenCanvasRef = useRef(null);
-  const exportStageRef = useRef(null);
 
   // Load initial saved workspace session if available
   const initialSession = loadWorkspaceSession();
@@ -322,25 +321,8 @@ export default function App() {
           }}
         >
           
-          {/* Mobile Top Bar: Title + Open Fullscreen Lightbox Button */}
-          <div className="lg:hidden w-full flex items-center justify-between px-1 text-[11px] pb-0.5">
-            <span className="font-bold" style={{ color: activeThemeObj.textMuted }}>المعاينة الحية:</span>
-            <button
-              onClick={() => setIsFullscreenPreviewOpen(true)}
-              className="flex items-center gap-1 text-[10px] font-bold px-2.5 py-1 rounded-lg transition-all active:scale-95 cursor-pointer shadow-sm border"
-              style={{
-                backgroundColor: activeThemeObj.bgDark,
-                borderColor: activeThemeObj.border,
-                color: activeThemeObj.accentText
-              }}
-            >
-              <Maximize2 className="w-3 h-3" style={{ color: activeThemeObj.accent }} />
-              <span>تكبير المعاينة 🔍</span>
-            </button>
-          </div>
-
           {/* Stage Bay: Centered with Generous Breathing Room between Canvas and Side Wings */}
-          <div className="w-full flex items-center justify-center gap-3 sm:gap-4 lg:gap-5 xl:gap-6 px-1 sm:px-2 lg:px-3">
+          <div className="w-full flex items-center justify-center gap-3 sm:gap-4 lg:gap-5 xl:gap-6 px-1 sm:px-2 lg:px-3 py-2">
             {/* Right Wing: Centered with comfortable margin */}
             <div className="flex-none flex items-center justify-center">
               <RightActionWing
@@ -354,26 +336,25 @@ export default function App() {
 
             {/* Center Canvas Preview: Exact pixel footprint on mobile with zero dead space */}
             <div className="flex-none flex items-center justify-center">
-              {/* MOBILE COMPACT PREVIEW (135px x 240px) - Click to expand */}
+              {/* MOBILE COMPACT PREVIEW (145px x 258px) - Click to expand */}
               <div
                 onClick={() => setIsFullscreenPreviewOpen(true)}
-                className="lg:hidden w-[135px] h-[240px] relative overflow-hidden rounded-[20px] shadow-xl ring-1 cursor-pointer active:scale-98 transition-transform shrink-0"
+                className="lg:hidden w-[145px] h-[258px] relative overflow-hidden rounded-[22px] shadow-2xl ring-1 cursor-pointer active:scale-98 transition-transform shrink-0"
                 style={{
                   backgroundColor: activeThemeObj.bgDark,
                   borderColor: activeThemeObj.border
                 }}
-                title="اضغط لتكبير المعاينة على كامل الشاشة"
+                title="اضغط لتكبير ومعاينة الغلاف على كامل الشاشة"
               >
                 <div
                   className="absolute top-0 left-0 origin-top-left pointer-events-none"
                   style={{
                     width: '360px',
                     height: '640px',
-                    transform: 'scale(0.375)'
+                    transform: 'scale(0.402)'
                   }}
                 >
                   <CanvasPreview
-                    ref={canvasRef}
                     {...previewProps}
                     isPhoneMockup={false}
                     activeThemeObj={activeThemeObj}
@@ -395,20 +376,10 @@ export default function App() {
             {/* Left Wing: Centered with comfortable margin */}
             <div className="flex-none flex items-center justify-center">
               <LeftActionWing
-                canvasRef={exportStageRef}
+                canvasRef={canvasRef}
                 activeThemeObj={activeThemeObj}
               />
             </div>
-          </div>
-
-          {/* Compact Bottom Action Bar: Fullscreen Preview & Views */}
-          <div className="w-full max-w-[360px] lg:max-w-[400px] pt-1">
-            <ExportControls
-              onOpenFullscreenPreview={() => setIsFullscreenPreviewOpen(true)}
-              showGridIndicator={showGridIndicator}
-              setShowGridIndicator={setShowGridIndicator}
-              activeThemeObj={activeThemeObj}
-            />
           </div>
         </div>
 
@@ -543,36 +514,11 @@ export default function App() {
         </div>
       </main>
 
-      {/* Dedicated 1:1 Pristine UHD Export Stage (Unscaled, off-screen, exact 360x640) */}
-      <div
-        style={{
-          position: 'fixed',
-          left: '-99999px',
-          top: '0',
-          width: '360px',
-          height: '640px',
-          overflow: 'hidden',
-          pointerEvents: 'none',
-          zIndex: -9999
-        }}
-        aria-hidden="true"
-      >
-        <CanvasPreview
-          ref={exportStageRef}
-          {...previewProps}
-          isPhoneMockup={false}
-          showGridLines={false}
-          showGridIndicator={false}
-          activeThemeObj={activeThemeObj}
-        />
-      </div>
-
       {/* Fullscreen Lightbox Dedicated Page */}
       <FullscreenPreviewModal
         isOpen={isFullscreenPreviewOpen}
         onClose={() => setIsFullscreenPreviewOpen(false)}
         canvasRef={fullscreenCanvasRef}
-        exportStageRef={exportStageRef}
         previewProps={previewProps}
         activeThemeObj={activeThemeObj}
       />
