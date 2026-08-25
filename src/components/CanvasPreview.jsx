@@ -182,26 +182,24 @@ const CanvasPreview = forwardRef(({
 
     if (isNeonModeActive) {
       if (intensity === 0) {
-        return `0 0 0 1.5px rgba(255, 255, 255, 0.7), 0 16px 40px rgba(0, 0, 0, 0.85)`;
+        return `0 0 0 1px rgba(255, 255, 255, 0.7), 0 16px 40px rgba(0, 0, 0, 0.85)`;
       }
-      const glowBlur = (intensity / 100) * 20;
-      const glowSpread = (intensity / 100) * 3;
-      return `0 0 0 1.5px rgba(255, 255, 255, 0.8), 0 0 ${glowBlur}px ${glowSpread}px ${effectiveBorderColor}, 0 0 ${glowBlur * 1.5}px ${effectiveGlowColor}, 0 16px 40px rgba(0, 0, 0, 0.85)`;
+      const glowBlur = (intensity / 100) * 16;
+      return `0 0 0 1px rgba(255, 255, 255, 0.8), 0 0 ${glowBlur}px ${effectiveBorderColor}, 0 0 ${glowBlur * 1.5}px ${effectiveGlowColor}, 0 16px 40px rgba(0, 0, 0, 0.85)`;
     }
 
     if (isGlossy) {
       if (intensity === 0) {
         return `0 18px 50px rgba(0, 0, 0, 0.65), inset 0 1px 2px rgba(255, 255, 255, 0.45), inset 0 -1px 2px rgba(0, 0, 0, 0.4)`;
       }
-      const glowBlur = (intensity / 100) * 22;
-      const glowSpread = (intensity / 100) * 2;
-      return `0 18px 50px rgba(0, 0, 0, 0.65), 0 0 ${glowBlur}px ${glowSpread}px ${effectiveGlowColor}, inset 0 1px 2px rgba(255, 255, 255, 0.45), inset 0 -1px 2px rgba(0, 0, 0, 0.4)`;
+      const glowBlur = (intensity / 100) * 18;
+      return `0 18px 50px rgba(0, 0, 0, 0.65), 0 0 ${glowBlur}px ${effectiveGlowColor}, inset 0 1px 2px rgba(255, 255, 255, 0.45), inset 0 -1px 2px rgba(0, 0, 0, 0.4)`;
     }
 
     if (intensity === 0) {
       return `0 14px 35px rgba(0, 0, 0, 0.5)`;
     }
-    const glowBlur = (intensity / 100) * 18;
+    const glowBlur = (intensity / 100) * 15;
     return `0 14px 35px rgba(0, 0, 0, 0.5), 0 0 ${glowBlur}px ${effectiveGlowColor}`;
   };
 
@@ -500,7 +498,7 @@ const CanvasPreview = forwardRef(({
           ref={ref}
           id="tiktok-canvas-target"
           className={`relative w-[360px] h-[640px] overflow-hidden select-none ${
-            isPhoneMockup ? 'rounded-[32px]' : 'rounded-2xl'
+            isPhoneMockup ? 'rounded-[32px]' : 'rounded-none'
           } bg-slate-950`}
           style={{ aspectRatio: '9 / 16' }}
         >
@@ -667,7 +665,7 @@ const CanvasPreview = forwardRef(({
                 )}
 
                 {/* Giant Hero Number with Unit */}
-                <div className="flex items-baseline justify-center gap-1.5 rtl:flex-row ltr:flex-row">
+                <div className="flex items-center justify-center gap-2">
                   {heroUnit && (
                     <span
                       className="font-bold tracking-tight select-none transition-opacity"
