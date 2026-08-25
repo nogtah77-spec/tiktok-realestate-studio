@@ -7,6 +7,7 @@ export default function FullscreenPreviewModal({
   isOpen,
   onClose,
   canvasRef,
+  exportStageRef,
   previewProps = {},
   activeThemeObj
 }) {
@@ -28,12 +29,14 @@ export default function FullscreenPreviewModal({
     textMuted: '#94a3b8'
   };
 
+  const targetNode = exportStageRef?.current || canvasRef?.current;
+
   const handleDownloadFull = async () => {
-    if (!canvasRef.current || isExporting) return;
+    if (!targetNode || isExporting) return;
     setIsExporting(true);
     try {
       await exportCoverImage({
-        node: canvasRef.current,
+        node: targetNode,
         format: 'png',
         fileName: 'alamoudi-tiktok-cover'
       });
@@ -45,10 +48,10 @@ export default function FullscreenPreviewModal({
   };
 
   const handleCopyClipboard = async () => {
-    if (!canvasRef.current || isCopying) return;
+    if (!targetNode || isCopying) return;
     setIsCopying(true);
     try {
-      await copyCoverImageToClipboard({ node: canvasRef.current });
+      await copyCoverImageToClipboard({ node: targetNode });
       setCopiedSuccess(true);
       setTimeout(() => setCopiedSuccess(false), 2000);
     } catch (err) {

@@ -11,7 +11,7 @@ import SocialCopywriterModal from './components/SocialCopywriterModal';
 import FullscreenPreviewModal from './components/FullscreenPreviewModal';
 import SupabaseModal from './components/SupabaseModal';
 import { DEFAULT_GLASS_CARD_DATA, SAMPLE_IMAGES, LUXURY_THEMES } from './utils/constants';
-import { getAllPresets, saveUserPreset, deleteUserPreset, BUILTIN_PRESETS, saveWorkspaceSession, loadWorkspaceSession, clearWorkspaceSession } from './utils/presetStorage';
+import { getAllPresets, saveUserPreset, deleteUserPreset, BUILTIN_PRESETS, saveWorkspaceSession, loadWorkspaceSession, clearWorkspaceSession, syncPresetsFromCloud, fetchCloudWorkspaceSession } from './utils/presetStorage';
 import { loadSavedCustomFonts } from './utils/fontLoader';
 import { ALL_PALETTES, getSavedPlatformThemeId, savePlatformThemeId, applyThemeToCSS } from './utils/themeEngine';
 import { Image as ImageIcon, Type, LayoutGrid, FileText, Shield, Maximize2, Palette } from 'lucide-react';
@@ -19,6 +19,7 @@ import { Image as ImageIcon, Type, LayoutGrid, FileText, Shield, Maximize2, Pale
 export default function App() {
   const canvasRef = useRef(null);
   const fullscreenCanvasRef = useRef(null);
+  const exportStageRef = useRef(null);
 
   // Load initial saved workspace session if available
   const initialSession = loadWorkspaceSession();
@@ -76,9 +77,29 @@ export default function App() {
   }, [activePlatformThemeId, activeThemeObj]);
 
   useEffect(() => {
+    // 1. Load custom fonts from IndexedDB
     loadSavedCustomFonts().then((loaded) => {
       if (loaded && loaded.length > 0) {
         setCustomFonts(loaded);
+      }
+    });
+
+    // 2. Sync user presets from Supabase cloud
+    syncPresetsFromCloud().then((cloudPresets) => {
+      if (cloudPresets && cloudPresets.length > 0) {
+        setPresets(cloudPresets);
+      }
+    });
+
+    // 3. If local session is empty, fetch cloud session for cross-device continuation
+    fetchCloudWorkspaceSession().then((cloudSession) => {
+      if (cloudSession && !initialSession) {
+        if (cloudSession.themeId) setThemeId(cloudSession.themeId);
+        if (cloudSession.finish) setFinish(cloudSession.finish);
+        if (cloudSession.imageUrl) setImageUrl(cloudSession.imageUrl);
+        if (cloudSession.cardData) setCardData(cloudSession.cardData);
+        if (cloudSession.activePlatformThemeId) handleSelectPlatformTheme(cloudSession.activePlatformThemeId);
+        if (cloudSession.activePresetId) setActivePresetId(cloudSession.activePresetId);
       }
     });
   }, []);
@@ -374,16 +395,16 @@ export default function App() {
             {/* Left Wing: Centered with comfortable margin */}
             <div className="flex-none flex items-center justify-center">
               <LeftActionWing
-                canvasRef={canvasRef}
+                canvasRef={exportStageRef}
                 activeThemeObj={activeThemeObj}
               />
             </div>
           </div>
 
-          {/* Compact Bottom Action Bar: High-Res Download & Views */}
+          {/* Compact Bottom Action Bar: Fullscreen Preview & Views */}
           <div className="w-full max-w-[360px] lg:max-w-[400px] pt-1">
             <ExportControls
-              canvasRef={canvasRef}
+              onOpenFullscreenPreview={() => setIsFullscreenPreviewOpen(true)}
               showGridIndicator={showGridIndicator}
               setShowGridIndicator={setShowGridIndicator}
               activeThemeObj={activeThemeObj}
@@ -522,11 +543,36 @@ export default function App() {
         </div>
       </main>
 
+      {/* Dedicated 1:1 Pristine UHD Export Stage (Unscaled, off-screen, exact 360x640) */}
+      <div
+        style={{
+          position: 'fixed',
+          left: '-99999px',
+          top: '0',
+          width: '360px',
+          height: '640px',
+          overflow: 'hidden',
+          pointerEvents: 'none',
+          zIndex: -9999
+        }}
+        aria-hidden="true"
+      >
+        <CanvasPreview
+          ref={exportStageRef}
+          {...previewProps}
+          isPhoneMockup={false}
+          showGridLines={false}
+          showGridIndicator={false}
+          activeThemeObj={activeThemeObj}
+        />
+      </div>
+
       {/* Fullscreen Lightbox Dedicated Page */}
       <FullscreenPreviewModal
         isOpen={isFullscreenPreviewOpen}
         onClose={() => setIsFullscreenPreviewOpen(false)}
         canvasRef={fullscreenCanvasRef}
+        exportStageRef={exportStageRef}
         previewProps={previewProps}
         activeThemeObj={activeThemeObj}
       />

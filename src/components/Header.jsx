@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sparkles, Save, RotateCcw, Database, Palette } from 'lucide-react';
+import { Sparkles, Save, RotateCcw, Database, Palette, Trash2 } from 'lucide-react';
 import { NEON_PALETTES, MUTED_LUXURY_PALETTES, MASTER_PALETTES } from '../utils/themeEngine';
 import NeonButton from './NeonButton';
 
@@ -8,6 +8,7 @@ export default function Header({
   activePresetId,
   onSelectPreset,
   onSavePreset,
+  onDeletePreset,
   onResetToDefault,
   onOpenSupabaseModal,
   onOpenCopywriterModal,
@@ -69,19 +70,7 @@ export default function Header({
 
       {/* Center Theme Switcher & Presets Dropdown */}
       <div className="hidden md:flex items-center gap-2">
-        {/* ⚡ Quick Dark Neon Mode Switcher Button */}
-        <NeonButton
-          isActive={isCurrentThemeNeon}
-          onClick={() => {
-            if (isCurrentThemeNeon) {
-              onSelectPlatformTheme('matte-charcoal-platinum');
-            } else {
-              onSelectPlatformTheme('neon-cyber-pink');
-            }
-          }}
-        />
-
-        {/* Quick Platform Theme Selector */}
+        {/* 1. Quick Platform Theme Selector */}
         <div
           className="h-7 flex items-center gap-1 border rounded-lg px-2"
           style={{
@@ -119,7 +108,19 @@ export default function Header({
           </select>
         </div>
 
-        {/* Real Estate Models Preset Dropdown */}
+        {/* 2. ⚡ Quick Dark Neon Mode Switcher Button (Centered Between the Two) */}
+        <NeonButton
+          isActive={isCurrentThemeNeon}
+          onClick={() => {
+            if (isCurrentThemeNeon) {
+              onSelectPlatformTheme('matte-charcoal-platinum');
+            } else {
+              onSelectPlatformTheme('neon-cyber-pink');
+            }
+          }}
+        />
+
+        {/* 3. Real Estate Models Preset Dropdown */}
         <select
           value={activePresetId}
           onChange={(e) => {
@@ -138,6 +139,26 @@ export default function Header({
             </option>
           ))}
         </select>
+
+        {/* Delete Custom Preset Button (Only appears for custom user presets) */}
+        {activePresetId?.startsWith('custom-') && !isSaving && (
+          <button
+            onClick={() => {
+              if (window.confirm('هل تريد بالتأكيد حذف هذا القالب المخصص نهائياً؟')) {
+                if (onDeletePreset) onDeletePreset(activePresetId);
+                if (onSelectPreset && presets[0]) onSelectPreset(presets[0]);
+              }
+            }}
+            className="h-7 w-7 rounded-lg border flex items-center justify-center text-rose-400 hover:bg-rose-500/20 hover:text-rose-300 transition-all cursor-pointer shrink-0"
+            style={{
+              backgroundColor: theme.bgDark,
+              borderColor: theme.borderSubtle
+            }}
+            title="حذف هذا القالب المخصص 🗑️"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+          </button>
+        )}
 
         {/* Save Custom Preset Button */}
         {isSaving ? (

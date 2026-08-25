@@ -3,13 +3,11 @@ import { Download, Copy, Check, Grid, Shield, Layers, Eye } from 'lucide-react';
 import { exportCoverImage, exportTransparentGlassCard, copyCoverImageToClipboard } from '../utils/exportEngine';
 
 export default function ExportControls({
-  canvasRef,
+  onOpenFullscreenPreview,
   showGridIndicator,
   setShowGridIndicator,
   activeThemeObj
 }) {
-  const [isExporting, setIsExporting] = useState(false);
-
   const theme = activeThemeObj || {
     bgDark: '#0f172a',
     bgSurface: '#1e293b',
@@ -21,37 +19,20 @@ export default function ExportControls({
     textMuted: '#94a3b8'
   };
 
-  const handleDownloadFull = async (format = 'png') => {
-    if (!canvasRef.current || isExporting) return;
-    setIsExporting(true);
-    try {
-      await exportCoverImage({
-        node: canvasRef.current,
-        format,
-        fileName: 'alamoudi-tiktok-cover'
-      });
-    } catch (err) {
-      alert('حدث خطأ أثناء التصدير: ' + err.message);
-    } finally {
-      setIsExporting(false);
-    }
-  };
-
   return (
     <div className="w-full flex items-center gap-2 select-none">
-      {/* Main High-Res Download Button with Dynamic Theme Styling */}
+      {/* Main Preview & Export Button that opens the Fullscreen Preview Modal */}
       <button
-        onClick={() => handleDownloadFull('png')}
-        disabled={isExporting}
-        className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl font-black text-xs shadow-lg transition-all active:scale-95 cursor-pointer disabled:opacity-50"
+        onClick={onOpenFullscreenPreview}
+        className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl font-black text-xs shadow-lg transition-all active:scale-95 cursor-pointer"
         style={{
           backgroundColor: theme.accent,
           color: theme.bgDark,
           boxShadow: `0 0 16px ${theme.accentGlow}`
         }}
       >
-        <Download className="w-4 h-4 stroke-[2.5]" />
-        <span>{isExporting ? 'جاري التصدير...' : 'تحميل الغلاف (1080×1920)'}</span>
+        <Eye className="w-4 h-4 stroke-[2.5]" />
+        <span>معاينة وتصدير الغلاف (1080×1920)</span>
       </button>
 
       {/* TikTok Views Toggle Button */}
@@ -74,7 +55,7 @@ export default function ExportControls({
         }
         title="مؤشر مشاهدات تيك توك ▷"
       >
-        <Eye className="w-3.5 h-3.5" style={{ color: showGridIndicator ? theme.accent : undefined }} />
+        <Grid className="w-3.5 h-3.5" style={{ color: showGridIndicator ? theme.accent : undefined }} />
         <span>المشاهدات</span>
       </button>
     </div>
