@@ -19,6 +19,7 @@ import { Image as ImageIcon, Type, LayoutGrid, FileText, Shield, Maximize2, Pale
 export default function App() {
   const canvasRef = useRef(null);
   const fullscreenCanvasRef = useRef(null);
+  const isRemoteUpdatingRef = useRef(false);
 
   // Load initial saved workspace session if available
   const initialSession = loadWorkspaceSession();
@@ -133,6 +134,7 @@ export default function App() {
     const unsubscribe = subscribeToWorkspaceRealtime(
       (remoteState) => {
         if (!remoteState) return;
+        isRemoteUpdatingRef.current = true;
         if (remoteState.themeId) setThemeId(remoteState.themeId);
         if (remoteState.finish) setFinish(remoteState.finish);
         if (remoteState.imageUrl !== undefined) setImageUrl(remoteState.imageUrl);
@@ -169,8 +171,13 @@ export default function App() {
     };
   }, []);
 
-  // Auto-save session state to local storage
+  // Auto-save session state to local storage & cloud (skips echo if state was applied from remote)
   useEffect(() => {
+    if (isRemoteUpdatingRef.current) {
+      isRemoteUpdatingRef.current = false;
+      return;
+    }
+
     const timer = setTimeout(() => {
       saveWorkspaceSession({
         activePresetId,

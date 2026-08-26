@@ -403,6 +403,39 @@ export function deleteUserPreset(presetId) {
   }
 }
 
+// State Signature & Timestamp Cache for Echo Prevention
+let lastSyncedPayloadSignature = '';
+let lastRemoteTimestamp = 0;
+
+function computeStateSignature(state) {
+  if (!state) return '';
+  return JSON.stringify({
+    themeId: state.themeId,
+    finish: state.finish,
+    overlayColor: state.overlayColor,
+    overlayOpacity: state.overlayOpacity,
+    imageBlur: state.imageBlur,
+    imageFilter: state.imageFilter,
+    hasVignette: state.hasVignette,
+    vignetteIntensity: state.vignetteIntensity,
+    imageUrl: state.imageUrl,
+    cardData: state.cardData,
+    activePlatformThemeId: state.activePlatformThemeId,
+    activePresetId: state.activePresetId,
+    activeCardPaletteId: state.activeCardPaletteId,
+    activeNeonButtonStyleId: state.activeNeonButtonStyleId,
+    neonButtonOpacity: state.neonButtonOpacity,
+    imageZoom: state.imageZoom,
+    imagePanX: state.imagePanX,
+    imagePanY: state.imagePanY,
+    showLogo: state.showLogo,
+    logoUrl: state.logoUrl,
+    logoPosition: state.logoPosition,
+    logoScale: state.logoScale,
+    logoOpacity: state.logoOpacity
+  });
+}
+
 // Unique Device Instance ID to prevent echo loops in real-time sync
 export const CLIENT_DEVICE_ID = 'dev_' + Math.random().toString(36).substring(2, 9) + '_' + Date.now().toString(36);
 
@@ -418,11 +451,20 @@ export function saveWorkspaceSession(state) {
     // If state change came from a remote real-time update, do not re-broadcast
     if (state._fromRemote) return;
 
-    // Debounced Cloud Sync for current workspace (500ms for near-instant mirroring)
+    const signature = computeStateSignature(state);
+    if (signature === lastSyncedPayloadSignature) {
+      return; // Identical state already synced
+    }
+
+    // Debounced Cloud Sync for current workspace (400ms for fast, stable mirroring)
     if (cloudSyncTimer) clearTimeout(cloudSyncTimer);
     cloudSyncTimer = setTimeout(() => {
+      const currentSignature = computeStateSignature(state);
+      if (currentSignature === lastSyncedPayloadSignature) return;
+
       const supabase = getSupabaseClient();
       if (supabase) {
+        lastSyncedPayloadSignature = currentSignature;
         supabase.from('presets').upsert({
           id: 'current_workspace_session',
           name: 'جلسة العمل السحابية الحالية',
@@ -460,7 +502,7 @@ export function saveWorkspaceSession(state) {
           if (error) console.warn('Failed to sync workspace to Supabase:', error);
         });
       }
-    }, 500);
+    }, 400);
   } catch (e) {
     console.warn('Unable to auto-save session state:', e);
   }
@@ -493,7 +535,7 @@ export async function fetchCloudWorkspaceSession() {
     if (error || !data) return null;
 
     const sessionMeta = data.card_data?._sessionMeta || {};
-    return {
+    const result = {
       themeId: data.theme_id,
       finish: data.finish,
       overlayColor: data.overlay_color,
@@ -518,6 +560,9 @@ export async function fetchCloudWorkspaceSession() {
       logoScale: sessionMeta.logoScale ?? 100,
       logoOpacity: sessionMeta.logoOpacity ?? 100
     };
+
+    lastSyncedPayloadSignature = computeStateSignature(result);
+    return result;
   } catch (err) {
     console.warn('Could not fetch cloud workspace session:', err);
     return null;
@@ -546,7 +591,15 @@ export function subscribeToWorkspaceRealtime(onWorkspaceChange, onPresetsChange)
           // 1. Live Workspace State Change (Theme, Neon, Cards, Numbers, etc.)
           if (newRow && newRow.id === 'current_workspace_session') {
             const sessionMeta = newRow.card_data?._sessionMeta || {};
+            // Ignore self-broadcasts from this exact device
             if (sessionMeta._deviceId === CLIENT_DEVICE_ID) return;
+
+            // Check timestamp sequence to avoid out-of-order jitter
+            const incomingTimestamp = sessionMeta._updatedAt || 0;
+            if (incomingTimestamp && incomingTimestamp < lastRemoteTimestamp) {
+              return;
+            }
+            lastRemoteTimestamp = incomingTimestamp;
 
             const remoteState = {
               themeId: newRow.theme_id,
@@ -574,6 +627,10 @@ export function subscribeToWorkspaceRealtime(onWorkspaceChange, onPresetsChange)
               logoOpacity: sessionMeta.logoOpacity ?? 100,
               _fromRemote: true
             };
+
+            // Update signature so local auto-save won't echo back
+            lastSyncedPayloadSignature = computeStateSignature(remoteState);
+
             if (onWorkspaceChange) onWorkspaceChange(remoteState);
             return;
           }
