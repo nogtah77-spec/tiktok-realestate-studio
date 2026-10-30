@@ -42,7 +42,7 @@ const CanvasPreview = forwardRef(({
   const theme = activePlatformTheme;
 
   // Image Filter CSS with Cyberpunk options
-  let filterCss = 'none';
+  let filterCss = '';
   if (imageFilter === 'monochrome') filterCss = 'grayscale(100%) contrast(115%) brightness(95%)';
   else if (imageFilter === 'warm') filterCss = 'sepia(30%) saturate(130%) brightness(102%) contrast(105%)';
   else if (imageFilter === 'cool') filterCss = 'hue-rotate(185deg) saturate(90%) contrast(108%)';
@@ -50,6 +50,10 @@ const CanvasPreview = forwardRef(({
   else if (imageFilter === 'moody') filterCss = 'contrast(125%) brightness(85%) saturate(110%)';
   else if (imageFilter === 'cyber-dark') filterCss = 'contrast(140%) brightness(84%) saturate(145%)';
   else if (imageFilter === 'synthwave-neon') filterCss = 'hue-rotate(280deg) saturate(180%) contrast(125%) brightness(90%)';
+
+  const blurAmount = Number(imageBlur) || 0;
+  const blurFilterStr = blurAmount > 0 ? `blur(${blurAmount}px)` : '';
+  const combinedFilter = [filterCss, blurFilterStr].filter(Boolean).join(' ') || 'none';
 
   const isGlossy = finish === 'glossy';
 
@@ -509,7 +513,8 @@ const CanvasPreview = forwardRef(({
               style={{
                 backgroundImage: `url(${imageUrl})`,
                 transform: `scale(${imageZoom / 100}) translate(${imagePanX}px, ${imagePanY}px)`,
-                filter: `${filterCss} blur(${imageBlur}px)`,
+                filter: combinedFilter,
+                WebkitFilter: combinedFilter,
                 transformOrigin: 'center center'
               }}
             />

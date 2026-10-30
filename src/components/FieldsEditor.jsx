@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
-import { Type, Palette, Sparkles, Zap, Upload, Image as ImageIcon, ChevronDown, Heading, Hash, MapPin, RotateCcw } from 'lucide-react';
-import { BUILTIN_FONTS, QUICK_TEXT_PRESETS } from '../utils/constants';
+import { Type, Palette, Sparkles, Upload, Image as ImageIcon, ChevronDown, Heading, Hash, MapPin, RotateCcw } from 'lucide-react';
+import { BUILTIN_FONTS } from '../utils/constants';
 
 export default function FieldsEditor({
   cardData = {},
@@ -29,18 +29,6 @@ export default function FieldsEditor({
 
   const update = (key, value) => {
     onCardDataChange(prev => ({ ...prev, [key]: value }));
-  };
-
-  const applyQuickPreset = (preset) => {
-    onCardDataChange(prev => ({
-      ...prev,
-      title: preset.title,
-      subtitle: preset.subtitle,
-      showSubtitle: !!preset.subtitle,
-      heroNumber: preset.heroNumber,
-      heroUnit: preset.heroUnit,
-      bottomText: preset.bottomText
-    }));
   };
 
   const handleImageUpload = (e) => {
@@ -100,58 +88,6 @@ export default function FieldsEditor({
           <Upload className="w-3.5 h-3.5" />
           <span>رفع صورة</span>
         </button>
-      </div>
-
-      {/* Quick Templates Bar */}
-      <div
-        className="p-3.5 sm:p-4 rounded-2xl border space-y-2.5 shadow-sm transition-colors duration-200"
-        style={{
-          backgroundColor: theme.bgSurface,
-          borderColor: theme.borderSubtle
-        }}
-      >
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div
-              className="w-6 h-6 rounded-lg flex items-center justify-center font-bold border"
-              style={{
-                backgroundColor: theme.bgDark,
-                borderColor: theme.borderSubtle,
-                color: theme.accent
-              }}
-            >
-              <Zap className="w-3.5 h-3.5" />
-            </div>
-            <span className="font-black text-xs leading-normal" style={{ color: theme.textPrimary }}>نماذج وعروض سريعة جاهزة</span>
-          </div>
-          <span
-            className="text-[9px] font-extrabold px-2 py-0.5 rounded-full border"
-            style={{
-              backgroundColor: theme.badgeBg,
-              color: theme.accentText,
-              borderColor: theme.border
-            }}
-          >
-            PRESETS
-          </span>
-        </div>
-
-        <div className="flex items-center gap-2 flex-wrap pt-1">
-          {QUICK_TEXT_PRESETS.map((qp, idx) => (
-            <button
-              key={idx}
-              onClick={() => applyQuickPreset(qp)}
-              className="px-3 py-1.5 rounded-xl border text-[11px] font-semibold transition-all active:scale-95 cursor-pointer shadow-sm hover:opacity-100"
-              style={{
-                backgroundColor: theme.bgDark,
-                borderColor: theme.borderSubtle,
-                color: theme.textMuted
-              }}
-            >
-              {qp.title} ({qp.heroNumber} {qp.heroUnit})
-            </button>
-          ))}
-        </div>
       </div>
 
       {/* Main Title Section */}
